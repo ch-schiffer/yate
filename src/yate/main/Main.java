@@ -5,15 +5,27 @@
  */
 package yate.main;
 
+import yate.controll.MainFrameController;
+import yate.model.MainFrameModel;
+import yate.view.MainFrameView;
+
 /**
  *
- * @author Christian
+ * @author Laurin
  */
 public class Main {
-    
-    public static int main()
-    {
-        return 0;
+
+    private static MainFrameView view;
+    private static MainFrameModel model;
+    private static MainFrameController controller;
+
+    public static void main(String[] args) {
+
+        model = new MainFrameModel();
+        view = new MainFrameView();
+        controller = new MainFrameController(view, model);
+        controller.addListener();
+
+        view.setVisible(true);
     }
-    
 }

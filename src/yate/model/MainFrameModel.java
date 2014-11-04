@@ -9,6 +9,6 @@ package yate.model;
  *
  * @author Laurin
  */
-public class TextBoxModel {
+public class MainFrameModel {
 
 }
