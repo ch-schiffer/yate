@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yate.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -14,16 +11,31 @@ import javax.swing.text.Document;
  *
  * @author Laurin
  */
-public class CenterBoxView extends javax.swing.JPanel {
+public class CenterBoxView extends javax.swing.JPanel implements View{
 
     private ArrayList<JLabel> lines = new ArrayList<JLabel>();
+    private HashMap<String,JComponent> components;
 
     /**
      * Creates new form CenterBox
      */
     public CenterBoxView() {
         initComponents();
+        components = new HashMap<>();
         setLines(1);
+        addComponentsToHashMap();
+    }
+    
+    
+    private void addComponentsToHashMap()
+    {
+        
+    }
+    
+    
+  @Override
+    public JComponent getComponent(String Name) {
+        return components.get(Name);
     }
 
     public void setLines(int lineCount) {
@@ -90,5 +102,6 @@ public class CenterBoxView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
+
 
 }

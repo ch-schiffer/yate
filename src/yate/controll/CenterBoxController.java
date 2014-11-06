@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yate.controll;
 
-import yate.actions.CenterBox.DocumentUpdateAction;
+import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -13,25 +8,24 @@ import yate.view.CenterBoxView;
  *
  * @author Laurin
  */
-public class CenterBoxController {
+public class CenterBoxController extends Controller{
 
-    private final CenterBoxView view;
-    private final CenterBoxModel model;
-
-    /**
-     * @param view Die Passende View fuer das Model.
-     * @param model Das Model fuer die CenterBox.
-     *
-     * Die Funktion addListener muss seperat aufgerufen werden.
-     */
     public CenterBoxController(CenterBoxView view, CenterBoxModel model) {
-
-        this.view = view;
-        this.model = model;
+        super(view,model);
+    }
+    
+    private CenterBoxView getCenterBoxView()
+    {
+        return (CenterBoxView)getView();
+    }
+    
+    private CenterBoxModel getCenterBoxModel()
+    {
+        return (CenterBoxModel)getModel();
     }
 
     public void addListener() {
-        view.addDocumentUpdateListener(new DocumentUpdateAction(view, model));
+        getCenterBoxView().addDocumentUpdateListener(new DocumentUpdateAction(getCenterBoxView(), getCenterBoxModel()));
     }
 
 }

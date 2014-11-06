@@ -73,7 +73,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
               <SubComponents>
-                <Component class="yate.view.SideMenuView" name="sideMenuView1">
+                <Component class="yate.view.ProjectMenuView" name="sideMenuView1">
                 </Component>
               </SubComponents>
             </Container>

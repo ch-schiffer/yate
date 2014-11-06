@@ -1,37 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yate.view;
 
+import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JComponent;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import yate.controll.CenterBoxController;
+import yate.controll.ProjectMenuController;
 import yate.model.CenterBoxModel;
 
 /**
  *
  * @author Laurin
  */
-public class MainFrameView extends javax.swing.JFrame {
+public class MainFrameView extends javax.swing.JFrame implements View{
 
-    ArrayList<CenterBoxController> cbController;
-
+    private ArrayList<CenterBoxController> centerBoxController;
+    private ProjectMenuController projectMenuController;
+    private HashMap<String,JComponent> components;
     /**
      * Creates new form MainFrame
      */
     public MainFrameView() {
 
         initComponents();
-
-        cbController = new ArrayList<>();
-
+        
+        components = new HashMap<>();
+        centerBoxController = new ArrayList<>();
+        //projectMenuController = new ProjectMenuController()
+        addComponentsToHashMap();
+        
+        
         //Zum debuggen
         addCenterBox("Datei 1");
         addCenterBox("Datei 2");
         addCenterBox("Datei 3");
     }
+    
+    private void addComponentsToHashMap()
+    {
+        Component[] comps = this.getContentPane().getComponents();
+        for (Component component : comps) {
+            if(component instanceof JComponent)
+            {
+                 components.put(component.getName(), (JComponent)component);
+            }
+        }
+        System.err.println("");
+    }
+    
+    
+    @Override
+    public JComponent getComponent(String Name) {
+        return components.get(Name);
+    }
+    
 
     public void addCenterBox(String fileName) {
         CenterBoxView view = new CenterBoxView();
@@ -41,7 +65,7 @@ public class MainFrameView extends javax.swing.JFrame {
         CenterBoxController cbc = new CenterBoxController(view, model);
         cbc.addListener();
 
-        cbController.add(cbc);
+        centerBoxController.add(cbc);
 
         jTabbedPane1.addTab(fileName, view);
     }
@@ -59,7 +83,7 @@ public class MainFrameView extends javax.swing.JFrame {
         jPSide = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        sideMenuView1 = new yate.view.SideMenuView();
+        sideMenuView1 = new yate.view.ProjectMenuView();
         jPBottom = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -124,6 +148,7 @@ public class MainFrameView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private yate.view.SideMenuView sideMenuView1;
+    private yate.view.ProjectMenuView sideMenuView1;
     // End of variables declaration//GEN-END:variables
+
 }

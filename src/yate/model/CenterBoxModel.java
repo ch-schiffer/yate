@@ -9,7 +9,7 @@ import javax.swing.text.Document;
  *
  * @author Laurin
  */
-public class CenterBoxModel {
+public class CenterBoxModel extends Model{
 
     private static final Logger logger = Logger.getLogger(CenterBoxModel.class.getName());
 
