@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
 import yate.controll.CenterBoxController;
 import yate.controll.ProjectMenuController;
 import yate.model.CenterBoxModel;
@@ -14,48 +13,44 @@ import yate.model.CenterBoxModel;
  *
  * @author Laurin
  */
-public class MainFrameView extends javax.swing.JFrame implements View{
+public class MainFrameView extends javax.swing.JFrame implements View {
 
     private ArrayList<CenterBoxController> centerBoxController;
     private ProjectMenuController projectMenuController;
-    private HashMap<String,JComponent> components;
+    private HashMap<String, JComponent> components;
+
     /**
      * Creates new form MainFrame
      */
     public MainFrameView() {
 
         initComponents();
-        
+
         components = new HashMap<>();
         centerBoxController = new ArrayList<>();
         //projectMenuController = new ProjectMenuController()
         addComponentsToHashMap();
-        
-        
+
         //Zum debuggen
         addCenterBox("Datei 1");
         addCenterBox("Datei 2");
         addCenterBox("Datei 3");
     }
-    
-    private void addComponentsToHashMap()
-    {
+
+    private void addComponentsToHashMap() {
         Component[] comps = this.getContentPane().getComponents();
         for (Component component : comps) {
-            if(component instanceof JComponent)
-            {
-                 components.put(component.getName(), (JComponent)component);
+            if (component instanceof JComponent) {
+                components.put(component.getName(), (JComponent) component);
             }
         }
         System.err.println("");
     }
-    
-    
+
     @Override
     public JComponent getComponent(String Name) {
         return components.get(Name);
     }
-    
 
     public void addCenterBox(String fileName) {
         CenterBoxView view = new CenterBoxView();
@@ -78,19 +73,32 @@ public class MainFrameView extends javax.swing.JFrame implements View{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPMenu = new javax.swing.JPanel();
         jPSide = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         sideMenuView1 = new yate.view.ProjectMenuView();
-        jPBottom = new javax.swing.JPanel();
+        jP_Center = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jP_searchContainer = new javax.swing.JPanel();
+        jP_search = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jTF_search = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTF_replace = new javax.swing.JTextField();
+        jB_next = new javax.swing.JButton();
+        jB_previous = new javax.swing.JButton();
+        jB_replace = new javax.swing.JButton();
+        jb_replaceAll = new javax.swing.JButton();
+        jbCB_regex = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("yate");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -109,23 +117,89 @@ public class MainFrameView extends javax.swing.JFrame implements View{
 
         getContentPane().add(jPSide, java.awt.BorderLayout.LINE_START);
 
-        jPBottom.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPBottom.setMinimumSize(new java.awt.Dimension(0, 30));
-        jPBottom.setPreferredSize(new java.awt.Dimension(603, 30));
+        jP_Center.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPBottomLayout = new javax.swing.GroupLayout(jPBottom);
-        jPBottom.setLayout(jPBottomLayout);
-        jPBottomLayout.setHorizontalGroup(
-            jPBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
-        );
-        jPBottomLayout.setVerticalGroup(
-            jPBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(500, 500));
+        jP_Center.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPBottom, java.awt.BorderLayout.PAGE_END);
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        jP_searchContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jP_search.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Suchen:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jLabel1, gridBagConstraints);
+
+        jTF_search.setMaximumSize(new java.awt.Dimension(70, 20));
+        jTF_search.setMinimumSize(new java.awt.Dimension(70, 20));
+        jTF_search.setPreferredSize(new java.awt.Dimension(70, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jTF_search, gridBagConstraints);
+
+        jLabel2.setText("Ersetzen:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jLabel2, gridBagConstraints);
+
+        jTF_replace.setMaximumSize(new java.awt.Dimension(70, 20));
+        jTF_replace.setMinimumSize(new java.awt.Dimension(70, 20));
+        jTF_replace.setPreferredSize(new java.awt.Dimension(70, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jTF_replace, gridBagConstraints);
+
+        jB_next.setText("Nächstes");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jB_next, gridBagConstraints);
+
+        jB_previous.setText("Vorheriges");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jB_previous, gridBagConstraints);
+
+        jB_replace.setText("Ersetzen");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jB_replace, gridBagConstraints);
+
+        jb_replaceAll.setText("Alle ersetzen");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jb_replaceAll, gridBagConstraints);
+
+        jbCB_regex.setText("regex");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        jP_search.add(jbCB_regex, gridBagConstraints);
+
+        jP_searchContainer.add(jP_search);
+
+        jP_Center.add(jP_searchContainer, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(jP_Center, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -139,15 +213,26 @@ public class MainFrameView extends javax.swing.JFrame implements View{
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jB_next;
+    private javax.swing.JButton jB_previous;
+    private javax.swing.JButton jB_replace;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPBottom;
     private javax.swing.JPanel jPMenu;
     private javax.swing.JPanel jPSide;
+    private javax.swing.JPanel jP_Center;
+    private javax.swing.JPanel jP_search;
+    private javax.swing.JPanel jP_searchContainer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTF_replace;
+    private javax.swing.JTextField jTF_search;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JCheckBox jbCB_regex;
+    private javax.swing.JButton jb_replaceAll;
     private yate.view.ProjectMenuView sideMenuView1;
     // End of variables declaration//GEN-END:variables
 
