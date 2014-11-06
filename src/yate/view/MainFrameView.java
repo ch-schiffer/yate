@@ -1,13 +1,8 @@
 package yate.view;
 
-import java.awt.Component;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JComponent;
-import javax.swing.text.Document;
-import yate.controll.CenterBoxController;
-import yate.controll.ProjectMenuController;
-import yate.model.CenterBoxModel;
+import yate.controller.ProjectMenuController;
 
 /**
  *
@@ -15,7 +10,6 @@ import yate.model.CenterBoxModel;
  */
 public class MainFrameView extends javax.swing.JFrame implements View {
 
-    private ArrayList<CenterBoxController> centerBoxController;
     private ProjectMenuController projectMenuController;
     private HashMap<String, JComponent> components;
 
@@ -27,42 +21,29 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         initComponents();
 
         components = new HashMap<>();
-        centerBoxController = new ArrayList<>();
         //projectMenuController = new ProjectMenuController()
         addComponentsToHashMap();
 
-        //Zum debuggen
-        addCenterBox("Datei 1");
-        addCenterBox("Datei 2");
-        addCenterBox("Datei 3");
     }
 
     private void addComponentsToHashMap() {
-        Component[] comps = this.getContentPane().getComponents();
-        for (Component component : comps) {
-            if (component instanceof JComponent) {
-                components.put(component.getName(), (JComponent) component);
-            }
-        }
-        System.err.println("");
+        /*Component[] comps = this.getContentPane().getComponents();
+         for (Component component : comps) {
+         if (component instanceof JComponent) {
+         components.put(component.getName(), (JComponent) component);
+         }
+         }
+         System.err.println("");*/
+
+        components.put("jCB_font", jCB_font);
+        components.put("jCB_fontSize", jCB_fontSize);
+        components.put("jTP_tabed", jTP_tabed);
+        components.put("jB_newFile", jB_newFile);
     }
 
     @Override
     public JComponent getComponent(String Name) {
         return components.get(Name);
-    }
-
-    public void addCenterBox(String fileName) {
-        CenterBoxView view = new CenterBoxView();
-        Document d = view.getEditorPaneDocument();
-        CenterBoxModel model = new CenterBoxModel(d);
-
-        CenterBoxController cbc = new CenterBoxController(view, model);
-        cbc.addListener();
-
-        centerBoxController.add(cbc);
-
-        jTabbedPane1.addTab(fileName, view);
     }
 
     /**
@@ -75,13 +56,19 @@ public class MainFrameView extends javax.swing.JFrame implements View {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPMenu = new javax.swing.JPanel();
-        jPSide = new javax.swing.JPanel();
+        jP_Menu = new javax.swing.JPanel();
+        jB_newFile = new javax.swing.JButton();
+        jB_open = new javax.swing.JButton();
+        jB_save = new javax.swing.JButton();
+        jB_saveAll = new javax.swing.JButton();
+        jCB_font = new javax.swing.JComboBox();
+        jCB_fontSize = new javax.swing.JComboBox();
+        jP_Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         sideMenuView1 = new yate.view.ProjectMenuView();
         jP_Center = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTP_tabed = new javax.swing.JTabbedPane();
         jP_searchContainer = new javax.swing.JPanel();
         jP_search = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -93,9 +80,15 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         jB_replace = new javax.swing.JButton();
         jb_replaceAll = new javax.swing.JButton();
         jbCB_regex = new javax.swing.JCheckBox();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMB_menuBar = new javax.swing.JMenuBar();
+        jM_file = new javax.swing.JMenu();
+        jMI_new = new javax.swing.JMenuItem();
+        jMI_open = new javax.swing.JMenuItem();
+        jMI_save = new javax.swing.JMenuItem();
+        jMI_saveAll = new javax.swing.JMenuItem();
+        jM_edit = new javax.swing.JMenu();
+        jMI_editColors = new javax.swing.JMenuItem();
+        jMI_languageSub = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("yate");
@@ -103,24 +96,41 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(800, 600));
 
-        jPMenu.setLayout(new javax.swing.BoxLayout(jPMenu, javax.swing.BoxLayout.LINE_AXIS));
-        getContentPane().add(jPMenu, java.awt.BorderLayout.PAGE_START);
+        jP_Menu.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jPSide.setLayout(new javax.swing.BoxLayout(jPSide, javax.swing.BoxLayout.LINE_AXIS));
+        jB_newFile.setText("Neue Datei");
+        jP_Menu.add(jB_newFile);
+
+        jB_open.setText("Datei öffnen");
+        jP_Menu.add(jB_open);
+
+        jB_save.setText("Datei speichern");
+        jP_Menu.add(jB_save);
+
+        jB_saveAll.setText("Alle Dateien speichern");
+        jP_Menu.add(jB_saveAll);
+        jP_Menu.add(jCB_font);
+
+        jCB_fontSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jP_Menu.add(jCB_fontSize);
+
+        getContentPane().add(jP_Menu, java.awt.BorderLayout.PAGE_START);
+
+        jP_Side.setLayout(new javax.swing.BoxLayout(jP_Side, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
         jPanel1.add(sideMenuView1);
 
         jScrollPane1.setViewportView(jPanel1);
 
-        jPSide.add(jScrollPane1);
+        jP_Side.add(jScrollPane1);
 
-        getContentPane().add(jPSide, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(jP_Side, java.awt.BorderLayout.LINE_START);
 
         jP_Center.setLayout(new java.awt.BorderLayout());
 
-        jTabbedPane1.setMinimumSize(new java.awt.Dimension(500, 500));
-        jP_Center.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        jTP_tabed.setMinimumSize(new java.awt.Dimension(500, 500));
+        jP_Center.add(jTP_tabed, java.awt.BorderLayout.CENTER);
 
         jP_searchContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -201,36 +211,68 @@ public class MainFrameView extends javax.swing.JFrame implements View {
 
         getContentPane().add(jP_Center, java.awt.BorderLayout.CENTER);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jM_file.setText("Datei");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jMI_new.setText("Neue Datei");
+        jM_file.add(jMI_new);
 
-        setJMenuBar(jMenuBar1);
+        jMI_open.setText("Datei öffnen");
+        jM_file.add(jMI_open);
+
+        jMI_save.setText("Datei speichern");
+        jM_file.add(jMI_save);
+
+        jMI_saveAll.setText("Alle Dateien speichern");
+        jM_file.add(jMI_saveAll);
+
+        jMB_menuBar.add(jM_file);
+
+        jM_edit.setText("Bearbeiten");
+
+        jMI_editColors.setText("Farben bearbeiten");
+        jM_edit.add(jMI_editColors);
+
+        jMI_languageSub.setText("Sprachen");
+        jM_edit.add(jMI_languageSub);
+
+        jMB_menuBar.add(jM_edit);
+
+        setJMenuBar(jMB_menuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jB_newFile;
     private javax.swing.JButton jB_next;
+    private javax.swing.JButton jB_open;
     private javax.swing.JButton jB_previous;
     private javax.swing.JButton jB_replace;
+    private javax.swing.JButton jB_save;
+    private javax.swing.JButton jB_saveAll;
+    private javax.swing.JComboBox jCB_font;
+    private javax.swing.JComboBox jCB_fontSize;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPMenu;
-    private javax.swing.JPanel jPSide;
+    private javax.swing.JMenuBar jMB_menuBar;
+    private javax.swing.JMenuItem jMI_editColors;
+    private javax.swing.JMenu jMI_languageSub;
+    private javax.swing.JMenuItem jMI_new;
+    private javax.swing.JMenuItem jMI_open;
+    private javax.swing.JMenuItem jMI_save;
+    private javax.swing.JMenuItem jMI_saveAll;
+    private javax.swing.JMenu jM_edit;
+    private javax.swing.JMenu jM_file;
     private javax.swing.JPanel jP_Center;
+    private javax.swing.JPanel jP_Menu;
+    private javax.swing.JPanel jP_Side;
     private javax.swing.JPanel jP_search;
     private javax.swing.JPanel jP_searchContainer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTF_replace;
     private javax.swing.JTextField jTF_search;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTP_tabed;
     private javax.swing.JCheckBox jbCB_regex;
     private javax.swing.JButton jb_replaceAll;
     private yate.view.ProjectMenuView sideMenuView1;

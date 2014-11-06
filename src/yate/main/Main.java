@@ -1,6 +1,6 @@
 package yate.main;
 
-import yate.controll.MainFrameController;
+import yate.controller.MainFrameController;
 import yate.model.MainFrameModel;
 import yate.view.MainFrameView;
 

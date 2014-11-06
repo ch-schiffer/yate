@@ -7,8 +7,9 @@ import javax.swing.JComponent;
  *
  * @author Laurin
  */
-public class ProjectMenuView extends javax.swing.JPanel implements View{
-    private HashMap<String,JComponent> components;
+public class ProjectMenuView extends javax.swing.JPanel implements View {
+
+    private HashMap<String, JComponent> components;
 
     /**
      * Creates new form SideMenu
@@ -18,21 +19,19 @@ public class ProjectMenuView extends javax.swing.JPanel implements View{
         components = new HashMap<>();
         addComponentsToHashMap();
     }
-    
-    private void addComponentsToHashMap()
-    {
-        components.put("jButton1", jButton1);
-        components.put("jButton2", jButton2);
+
+    private void addComponentsToHashMap() {
+        components.put("jButton1", jB_addFile);
+        components.put("jButton2", jB_removeFile);
         components.put("jList1", jList1);
         components.put("jPanel1", jPanel1);
         components.put("jScrollPane1", jScrollPane1);
     }
-    
+
     @Override
     public JComponent getComponent(String Name) {
         return components.get(Name);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,8 +45,10 @@ public class ProjectMenuView extends javax.swing.JPanel implements View{
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jB_addFile = new javax.swing.JButton();
+        jB_removeFile = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jL_projectName = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -62,26 +63,35 @@ public class ProjectMenuView extends javax.swing.JPanel implements View{
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        jButton1.setText("+");
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jPanel1.add(jButton1);
+        jB_addFile.setText("+");
+        jB_addFile.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jB_addFile.setMaximumSize(new java.awt.Dimension(15, 20));
+        jB_addFile.setMinimumSize(new java.awt.Dimension(15, 20));
+        jB_addFile.setPreferredSize(new java.awt.Dimension(15, 20));
+        jPanel1.add(jB_addFile);
 
-        jButton2.setText("-");
-        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton2.setMaximumSize(new java.awt.Dimension(15, 20));
-        jButton2.setMinimumSize(new java.awt.Dimension(15, 20));
-        jButton2.setPreferredSize(new java.awt.Dimension(15, 20));
-        jPanel1.add(jButton2);
+        jB_removeFile.setText("-");
+        jB_removeFile.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jB_removeFile.setMaximumSize(new java.awt.Dimension(15, 20));
+        jB_removeFile.setMinimumSize(new java.awt.Dimension(15, 20));
+        jB_removeFile.setPreferredSize(new java.awt.Dimension(15, 20));
+        jPanel1.add(jB_removeFile);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
+
+        jL_projectName.setText("Projekt Name");
+        jPanel2.add(jL_projectName);
+
+        add(jPanel2, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jB_addFile;
+    private javax.swing.JButton jB_removeFile;
+    private javax.swing.JLabel jL_projectName;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

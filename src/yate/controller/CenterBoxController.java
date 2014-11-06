@@ -1,4 +1,4 @@
-package yate.controll;
+package yate.controller;
 
 import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.model.CenterBoxModel;

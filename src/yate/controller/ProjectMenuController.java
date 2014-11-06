@@ -1,4 +1,4 @@
-package yate.controll;
+package yate.controller;
 
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
