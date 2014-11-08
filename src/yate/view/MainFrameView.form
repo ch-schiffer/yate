@@ -142,13 +142,9 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel1">
+            <Container class="javax.swing.JPanel" name="jP_Pmv">
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-              <SubComponents>
-                <Component class="yate.view.ProjectMenuView" name="sideMenuView1">
-                </Component>
-              </SubComponents>
             </Container>
           </SubComponents>
         </Container>
@@ -278,7 +274,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JButton" name="jb_replaceAll">
+                <Component class="javax.swing.JButton" name="jB_replaceAll">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Alle ersetzen"/>
                   </Properties>

@@ -3,11 +3,14 @@ package yate.model;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.text.Document;
+import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.controller.ProjectMenuController;
 import yate.view.CenterBoxView;
+import yate.view.ProjectMenuView;
 
 /**
  *
@@ -63,6 +66,14 @@ public class MainFrameModel extends Model {
         return projectMenuController;
     }
 
+    public void setCenterBoxes(ArrayList<CenterBoxController> centerBoxes) {
+        this.centerBoxes = centerBoxes;
+    }
+
+    public void setProjectMenuController(ProjectMenuController projectMenuController) {
+        this.projectMenuController = projectMenuController;
+    }
+
     public Font[] getFonts() {
         return fonts;
     }
@@ -90,7 +101,9 @@ public class MainFrameModel extends Model {
 
     public void addCenterBox(String fileName, JTabbedPane jTP_tabed) {
         CenterBoxView view = new CenterBoxView();
-        Document d = view.getEditorPaneDocument();
+
+        javax.swing.JTextPane pane = (javax.swing.JTextPane) view.getComponent("jTP_text");
+        StyledDocument d = pane.getStyledDocument();
         CenterBoxModel model = new CenterBoxModel(d);
 
         CenterBoxController cbc = new CenterBoxController(view, model);
@@ -99,6 +112,18 @@ public class MainFrameModel extends Model {
         centerBoxes.add(cbc);
 
         jTP_tabed.addTab(fileName, view);
+    }
+
+    public void addProjectMenu(String projectName, DefaultListModel<FileModel> fileModel, JPanel panel) {
+        ProjectMenuView view = new ProjectMenuView();
+
+        ProjectMenuModel model = new ProjectMenuModel();
+
+        projectMenuController = new ProjectMenuController(view, model);
+        projectMenuController.addListener();
+
+        view.setProjectName(model.getProjectName());
+        panel.add(view);
     }
 
 }

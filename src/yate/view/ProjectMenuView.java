@@ -21,11 +21,17 @@ public class ProjectMenuView extends javax.swing.JPanel implements View {
     }
 
     private void addComponentsToHashMap() {
-        components.put("jButton1", jB_addFile);
-        components.put("jButton2", jB_removeFile);
-        components.put("jList1", jList1);
+        components.put("jB_addFile", jB_addFile);
+        components.put("jB_removeFile", jB_removeFile);
+        components.put("jB_editProject", jB_editProject);
+        components.put("jB_newProject", jB_newProject);
+        components.put("jL_files", jL_files);
         components.put("jPanel1", jPanel1);
         components.put("jScrollPane1", jScrollPane1);
+    }
+
+    public void setProjectName(String text) {
+        jL_projectName.setText(text);
     }
 
     @Override
@@ -43,21 +49,18 @@ public class ProjectMenuView extends javax.swing.JPanel implements View {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jL_files = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
         jB_addFile = new javax.swing.JButton();
         jB_removeFile = new javax.swing.JButton();
+        jB_editProject = new javax.swing.JButton();
+        jB_newProject = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jL_projectName = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jL_files);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -65,17 +68,23 @@ public class ProjectMenuView extends javax.swing.JPanel implements View {
 
         jB_addFile.setText("+");
         jB_addFile.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jB_addFile.setMaximumSize(new java.awt.Dimension(15, 20));
-        jB_addFile.setMinimumSize(new java.awt.Dimension(15, 20));
-        jB_addFile.setPreferredSize(new java.awt.Dimension(15, 20));
+        jB_addFile.setMaximumSize(new java.awt.Dimension(30, 25));
+        jB_addFile.setMinimumSize(new java.awt.Dimension(30, 25));
+        jB_addFile.setPreferredSize(new java.awt.Dimension(30, 25));
         jPanel1.add(jB_addFile);
 
         jB_removeFile.setText("-");
         jB_removeFile.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jB_removeFile.setMaximumSize(new java.awt.Dimension(15, 20));
-        jB_removeFile.setMinimumSize(new java.awt.Dimension(15, 20));
-        jB_removeFile.setPreferredSize(new java.awt.Dimension(15, 20));
+        jB_removeFile.setMaximumSize(new java.awt.Dimension(30, 25));
+        jB_removeFile.setMinimumSize(new java.awt.Dimension(30, 25));
+        jB_removeFile.setPreferredSize(new java.awt.Dimension(30, 25));
         jPanel1.add(jB_removeFile);
+
+        jB_editProject.setText("Projekt bearbeiten");
+        jPanel1.add(jB_editProject);
+
+        jB_newProject.setText("Neues Projekt");
+        jPanel1.add(jB_newProject);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
@@ -87,9 +96,11 @@ public class ProjectMenuView extends javax.swing.JPanel implements View {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jB_addFile;
+    private javax.swing.JButton jB_editProject;
+    private javax.swing.JButton jB_newProject;
     private javax.swing.JButton jB_removeFile;
+    private javax.swing.JList jL_files;
     private javax.swing.JLabel jL_projectName;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

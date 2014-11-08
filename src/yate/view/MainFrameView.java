@@ -2,7 +2,6 @@ package yate.view;
 
 import java.util.HashMap;
 import javax.swing.JComponent;
-import yate.controller.ProjectMenuController;
 
 /**
  *
@@ -10,7 +9,6 @@ import yate.controller.ProjectMenuController;
  */
 public class MainFrameView extends javax.swing.JFrame implements View {
 
-    private ProjectMenuController projectMenuController;
     private HashMap<String, JComponent> components;
 
     /**
@@ -21,24 +19,44 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         initComponents();
 
         components = new HashMap<>();
-        //projectMenuController = new ProjectMenuController()
         addComponentsToHashMap();
 
     }
 
     private void addComponentsToHashMap() {
-        /*Component[] comps = this.getContentPane().getComponents();
-         for (Component component : comps) {
-         if (component instanceof JComponent) {
-         components.put(component.getName(), (JComponent) component);
-         }
-         }
-         System.err.println("");*/
-
+        components.put("jMI_editColors", jMI_editColors);
+        components.put("jB_next", jB_next);
+        components.put("jbCB_regex", jbCB_regex);
         components.put("jCB_font", jCB_font);
+        components.put("jMI_open", jMI_open);
+        components.put("jMI_new", jMI_new);
         components.put("jCB_fontSize", jCB_fontSize);
-        components.put("jTP_tabed", jTP_tabed);
+        components.put("jB_saveAll", jB_saveAll);
+        components.put("jMI_languageSub", jMI_languageSub);
+        components.put("jP_Side", jP_Side);
+        components.put("jTF_search", jTF_search);
+        components.put("jM_edit", jM_edit);
+        components.put("jLabel2", jLabel2);
+        components.put("jMI_saveAll", jMI_saveAll);
+        components.put("jLabel1", jLabel1);
+        components.put("jB_replaceAll", jB_replaceAll);
+        components.put("jTF_replace", jTF_replace);
+        components.put("jScrollPane1", jScrollPane1);
         components.put("jB_newFile", jB_newFile);
+        components.put("jP_Menu", jP_Menu);
+        components.put("jB_open", jB_open);
+        components.put("jB_save", jB_save);
+        components.put("jP_Pmv", jP_Pmv);
+        components.put("jP_search", jP_search);
+        components.put("jB_previous", jB_previous);
+        components.put("jB_replace", jB_replace);
+        components.put("jMB_menuBar", jMB_menuBar);
+        components.put("jM_file", jM_file);
+        components.put("jP_Center", jP_Center);
+        components.put("jP_searchContainer", jP_searchContainer);
+        components.put("jMI_save", jMI_save);
+        components.put("jTP_tabed", jTP_tabed);
+
     }
 
     @Override
@@ -65,8 +83,7 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         jCB_fontSize = new javax.swing.JComboBox();
         jP_Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-        sideMenuView1 = new yate.view.ProjectMenuView();
+        jP_Pmv = new javax.swing.JPanel();
         jP_Center = new javax.swing.JPanel();
         jTP_tabed = new javax.swing.JTabbedPane();
         jP_searchContainer = new javax.swing.JPanel();
@@ -78,7 +95,7 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         jB_next = new javax.swing.JButton();
         jB_previous = new javax.swing.JButton();
         jB_replace = new javax.swing.JButton();
-        jb_replaceAll = new javax.swing.JButton();
+        jB_replaceAll = new javax.swing.JButton();
         jbCB_regex = new javax.swing.JCheckBox();
         jMB_menuBar = new javax.swing.JMenuBar();
         jM_file = new javax.swing.JMenu();
@@ -118,10 +135,8 @@ public class MainFrameView extends javax.swing.JFrame implements View {
 
         jP_Side.setLayout(new javax.swing.BoxLayout(jP_Side, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-        jPanel1.add(sideMenuView1);
-
-        jScrollPane1.setViewportView(jPanel1);
+        jP_Pmv.setLayout(new javax.swing.BoxLayout(jP_Pmv, javax.swing.BoxLayout.LINE_AXIS));
+        jScrollPane1.setViewportView(jP_Pmv);
 
         jP_Side.add(jScrollPane1);
 
@@ -190,13 +205,13 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         jP_search.add(jB_replace, gridBagConstraints);
 
-        jb_replaceAll.setText("Alle ersetzen");
+        jB_replaceAll.setText("Alle ersetzen");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        jP_search.add(jb_replaceAll, gridBagConstraints);
+        jP_search.add(jB_replaceAll, gridBagConstraints);
 
         jbCB_regex.setText("regex");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -248,6 +263,7 @@ public class MainFrameView extends javax.swing.JFrame implements View {
     private javax.swing.JButton jB_open;
     private javax.swing.JButton jB_previous;
     private javax.swing.JButton jB_replace;
+    private javax.swing.JButton jB_replaceAll;
     private javax.swing.JButton jB_save;
     private javax.swing.JButton jB_saveAll;
     private javax.swing.JComboBox jCB_font;
@@ -265,17 +281,15 @@ public class MainFrameView extends javax.swing.JFrame implements View {
     private javax.swing.JMenu jM_file;
     private javax.swing.JPanel jP_Center;
     private javax.swing.JPanel jP_Menu;
+    private javax.swing.JPanel jP_Pmv;
     private javax.swing.JPanel jP_Side;
     private javax.swing.JPanel jP_search;
     private javax.swing.JPanel jP_searchContainer;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTF_replace;
     private javax.swing.JTextField jTF_search;
     private javax.swing.JTabbedPane jTP_tabed;
     private javax.swing.JCheckBox jbCB_regex;
-    private javax.swing.JButton jb_replaceAll;
-    private yate.view.ProjectMenuView sideMenuView1;
     // End of variables declaration//GEN-END:variables
 
 }

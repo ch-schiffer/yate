@@ -1,48 +1,27 @@
 package yate.model;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.text.BadLocationException;
+import java.awt.Color;
 import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
  * @author Laurin
  */
-public class CenterBoxModel extends Model{
+public class CenterBoxModel extends Model {
 
-    private static final Logger logger = Logger.getLogger(CenterBoxModel.class.getName());
-
-    //Die Zeilennummern
-    private int lineNumbers;
     //Document der zugehoerigen CenterBoxView;
-    Document document;
+    StyledDocument document;
 
-    public CenterBoxModel(Document document) {
+    public CenterBoxModel(Document StyledDocument) {
         this.document = document;
-        updateLineNumbers();
     }
 
-    private void calculateLineNumbers(String text) {
-        this.lineNumbers = text.length() - text.replace("\n", "").length() + 1;
+    public void setColor(Color c, int start, int length) {
+        SimpleAttributeSet sas = new SimpleAttributeSet();
+        StyleConstants.setForeground(sas, c);
+        document.setCharacterAttributes(start, length, sas, false);
     }
-
-    public void updateLineNumbers() {
-        try {
-            calculateLineNumbers(document.getText(0, document.getLength()));
-        } catch (BadLocationException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public int getLineNumbers() {
-        return lineNumbers;
-    }
-
-    public void setLineNumbers(int lineNumbers) {
-        this.lineNumbers = lineNumbers;
-    }
-
 }

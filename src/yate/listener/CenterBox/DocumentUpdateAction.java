@@ -14,10 +14,10 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     public DocumentUpdateAction(View view, Model model) {
         super(view, model);
     }
-    
+
     private void action() {
-        model.updateLineNumbers();
-        view.setLines(model.getLineNumbers());
+        //model.updateLineNumbers();
+        //view.setLines(model.getLineNumbers());
     }
 
     @Override
