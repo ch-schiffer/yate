@@ -1,7 +1,8 @@
 package yate.view;
 
-import java.util.HashMap;
-import javax.swing.JComponent;
+import java.awt.Font;
+import javax.swing.text.StyledDocument;
+import yate.listener.CenterBox.DocumentUpdateAction;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,20 +13,27 @@ import javax.swing.JComponent;
  *
  * @author Laurin
  */
-public class CenterBoxView extends javax.swing.JPanel implements View {
+public class CenterBoxView extends javax.swing.JPanel {
 
     /**
      * Creates new form CenterBox
      */
-    private final HashMap<String, JComponent> components;
-
     public CenterBoxView() {
-        components = new HashMap<>();
         initComponents();
         TextLineNumberComponent tln = new TextLineNumberComponent(jTP_text);
         jScrollPane1.setRowHeaderView(tln);
+    }
 
-        addComponentsToHashMap();
+    public StyledDocument getStyledDocument() {
+        return this.jTP_text.getStyledDocument();
+    }
+
+    public void setFont(String font, int size) {
+        jTP_text.setFont(new Font(font, 0, size));
+    }
+
+    public void addDocumentUpdateAction(DocumentUpdateAction l) {
+        jTP_text.getDocument().addDocumentListener(l);
     }
 
     /**
@@ -52,14 +60,9 @@ public class CenterBoxView extends javax.swing.JPanel implements View {
     private javax.swing.JTextPane jTP_text;
     // End of variables declaration//GEN-END:variables
 
-    private void addComponentsToHashMap() {
-        components.put("jTP_text", jTP_text);
-        //components.put("jSP_scrollPane", jSP_scrollPane);
 
-    }
-
-    @Override
-    public JComponent getComponent(String Name) {
-        return components.get(Name);
-    }
+    /* @Override
+     public JComponent getComponent(String Name) {
+     return components.get(Name);
+     }*/
 }

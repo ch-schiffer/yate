@@ -25,10 +25,9 @@ public class Main {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        model = new MainFrameModel();
         view = new MainFrameView();
+        model = new MainFrameModel(view.getFontModel(), view.getFontSizeModel());
         controller = new MainFrameController(view, model);
-        controller.addListener();
 
         view.setVisible(true);
     }

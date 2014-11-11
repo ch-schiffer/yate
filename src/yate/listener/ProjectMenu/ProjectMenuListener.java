@@ -1,26 +1,20 @@
 package yate.listener.ProjectMenu;
 
-import yate.listener.MVCListener;
-import yate.model.Model;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
-import yate.view.View;
 
 /**
  *
  * @author Laurin
  */
-public abstract class ProjectMenuListener extends MVCListener{
+public abstract class ProjectMenuListener {
 
     protected final ProjectMenuView view;
     protected final ProjectMenuModel model;
-    
-    public ProjectMenuListener(View view, Model model) {
-        super(view, model);
-        this.view = (ProjectMenuView)view;
-        this.model = (ProjectMenuModel)model;
+
+    public ProjectMenuListener(ProjectMenuView view, ProjectMenuModel model) {
+        this.view = view;
+        this.model = model;
     }
 
-   
-    
 }

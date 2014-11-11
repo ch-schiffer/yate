@@ -10,7 +10,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author Laurin
  */
-public class CenterBoxModel extends Model {
+public class CenterBoxModel {
 
     //Document der zugehoerigen CenterBoxView;
     StyledDocument document;

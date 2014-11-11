@@ -2,8 +2,8 @@ package yate.listener.CenterBox;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import yate.model.Model;
-import yate.view.View;
+import yate.model.CenterBoxModel;
+import yate.view.CenterBoxView;
 
 /**
  *
@@ -11,7 +11,7 @@ import yate.view.View;
  */
 public class DocumentUpdateAction extends CenterBoxListener implements DocumentListener {
 
-    public DocumentUpdateAction(View view, Model model) {
+    public DocumentUpdateAction(CenterBoxView view, CenterBoxModel model) {
         super(view, model);
     }
 

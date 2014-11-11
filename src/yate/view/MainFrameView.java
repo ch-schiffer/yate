@@ -1,67 +1,95 @@
 package yate.view;
 
-import java.util.HashMap;
-import javax.swing.JComponent;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SingleSelectionModel;
+import yate.listener.MainFrame.FontChangedListener;
+import yate.listener.MainFrame.FontSizeChangedListener;
+import yate.listener.MainFrame.NewFileListener;
+import yate.listener.MainFrame.OpenFileListener;
+import yate.listener.MainFrame.SaveAllFilesListener;
+import yate.listener.MainFrame.regex.FindNextListener;
+import yate.listener.MainFrame.regex.FindPreviousListener;
+import yate.listener.MainFrame.regex.ReplaceAllListener;
+import yate.listener.MainFrame.regex.ReplaceListener;
 
 /**
  *
  * @author Laurin
  */
-public class MainFrameView extends javax.swing.JFrame implements View {
-
-    private HashMap<String, JComponent> components;
+public class MainFrameView extends javax.swing.JFrame {
 
     /**
      * Creates new form MainFrame
      */
     public MainFrameView() {
-
         initComponents();
+    }
 
-        components = new HashMap<>();
-        addComponentsToHashMap();
+    public void addCenterBoxViewToTab(CenterBoxView view, String name) {
+        jTP_tabed.add(view, name);
+    }
+
+    public void addProjectMenuView(ProjectMenuView view) {
+        jP_Pmv.add(view);
+    }
+
+    public SingleSelectionModel getJTabedPaneModel() {
+        return jTP_tabed.getModel();
+    }
+
+    public DefaultComboBoxModel<String> getFontModel() {
+        return (DefaultComboBoxModel<String>) jCB_font.getModel();
+    }
+
+    public DefaultComboBoxModel<String> getFontSizeModel() {
+        return (DefaultComboBoxModel<String>) jCB_fontSize.getModel();
+    }
+
+    //Listener
+    public void addFontChangedListener(FontChangedListener l) {
+        jCB_font.addActionListener(l);
+    }
+
+    public void addFontSizeChangedListener(FontSizeChangedListener l) {
+        jCB_fontSize.addActionListener(l);
+    }
+
+    public void addNewFileListener(NewFileListener l) {
+        jB_newFile.addActionListener(l);
+        jMI_new.addActionListener(l);
+    }
+
+    public void addOpenFileListener(OpenFileListener l) {
+        jB_open.addActionListener(l);
+        jMI_open.addActionListener(l);
 
     }
 
-    private void addComponentsToHashMap() {
-        components.put("jMI_editColors", jMI_editColors);
-        components.put("jB_next", jB_next);
-        components.put("jbCB_regex", jbCB_regex);
-        components.put("jCB_font", jCB_font);
-        components.put("jMI_open", jMI_open);
-        components.put("jMI_new", jMI_new);
-        components.put("jCB_fontSize", jCB_fontSize);
-        components.put("jB_saveAll", jB_saveAll);
-        components.put("jMI_languageSub", jMI_languageSub);
-        components.put("jP_Side", jP_Side);
-        components.put("jTF_search", jTF_search);
-        components.put("jM_edit", jM_edit);
-        components.put("jLabel2", jLabel2);
-        components.put("jMI_saveAll", jMI_saveAll);
-        components.put("jLabel1", jLabel1);
-        components.put("jB_replaceAll", jB_replaceAll);
-        components.put("jTF_replace", jTF_replace);
-        components.put("jScrollPane1", jScrollPane1);
-        components.put("jB_newFile", jB_newFile);
-        components.put("jP_Menu", jP_Menu);
-        components.put("jB_open", jB_open);
-        components.put("jB_save", jB_save);
-        components.put("jP_Pmv", jP_Pmv);
-        components.put("jP_search", jP_search);
-        components.put("jB_previous", jB_previous);
-        components.put("jB_replace", jB_replace);
-        components.put("jMB_menuBar", jMB_menuBar);
-        components.put("jM_file", jM_file);
-        components.put("jP_Center", jP_Center);
-        components.put("jP_searchContainer", jP_searchContainer);
-        components.put("jMI_save", jMI_save);
-        components.put("jTP_tabed", jTP_tabed);
-
+    public void addSaveAllFileListener(SaveAllFilesListener l) {
+        jB_saveAll.addActionListener(l);
+        jMI_saveAll.addActionListener(l);
     }
 
-    @Override
-    public JComponent getComponent(String Name) {
-        return components.get(Name);
+    public void addSaveFileListener(SaveAllFilesListener l) {
+        jB_save.addActionListener(l);
+        jMI_save.addActionListener(l);
+    }
+
+    //RegexListener
+    public void addFindNextListener(FindNextListener l) {
+        jB_next.addActionListener(l);
+    }
+
+    public void addFindPreviousListener(FindPreviousListener l) {
+        jB_previous.addActionListener(l);
+    }
+
+    public void addReplaceAllListener(ReplaceAllListener l) {
+        jB_replaceAll.addActionListener(l);
+    }
+
+    public void addReplaceListener(ReplaceListener l) {
+        jB_replace.addActionListener(l);
     }
 
     /**
@@ -128,7 +156,6 @@ public class MainFrameView extends javax.swing.JFrame implements View {
         jP_Menu.add(jB_saveAll);
         jP_Menu.add(jCB_font);
 
-        jCB_fontSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jP_Menu.add(jCB_fontSize);
 
         getContentPane().add(jP_Menu, java.awt.BorderLayout.PAGE_START);

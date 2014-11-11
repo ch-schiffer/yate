@@ -6,7 +6,7 @@ import javax.swing.DefaultListModel;
  *
  * @author Laurin
  */
-public class ProjectMenuModel extends Model {
+public class ProjectMenuModel {
 
     private String projectName;
     private final DefaultListModel<FileModel> files;

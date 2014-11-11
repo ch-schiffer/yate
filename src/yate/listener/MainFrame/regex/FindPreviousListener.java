@@ -3,8 +3,8 @@ package yate.listener.MainFrame.regex;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import yate.listener.MainFrame.MainFrameListener;
-import yate.model.Model;
-import yate.view.View;
+import yate.model.MainFrameModel;
+import yate.view.MainFrameView;
 
 /**
  *
@@ -12,7 +12,7 @@ import yate.view.View;
  */
 public class FindPreviousListener extends MainFrameListener implements ActionListener {
 
-    public FindPreviousListener(View view, Model model) {
+    public FindPreviousListener(MainFrameView view, MainFrameModel model) {
         super(view, model);
     }
 

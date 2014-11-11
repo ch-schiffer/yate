@@ -4,16 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
-import yate.model.Model;
-import yate.view.View;
+import yate.model.MainFrameModel;
+import yate.view.MainFrameView;
 
 /**
  *
  * @author Laurin
  */
-public class OpenNewFileListener extends MainFrameListener implements ActionListener {
+public class OpenFileListener extends MainFrameListener implements ActionListener {
 
-    public OpenNewFileListener(View view, Model model) {
+    public OpenFileListener(MainFrameView view, MainFrameModel model) {
         super(view, model);
     }
 

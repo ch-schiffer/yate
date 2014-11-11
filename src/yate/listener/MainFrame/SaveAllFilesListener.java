@@ -9,9 +9,9 @@ import yate.view.MainFrameView;
  *
  * @author Laurin
  */
-public class SaveFileListener extends MainFrameListener implements ActionListener {
+public class SaveAllFilesListener extends MainFrameListener implements ActionListener {
 
-    public SaveFileListener(MainFrameView view, MainFrameModel model) {
+    public SaveAllFilesListener(MainFrameView view, MainFrameModel model) {
         super(view, model);
     }
 

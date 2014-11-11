@@ -1,11 +1,11 @@
 package yate.listener.MainFrame;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import yate.controller.CenterBoxController;
-import yate.model.Model;
-import yate.view.View;
+import yate.model.MainFrameModel;
+import yate.view.CenterBoxView;
+import yate.view.MainFrameView;
 
 /**
  *
@@ -13,22 +13,20 @@ import yate.view.View;
  */
 public class FontSizeChangedListener extends MainFrameListener implements ActionListener {
 
-    public FontSizeChangedListener(View view, Model model) {
+    public FontSizeChangedListener(MainFrameView view, MainFrameModel model) {
         super(view, model);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String font = ((javax.swing.JComboBox<String>) view.getComponent("jCB_font")).getSelectedItem().toString();
-        int size = Integer.parseInt(((javax.swing.JComboBox<String>) view.getComponent("jCB_fontSize")).getSelectedItem().toString());
+        String font = model.getSelectedFont();
+        int size = model.getSelectedFontSize();
 
         for (CenterBoxController cbc : model.getCenterBoxes()) {
 
-            View cb = cbc.getView();
-            javax.swing.JTextPane text = (javax.swing.JTextPane) cb.getComponent("jTP_text");
-            text.setFont(new Font(font, 0, size));
+            CenterBoxView cb = cbc.getView();
+            cb.setFont(font, size);
         }
-
     }
 
 }

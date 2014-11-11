@@ -1,44 +1,53 @@
 package yate.view;
 
-import java.util.HashMap;
-import javax.swing.JComponent;
+import javax.swing.ListModel;
+import yate.listener.ProjectMenu.AddToProjectListener;
+import yate.listener.ProjectMenu.EditProjectFileListener;
+import yate.listener.ProjectMenu.NewProjectListener;
+import yate.listener.ProjectMenu.RemoveFromProjectListener;
 
 /**
  *
  * @author Laurin
  */
-public class ProjectMenuView extends javax.swing.JPanel implements View {
-
-    private HashMap<String, JComponent> components;
+public class ProjectMenuView extends javax.swing.JPanel {
 
     /**
      * Creates new form SideMenu
      */
     public ProjectMenuView() {
         initComponents();
-        components = new HashMap<>();
-        addComponentsToHashMap();
-    }
-
-    private void addComponentsToHashMap() {
-        components.put("jB_addFile", jB_addFile);
-        components.put("jB_removeFile", jB_removeFile);
-        components.put("jB_editProject", jB_editProject);
-        components.put("jB_newProject", jB_newProject);
-        components.put("jL_files", jL_files);
-        components.put("jPanel1", jPanel1);
-        components.put("jScrollPane1", jScrollPane1);
     }
 
     public void setProjectName(String text) {
         jL_projectName.setText(text);
     }
 
-    @Override
-    public JComponent getComponent(String Name) {
-        return components.get(Name);
+    public ListModel getFileModel() {
+        return jL_files.getModel();
     }
 
+    //Listener
+    public void addAddToProjectListener(AddToProjectListener l) {
+        jB_addFile.addActionListener(l);
+    }
+
+    public void addEditProjectFileListener(EditProjectFileListener l) {
+        jB_editProject.addActionListener(l);
+    }
+
+    public void addNewProjectListener(NewProjectListener l) {
+        jB_newProject.addActionListener(l);
+    }
+
+    public void addRemoveFromProjectListener(RemoveFromProjectListener l) {
+        jB_removeFile.addActionListener(l);
+    }
+
+    /*@Override
+     public JComponent getComponent(String Name) {
+     return components.get(Name);
+     }*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

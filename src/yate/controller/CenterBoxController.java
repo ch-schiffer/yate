@@ -1,5 +1,6 @@
 package yate.controller;
 
+import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -7,22 +8,27 @@ import yate.view.CenterBoxView;
  *
  * @author Laurin
  */
-public class CenterBoxController extends Controller {
+public class CenterBoxController {
+
+    private final CenterBoxView view;
+    private final CenterBoxModel model;
 
     public CenterBoxController(CenterBoxView view, CenterBoxModel model) {
-        super(view, model);
+        this.view = view;
+        this.model = model;
+        addListener();
     }
 
-    private CenterBoxView getCenterBoxView() {
-        return (CenterBoxView) getView();
+    public CenterBoxView getView() {
+        return view;
     }
 
-    private CenterBoxModel getCenterBoxModel() {
-        return (CenterBoxModel) getModel();
+    public CenterBoxModel getModel() {
+        return model;
     }
 
-    public void addListener() {
-        //etCenterBoxView().addDocumentUpdateListener(new DocumentUpdateAction(getCenterBoxView(), getCenterBoxModel()));
+    private void addListener() {
+        view.addDocumentUpdateAction(new DocumentUpdateAction(view, model));
     }
 
 }

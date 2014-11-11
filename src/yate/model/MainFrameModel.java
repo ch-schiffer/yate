@@ -3,9 +3,9 @@ package yate.model;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.SingleSelectionModel;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.controller.ProjectMenuController;
@@ -16,30 +16,53 @@ import yate.view.ProjectMenuView;
  *
  * @author Laurin
  */
-public class MainFrameModel extends Model {
+public class MainFrameModel {
 
     private boolean regex;
     private boolean searchVisible;
-    private Font fonts[];
-    private String[] fontSizes = {"10", "12", "14"};
+    private final Font[] availableFonts;
+    private final String[] availableFontSizes;
+
+    private DefaultComboBoxModel<String> fonts;
+    private DefaultComboBoxModel<String> fontSizes;
+    private SingleSelectionModel tabedPaneModel;
 
     private ArrayList<CenterBoxController> centerBoxes;
     private ProjectMenuController projectMenuController;
 
-    public MainFrameModel() {
+    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes) {
+        this.availableFontSizes = new String[]{"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36"};
         regex = false;
         searchVisible = true;
         centerBoxes = new ArrayList<>();
-        loadSystemFonts();
+        availableFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        this.fontSizes = fontSizes;
+        this.fonts = fonts;
+
+        for (String s : getFontsAsStrings()) {
+            this.fonts.addElement(s);
+        }
+
+        for (String s : this.availableFontSizes) {
+            this.fontSizes.addElement(s);
+        }
+
+        this.fontSizes.setSelectedItem("12");
+        this.fonts.setSelectedItem("Arial");
     }
 
-    public MainFrameModel(boolean regex, boolean searchVisible) {
+    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes, boolean regex, boolean searchVisible) {
+        this(fonts, fontSizes);
         this.regex = regex;
         this.searchVisible = searchVisible;
     }
 
-    public void loadSystemFonts() {
-        fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+    public String getSelectedFont() {
+        return (String) fonts.getSelectedItem();
+    }
+
+    public int getSelectedFontSize() {
+        return Integer.parseInt((String) fontSizes.getSelectedItem());
     }
 
     public void setRegex(boolean regex) {
@@ -74,56 +97,37 @@ public class MainFrameModel extends Model {
         this.projectMenuController = projectMenuController;
     }
 
-    public Font[] getFonts() {
-        return fonts;
-    }
-
     public String[] getFontsAsStrings() {
-        String ret[] = new String[fonts.length];
+        String ret[] = new String[availableFonts.length];
 
-        for (int i = 0; i < fonts.length; i++) {
-            ret[i] = fonts[i].getName();
+        for (int i = 0; i < availableFonts.length; i++) {
+            ret[i] = availableFonts[i].getName();
         }
         return ret;
     }
 
-    public void setFonts(Font[] fonts) {
-        this.fonts = fonts;
-    }
-
-    public String[] getFontSizes() {
-        return fontSizes;
-    }
-
-    public void setFontSizes(String[] fontSizes) {
-        this.fontSizes = fontSizes;
-    }
-
-    public void addCenterBox(String fileName, JTabbedPane jTP_tabed) {
+    public CenterBoxController addCenterBox() {
         CenterBoxView view = new CenterBoxView();
 
-        javax.swing.JTextPane pane = (javax.swing.JTextPane) view.getComponent("jTP_text");
-        StyledDocument d = pane.getStyledDocument();
+        StyledDocument d = view.getStyledDocument();
         CenterBoxModel model = new CenterBoxModel(d);
 
-        CenterBoxController cbc = new CenterBoxController(view, model);
-        cbc.addListener();
+        view.setFont(getSelectedFont(), getSelectedFontSize());
 
+        CenterBoxController cbc = new CenterBoxController(view, model);
         centerBoxes.add(cbc);
 
-        jTP_tabed.addTab(fileName, view);
+        return cbc;
     }
 
-    public void addProjectMenu(String projectName, DefaultListModel<FileModel> fileModel, JPanel panel) {
+    public void addProjectMenu(String projectName, DefaultListModel<FileModel> fileModel) {
         ProjectMenuView view = new ProjectMenuView();
 
-        ProjectMenuModel model = new ProjectMenuModel();
+        ProjectMenuModel model = new ProjectMenuModel("test", fileModel);
 
         projectMenuController = new ProjectMenuController(view, model);
-        projectMenuController.addListener();
 
         view.setProjectName(model.getProjectName());
-        panel.add(view);
     }
 
 }
