@@ -1,0 +1,10 @@
+Bug/ToDo-Liste
+
+BUGS
+-----
+-Wenn man die Schriftart umstellt, verschieben sich die Zeilennummern teilweise extrem (Zehnerstelle abgeschnitten z.B.)
+-Manche Schriftarten funktionieren nicht
+
+ToDo
+-----
+-Per Rechtsklick auf eine Variable muss ein Popup Menü angezeigt werden

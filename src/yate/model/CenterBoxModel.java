@@ -1,5 +1,4 @@
 package yate.model;
-
 import java.awt.Color;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;

@@ -330,7 +330,7 @@ public class TextLineNumberComponent extends JPanel
         } else // We need to check all the attributes for font changes
         {
             if (fonts == null) {
-                fonts = new HashMap<String, FontMetrics>();
+                fonts = new HashMap<>();
             }
 
             Element root = component.getDocument().getDefaultRootElement();
