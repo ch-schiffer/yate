@@ -1,7 +1,5 @@
 package yate.view;
 
-
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -428,7 +426,7 @@ public class TextLineNumberComponent extends JPanel
         if (evt.getNewValue() instanceof Font) {
             if (updateFont) {
                 Font newFont = (Font) evt.getNewValue();
-                setFont(newFont);
+                setFont(new Font(getFont().getName(), getFont().getStyle(), newFont.getSize()));
                 lastDigits = 0;
                 setPreferredWidth();
             } else {

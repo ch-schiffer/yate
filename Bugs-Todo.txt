@@ -2,9 +2,15 @@ Bug/ToDo-Liste
 
 BUGS
 -----
--Wenn man die Schriftart umstellt, verschieben sich die Zeilennummern teilweise extrem (Zehnerstelle abgeschnitten z.B.)
--Manche Schriftarten funktionieren nicht
+-Wenn man die Schriftart umstellt, verschieben sich die Zeilennummern teilweise extrem (Zehnerstelle abgeschnitten z.B.) 
+----Habe ich gefixt.
+-Manche Schriftarten funktionieren nicht. 
+----Keine Ahnung welche du meinst, denn bei mir gehen alle die ich geprüft habe.
+-Der DocumentUpdateListener schmeist nervige exceptions.
+-Christians Netbenas steht auf Französisch oder so.
 
 ToDo
 -----
 -Per Rechtsklick auf eine Variable muss ein Popup Menü angezeigt werden
+----Möglich, wenn du prüfen kannst, ob eine Variable angeclickt wurde. Dann brauch ich nur xy von der Maus.
+-Fanzösisch aus dem Projekt entfernen.

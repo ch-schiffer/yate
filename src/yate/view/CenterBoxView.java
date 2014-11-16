@@ -21,6 +21,7 @@ public class CenterBoxView extends javax.swing.JPanel {
     public CenterBoxView() {
         initComponents();
         TextLineNumberComponent tln = new TextLineNumberComponent(jTP_text);
+        tln.setUpdateFont(true);
         jScrollPane1.setRowHeaderView(tln);
     }
 
