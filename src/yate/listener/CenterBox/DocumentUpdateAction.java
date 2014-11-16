@@ -14,9 +14,15 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     public DocumentUpdateAction(CenterBoxView view, CenterBoxModel model) {
         super(view, model);
     }
-
+    
     private void action() {
-        //Zeug, das beim Update gemacht werden muss hier
+        /*
+        *-*-*-*-* TEST CHS *-*-*-*-*
+        */
+        model.analyseSyntax();
+        /*
+        *-*-*-*-* TEST CHS *-*-*-*-*
+        */
     }
 
     @Override

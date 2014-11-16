@@ -1,9 +1,12 @@
 package yate.model;
 import java.awt.Color;
-import javax.swing.text.Document;
+import java.util.ArrayList;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import yate.syntax.general.SyntaxToken;
+import yate.syntax.java.JavaLanguage;
 
 /**
  *
@@ -11,10 +14,18 @@ import javax.swing.text.StyledDocument;
  */
 public class CenterBoxModel {
 
+    /*
+    *-*-*-*-* TEST CHS *-*-*-*-*
+    */
+    JavaLanguage javaLanguage = new JavaLanguage();
+    /*
+    *-*-*-*-* TEST CHS *-*-*-*-*
+    */
+
     //Document der zugehoerigen CenterBoxView;
     StyledDocument document;
 
-    public CenterBoxModel(Document StyledDocument) {
+    public CenterBoxModel(StyledDocument document) {
         this.document = document;
     }
 
@@ -23,4 +34,27 @@ public class CenterBoxModel {
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
     }
+    
+    /*
+    *-*-*-*-* TEST CHS *-*-*-*-*
+    */
+    public void analyseSyntax()
+    {
+        String text;
+        try {
+            text = document.getText(0, document.getLength());
+        }
+        catch(BadLocationException ex)
+        {
+            return;
+        }
+        
+        ArrayList<SyntaxToken> tokens = javaLanguage.analyzeSyntax(text);
+        for (SyntaxToken token : tokens) {
+            setColor(Color.red, token.getStart(), token.getLength());
+        }        
+    }
+    /*
+    *-*-*-*-* TEST CHS *-*-*-*-*
+    */
 }
