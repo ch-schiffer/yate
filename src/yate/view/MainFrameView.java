@@ -174,7 +174,7 @@ public class MainFrameView extends javax.swing.JFrame {
         jTP_tabed.setMinimumSize(new java.awt.Dimension(500, 500));
         jP_Center.add(jTP_tabed, java.awt.BorderLayout.CENTER);
 
-        jP_searchContainer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jP_searchContainer.setLayout(new java.awt.BorderLayout());
 
         jP_search.setLayout(new java.awt.GridBagLayout());
 
@@ -247,7 +247,7 @@ public class MainFrameView extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         jP_search.add(jbCB_regex, gridBagConstraints);
 
-        jP_searchContainer.add(jP_search);
+        jP_searchContainer.add(jP_search, java.awt.BorderLayout.WEST);
 
         jP_Center.add(jP_searchContainer, java.awt.BorderLayout.SOUTH);
 

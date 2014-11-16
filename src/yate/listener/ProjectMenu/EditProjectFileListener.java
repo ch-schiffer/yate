@@ -7,6 +7,7 @@ package yate.listener.ProjectMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
 
@@ -22,7 +23,12 @@ public class EditProjectFileListener extends ProjectMenuListener implements Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String eingabe = JOptionPane.showInputDialog(null, "Neuer Projektname",
+                "Projekt bearbeiten",
+                JOptionPane.PLAIN_MESSAGE);
+
+        view.setProjectName(eingabe);
+        model.setProjectName(eingabe);
     }
 
 }
