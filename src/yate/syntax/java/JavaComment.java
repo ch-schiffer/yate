@@ -26,7 +26,8 @@ public class JavaComment extends KeyWordCollection {
     
     private static final ArrayList<String> keyWords = new ArrayList<>(Arrays.asList(
             "//.*",        //Einzeiliger Kommentar
-            "/\\*.*\\*/"    //Mehrzeiliger Kommentar
-            ));
-    
+            "(?s)\\/\\*((?!(\\/\\*\\*)|(\\*\\/)).)*\\*\\/"    //Mehrzeiliger Kommentar, nutzt Negative Lookahead
+            ));    
 }
+
+

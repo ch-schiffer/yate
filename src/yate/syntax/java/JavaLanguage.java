@@ -8,6 +8,7 @@ package yate.syntax.java;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
+import yate.syntax.general.IImplementBracerLogic;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
@@ -18,7 +19,7 @@ import yate.syntax.general.SyntaxToken;
  * @author Christian
  * 
  */
-public class JavaLanguage extends Language {
+public class JavaLanguage extends Language implements IImplementBracerLogic {
     
     /**
      * Stack zur Verwaltung der Klammern
@@ -71,13 +72,20 @@ public class JavaLanguage extends Language {
             }            
         }
     }
+
+    @Override
+    protected void resetLanguage() {
+        //Klammernstack leeren
+        bracesStack.clear();
+    }   
+    
     
     /**
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
-       new JavaComment(),
        new JavaLiteral(),
+       new JavaComment(),
        new JavaOpenBracer(),
        new JavaCloseBracer(),
        new JavaKeyWord(),

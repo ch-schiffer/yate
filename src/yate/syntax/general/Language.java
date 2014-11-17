@@ -7,6 +7,7 @@ package yate.syntax.general;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NavigableMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,11 +63,13 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      * Analysiert die Syntax eines Textes und gibt eine Liste von atomaren Tokens
      * zurück
      * @param input Eingabetext
-     * @return Liste von Tokens
+     * @param syntaxMap Map, in die Tokens gespeichert werden
+     * 
      */
-    public ArrayList<SyntaxToken> analyzeSyntax(String input)
-    {
-        ArrayList<SyntaxToken> tokens = new ArrayList<>();
+    public final void analyzeSyntax(String input, NavigableMap<Integer, SyntaxToken> syntaxMap)
+    {        
+        syntaxMap.clear();  //Map leeren
+        resetLanguage();    //Sprachspezifisch aufräumen
         String pattern = this.toString();
         Pattern tokenPatterns = Pattern.compile(pattern);
         Matcher matcher = tokenPatterns.matcher(input);
@@ -75,13 +78,12 @@ public abstract class Language implements Iterable<KeyWordCollection> {
             for (KeyWordCollection token : getKeyWords()) {
                 if(matcher.group(token.qualifiedName) != null) {
                     SyntaxToken newToken = new SyntaxToken(token, matcher.group(token.qualifiedName), matcher.start(), matcher.end());
-                    tokens.add(newToken);
-                    analysisHandler(newToken);
+                    syntaxMap.put(newToken.getStart(), newToken);   //In Syntaxmap eintragen
+                    analysisHandler(newToken);  //Sprachspezifische Abhandlungen
                     break;
                 }
             }
         }
-        return tokens;
     }
     
     /**
@@ -90,4 +92,10 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      * @param token Letztes erzeugtes Token
      */
     protected abstract void analysisHandler(SyntaxToken token);
+    
+    /**
+     * Dient dazu, Sprachen mit eigenen Ressourcen eine Möglichkeit zu geben,
+     * diese zurückzusetzen, wenn eine neue Analyse beginnt.
+     */
+    protected void resetLanguage() { }
 }

@@ -15,14 +15,19 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
         super(view, model);
     }
     
+    /**
+     * Kennzeichnet, ob der Listener aktiv ist. Dies ist notwendig, um Endlossschleifen
+     * durch das Triggern von Events innerhalb eines Events zu vermeiden, insbesondere
+     * wenn diese durch externe Threads invoked werden.
+     */
+    public static boolean isEnabled = true;
+    
+    
     private void action() {
-        /*
-        *-*-*-*-* TEST CHS *-*-*-*-*
-        */
-        model.analyseSyntax();
-        /*
-        *-*-*-*-* TEST CHS *-*-*-*-*
-        */
+        if (isEnabled)
+        {
+            model.analyseSyntax();
+        }
     }
 
     @Override

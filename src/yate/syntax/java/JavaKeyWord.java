@@ -71,6 +71,7 @@ public class JavaKeyWord extends KeyWordCollection {
         "\\btransient\\b",
         "\\btry\\b",
         "\\bvolatile\\b",
-        "\\bwhile\\b"
+        "\\bwhile\\b",
+        "\\b@Override\\b"
         ));
 }

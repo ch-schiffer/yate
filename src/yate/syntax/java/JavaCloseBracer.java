@@ -7,13 +7,14 @@ package yate.syntax.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import yate.syntax.general.ICloseBracer;
 import yate.syntax.general.KeyWordCollection;
 
 /**
  *
  * @author Christian
  */
-public class JavaCloseBracer extends KeyWordCollection {
+public class JavaCloseBracer extends KeyWordCollection implements ICloseBracer {
 
     public JavaCloseBracer() {
         super("JavaCloseBracer", "Schließende Klammer");

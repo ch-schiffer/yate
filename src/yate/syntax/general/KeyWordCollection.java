@@ -40,9 +40,26 @@ public abstract class KeyWordCollection implements Iterable<String> {
      * Beispiel: "Kommentare"
      */
     protected String displayName;
+
+    /**
+     * Getter für QualifiedName
+     * @return QualifiedName
+     */
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    /**
+     * Getter für DisplayName
+     * @return DisplayName
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
     
     /**
      * Liste der Muster, die zur Erkennung der Schlüsselwörter dienen
+     * @return Liste der Muster
      */
     protected abstract ArrayList<String> getKeyWords();
     

@@ -27,6 +27,7 @@ public class MainFrameView extends javax.swing.JFrame {
 
     public void addCenterBoxViewToTab(CenterBoxView view, String name) {
         jTP_tabed.add(view, name);
+        jTP_tabed.setSelectedComponent(view); //17.11.14 Neuen Tab fokussieren CHS
     }
 
     public void addProjectMenuView(ProjectMenuView view) {

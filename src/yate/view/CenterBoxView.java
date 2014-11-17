@@ -1,6 +1,7 @@
 package yate.view;
 
 import java.awt.Font;
+import javax.swing.event.CaretListener;
 import javax.swing.text.StyledDocument;
 import yate.listener.CenterBox.DocumentUpdateAction;
 
@@ -35,6 +36,19 @@ public class CenterBoxView extends javax.swing.JPanel {
 
     public void addDocumentUpdateAction(DocumentUpdateAction l) {
         jTP_text.getDocument().addDocumentListener(l);
+    }
+    
+    public void addCaretListener(CaretListener l) {
+        jTP_text.addCaretListener(l);   //17.11.14 CHS
+    }
+    
+    /**
+     * Fokusiert den Text des Elements
+     */
+    public void focusElement()
+    {
+        //17.11.14 CHS
+        jTP_text.requestFocus();
     }
 
     /**

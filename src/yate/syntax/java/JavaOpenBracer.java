@@ -7,13 +7,14 @@ package yate.syntax.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.KeyWordCollection;
 
 /**
  *
  * @author Christian
  */
-public class JavaOpenBracer extends KeyWordCollection {
+public class JavaOpenBracer extends KeyWordCollection implements IOpenBracer {
     public JavaOpenBracer() {
         super("JavaOpenBracer", "Öffnende Klammer");
     }

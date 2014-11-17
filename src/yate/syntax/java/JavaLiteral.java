@@ -25,7 +25,7 @@ public class JavaLiteral extends KeyWordCollection {
     }
     
     private static final ArrayList<String> keyWords = new ArrayList<>(Arrays.asList(
-            "\".*\"",   //Doppelte Anführungszeichen
+            "\\\"((?!(\\\")).)*\\\"",   //Doppelte Anführungszeichen, nutze Negative Lookahead
             "\'.\'"     //Einfache Anführungszeichen
             ));
     

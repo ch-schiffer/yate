@@ -29,6 +29,12 @@ public class MainFrameController {
         view.addProjectMenuView(model.getProjectMenuController().getView());
         addListener();
         view.pack();
+        
+        //17.11.14 CHS
+        //Beim Start initial eine neue Datei anzeigen
+        CenterBoxController cbc = model.addCenterBox();
+        view.addCenterBoxViewToTab(cbc.getView(), "Neue Datei");
+        cbc.getView().focusElement();
     }
 
     public MainFrameView getView() {

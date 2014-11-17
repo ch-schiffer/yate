@@ -33,7 +33,9 @@ public class JavaDataType extends KeyWordCollection {
              "\\bint\\b",
              "\\blong\\b",
              "\\bshort\\b",
-             "\\bvoid\\b"
+             "\\bvoid\\b",
+             "\\btrue\\b",
+             "\\bfalse\\b"
             ));
     
 }
