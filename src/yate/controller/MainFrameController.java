@@ -5,6 +5,7 @@ import yate.listener.MainFrame.FontSizeChangedListener;
 import yate.listener.MainFrame.NewFileListener;
 import yate.listener.MainFrame.OpenFileListener;
 import yate.listener.MainFrame.SaveAllFilesListener;
+import yate.listener.MainFrame.SaveFileListener;
 import yate.listener.MainFrame.regex.FindNextListener;
 import yate.listener.MainFrame.regex.FindPreviousListener;
 import yate.listener.MainFrame.regex.ReplaceAllListener;
@@ -29,7 +30,7 @@ public class MainFrameController {
         view.addProjectMenuView(model.getProjectMenuController().getView());
         addListener();
         view.pack();
-        
+
         //17.11.14 CHS
         //Beim Start initial eine neue Datei anzeigen
         CenterBoxController cbc = model.addCenterBox();
@@ -51,7 +52,7 @@ public class MainFrameController {
         view.addNewFileListener(new NewFileListener(view, model));
         view.addOpenFileListener(new OpenFileListener(view, model));
         view.addSaveAllFileListener(new SaveAllFilesListener(view, model));
-        view.addSaveFileListener(new SaveAllFilesListener(view, model));
+        view.addSaveFileListener(new SaveFileListener(view, model));
         //RegexListener
         view.addFindNextListener(new FindNextListener(view, model));
         view.addFindPreviousListener(new FindPreviousListener(view, model));

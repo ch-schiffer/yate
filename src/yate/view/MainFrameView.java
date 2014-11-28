@@ -7,6 +7,8 @@ import yate.listener.MainFrame.FontSizeChangedListener;
 import yate.listener.MainFrame.NewFileListener;
 import yate.listener.MainFrame.OpenFileListener;
 import yate.listener.MainFrame.SaveAllFilesListener;
+import yate.listener.MainFrame.SaveFileListener;
+import yate.listener.MainFrame.TestButtonListener;
 import yate.listener.MainFrame.regex.FindNextListener;
 import yate.listener.MainFrame.regex.FindPreviousListener;
 import yate.listener.MainFrame.regex.ReplaceAllListener;
@@ -71,9 +73,13 @@ public class MainFrameView extends javax.swing.JFrame {
         jMI_saveAll.addActionListener(l);
     }
 
-    public void addSaveFileListener(SaveAllFilesListener l) {
+    public void addSaveFileListener(SaveFileListener l) {
         jB_save.addActionListener(l);
         jMI_save.addActionListener(l);
+    }
+
+    public void addTestButtonListener(TestButtonListener l) {
+        jB_testButton.addActionListener(l);
     }
 
     //RegexListener
@@ -110,6 +116,7 @@ public class MainFrameView extends javax.swing.JFrame {
         jB_saveAll = new javax.swing.JButton();
         jCB_font = new javax.swing.JComboBox();
         jCB_fontSize = new javax.swing.JComboBox();
+        jB_testButton = new javax.swing.JButton();
         jP_Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jP_Pmv = new javax.swing.JPanel();
@@ -158,6 +165,9 @@ public class MainFrameView extends javax.swing.JFrame {
         jP_Menu.add(jCB_font);
 
         jP_Menu.add(jCB_fontSize);
+
+        jB_testButton.setText("test Button");
+        jP_Menu.add(jB_testButton);
 
         getContentPane().add(jP_Menu, java.awt.BorderLayout.PAGE_START);
 
@@ -294,6 +304,7 @@ public class MainFrameView extends javax.swing.JFrame {
     private javax.swing.JButton jB_replaceAll;
     private javax.swing.JButton jB_save;
     private javax.swing.JButton jB_saveAll;
+    private javax.swing.JButton jB_testButton;
     private javax.swing.JComboBox jCB_font;
     private javax.swing.JComboBox jCB_fontSize;
     private javax.swing.JLabel jLabel1;
