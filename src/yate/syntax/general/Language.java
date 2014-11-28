@@ -19,17 +19,12 @@ import java.util.regex.Pattern;
 public abstract class Language implements Iterable<KeyWordCollection> {
 
     /**
-     * Konstruktir
-     * @param name Name der Sprache
+     * Konstruktor
      */
-    public Language(String name) {
-        this.name = name;
+    public Language() {
     }
     
-    /**
-     * Name der Sprache
-     */
-    protected String name;
+    public static String languageName;
     
     /**
      * Liste der Schlüsselwörter
@@ -76,8 +71,8 @@ public abstract class Language implements Iterable<KeyWordCollection> {
         while(matcher.find())
         {
             for (KeyWordCollection token : getKeyWords()) {
-                if(matcher.group(token.qualifiedName) != null) {
-                    SyntaxToken newToken = new SyntaxToken(token, matcher.group(token.qualifiedName), matcher.start(), matcher.end());
+                if(matcher.group(token.getType().toString()) != null) {
+                    SyntaxToken newToken = new SyntaxToken(token, matcher.group(token.getType().toString()), matcher.start(), matcher.end());
                     syntaxMap.put(newToken.getStart(), newToken);   //In Syntaxmap eintragen
                     analysisHandler(newToken);  //Sprachspezifische Abhandlungen
                     break;

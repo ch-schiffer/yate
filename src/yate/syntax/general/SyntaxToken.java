@@ -117,7 +117,7 @@ public class SyntaxToken {
         for (int i = 0; i < indentionLevel; i++) {
             sb.append("    ");
         }
-        sb.append(String.format("TYPE: %s CONTENT: %s", tokenType.getQualifiedName(),content));
+        sb.append(String.format("TYPE: %s CONTENT: %s", tokenType.getType(),content));
         return sb.toString();
     }
     

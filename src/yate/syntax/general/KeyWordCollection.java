@@ -5,8 +5,9 @@
  */
 package yate.syntax.general;
 
+import yate.syntax.general.elements.LanguageElement;
 import java.util.ArrayList;
-import java.util.Iterator;
+import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -14,60 +15,25 @@ import java.util.Iterator;
  * Abstrakte Basisklasse für eine Sammlung von Muster zur Erkennung einer
  * Gruppe von Schlüsselwörtern
  */
-public abstract class KeyWordCollection implements Iterable<String> {
+public abstract class KeyWordCollection {
 
 
-    /**
-     * Konstruktor
-     * @param qualifiedName Voll qualifizierter Name der Collection, zur eindeutigen
-     * Identifikation der KeyWord-Liste
-     * @param displayName Anzeigename der KeyWord-Liste auf der Oberfläche
-     */
-    public KeyWordCollection(String qualifiedName, String displayName) {   
-        this.qualifiedName = qualifiedName;
-        this.displayName = displayName;
-    }
-    
-    /**
-     * Gibt den voll qualifizierten Namen der Collection
-     * an. Beispiel: "JavaComment"
-     */
-    protected String qualifiedName;
-    
-    /**
-     * Gibt den Namen an, der auf der Oberfläche angezeigt werden
-     * kann.
-     * Beispiel: "Kommentare"
-     */
-    protected String displayName;
-
-    /**
-     * Getter für QualifiedName
-     * @return QualifiedName
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
+    public KeyWordCollection(LanguageElementType type) {   
+        this.type = type;
     }
 
-    /**
-     * Getter für DisplayName
-     * @return DisplayName
-     */
-    public String getDisplayName() {
-        return displayName;
+    public LanguageElementType getType() {
+        return type;
     }
     
+    protected final LanguageElementType type;
+
     /**
      * Liste der Muster, die zur Erkennung der Schlüsselwörter dienen
      * @return Liste der Muster
      */
-    protected abstract ArrayList<String> getKeyWords();
+    protected abstract ArrayList<? extends LanguageElement> getKeyWords();
     
-    @Override
-    public Iterator<String> iterator() {
-        return getKeyWords().iterator();
-    }
-
     /**
      * Singelton Instanz für das Muster der Collection
      */
@@ -80,9 +46,9 @@ public abstract class KeyWordCollection implements Iterable<String> {
         {
             StringBuilder builder = new StringBuilder();
             //Gruppenname festlegen
-            builder.append(String.format("(?<%s>", qualifiedName));
+            builder.append(String.format("(?<%s>", type));
             for (int i = 0; i < getKeyWords().size(); i++) {
-                builder.append(String.format("(%s)", getKeyWords().get(i)));
+                builder.append(String.format("(%s)", getKeyWords().get(i).getElementPattern()));
                 if (i != getKeyWords().size()-1)
                 {
                     //Wenn nicht letztes Element, "OR" verknüpfen

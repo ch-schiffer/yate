@@ -8,6 +8,9 @@ package yate.syntax.java;
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.KeyWordElement;
+import yate.syntax.general.elements.LanguageElement;
+import yate.syntax.general.elements.LanguageElementType;
 
 /**
  * Diese Klasse enthält Schlüsselwörter für Java
@@ -16,7 +19,7 @@ import yate.syntax.general.KeyWordCollection;
 public class JavaKeyWord extends KeyWordCollection {
 
     @Override
-    protected ArrayList<String> getKeyWords() {
+    protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
     }
 
@@ -24,54 +27,51 @@ public class JavaKeyWord extends KeyWordCollection {
      * Konstruktor
      */
     public JavaKeyWord() {
-        super("JavaKeyWord", "Schlüsselwort");
+        super(LanguageElementType.KEYWORD);
     }
     
     /**
      * Liste der Schlüsselwörter
      */
-    private static final ArrayList<String> keyWords = new ArrayList<>(Arrays.asList(
-        "\\babstract\\b", 
-        "\\bassert\\b",
-        "\\bbreak\\b",
-        "\\bcase\\b",
-        "\\bcatch\\b",
-        "\\bclass\\b",
-        "\\bconst\\b",
-        "\\bcontinue\\b",
-        "\\bdefault\\b",
-        "\\bdo\\b",
-        "\\belse\\b",
-        "\\benum\\b",
-        "\\bextends\\b",
-        "\\bfinal\\b",
-        "\\bfinally\\b",
-        "\\bfor\\b",
-        "\\bgoto\\b",
-        "\\bif\\b",
-        "\\bimplements\\b",
-        "\\bimport\\b",
-        "\\binstanceof\\b",
-        "\\binterface\\b",
-        "\\bnative\\b",
-        "\\bnew\\b",
-        "\\bpackage\\b",
-        "\\bprivate\\b",
-        "\\bprotected\\b",
-        "\\bpublic\\b",
-        "\\bpublic\\b",
-        "\\bstatic\\b",
-        "\\bstrictfp\\b",
-        "\\bsuper\\b",
-        "\\bswitch\\b",
-        "\\bsynchronized\\b",
-        "\\bthis\\b",
-        "\\bthrow\\b",
-        "\\bthrows\\b",
-        "\\btransient\\b",
-        "\\btry\\b",
-        "\\bvolatile\\b",
-        "\\bwhile\\b",
-        "\\b@Override\\b"
+    private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
+            new KeyWordElement("abstract"),
+            new KeyWordElement("assert"),
+            new KeyWordElement("break"),
+            new KeyWordElement("case"),
+            new KeyWordElement("catch"),
+            new KeyWordElement("class"),
+            new KeyWordElement("const"),
+            new KeyWordElement("continue"),
+            new KeyWordElement("default"),
+            new KeyWordElement("do"),
+            new KeyWordElement("else"),
+            new KeyWordElement("enum"),
+            new KeyWordElement("extends"),
+            new KeyWordElement("final"),
+            new KeyWordElement("for"),
+            new KeyWordElement("goto"),
+            new KeyWordElement("if"),
+            new KeyWordElement("implements"),
+            new KeyWordElement("import"),
+            new KeyWordElement("instanceof"),
+            new KeyWordElement("interface"),
+            new KeyWordElement("native"),
+            new KeyWordElement("new"),
+            new KeyWordElement("package"),
+            new KeyWordElement("private"),
+            new KeyWordElement("protected"),
+            new KeyWordElement("public"),
+            new KeyWordElement("static"),
+            new KeyWordElement("super"),
+            new KeyWordElement("switch"),
+            new KeyWordElement("synchronized"),
+            new KeyWordElement("this"),
+            new KeyWordElement("throws"),
+            new KeyWordElement("throw"),
+            new KeyWordElement("transient"),
+            new KeyWordElement("try"),
+            new KeyWordElement("volatile"),
+            new KeyWordElement("while"),
+            new KeyWordElement("\\@Override")
         ));
 }

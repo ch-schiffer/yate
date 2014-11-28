@@ -8,6 +8,9 @@ package yate.syntax.java;
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.KeyWordElement;
+import yate.syntax.general.elements.LanguageElement;
+import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -16,26 +19,27 @@ import yate.syntax.general.KeyWordCollection;
 public class JavaDataType extends KeyWordCollection {
 
     @Override
-    protected ArrayList<String> getKeyWords() {
+    protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
     }
 
     public JavaDataType() {
-        super("JavaDataType", "Datentyp");
+        super(LanguageElementType.DATATYPE);
     }
     
-     private static final ArrayList<String> keyWords = new ArrayList<>(Arrays.asList(
-             "\\bboolean\\b",
-            "\\bbyte\\b",
-            "\\bchar\\b",        
-            "\\bdouble\\b",
-             "\\bfloat\\b",
-             "\\bint\\b",
-             "\\blong\\b",
-             "\\bshort\\b",
-             "\\bvoid\\b",
-             "\\btrue\\b",
-             "\\bfalse\\b"
+     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
+             new KeyWordElement("boolean"),
+             new KeyWordElement("byte"),
+             new KeyWordElement("char"),
+             new KeyWordElement("double"),
+             new KeyWordElement("float"),
+             new KeyWordElement("int"),
+             new KeyWordElement("long"),
+             new KeyWordElement("short"),
+             new KeyWordElement("void"),
+             new KeyWordElement("true"),
+             new KeyWordElement("false"),
+             new KeyWordElement("String")   //In Java kein Datentyp, aber wir wollen mal nicht so sein             
             ));
     
 }

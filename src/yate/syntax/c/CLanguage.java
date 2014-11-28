@@ -3,39 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yate.syntax.java;
+package yate.syntax.c;
 
-import yate.syntax.cstyle.CStyleOpenBracer;
-import yate.syntax.cstyle.CStyleIdentifier;
-import yate.syntax.cstyle.CStyleComment;
-import yate.syntax.cstyle.CStyleCloseBracer;
-import yate.syntax.cstyle.CStyleLiteral;
 import java.util.ArrayList;
 import java.util.Arrays;
+import yate.syntax.cstyle.CStyleCloseBracer;
+import yate.syntax.cstyle.CStyleComment;
+import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
+import yate.syntax.cstyle.CStyleLiteral;
+import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.general.KeyWordCollection;
 
 /**
  *
- * Diese Klasse dient zur Analyse von Java-Syntax
  * @author Christian
- * 
  */
-public class JavaLanguage extends CStyleLanguage {
-    
-    public final static String languageName = "Java";
-    
-    /**
-     * Konstruktor     */     
-    public JavaLanguage() {
+public class CLanguage extends CStyleLanguage {
+
+    public CLanguage() {
         super();
+        languageName = "C";
     }
 
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
     }
-
+    
     /**
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
@@ -44,8 +39,8 @@ public class JavaLanguage extends CStyleLanguage {
        new CStyleComment(),
        new CStyleOpenBracer(),
        new CStyleCloseBracer(),
-       new JavaKeyWord(),
-       new JavaDataType(),
        new CStyleIdentifier()
     ));
+
+    
 }

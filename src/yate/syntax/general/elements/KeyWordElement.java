@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yate.syntax.general;
+package yate.syntax.general.elements;
 
 /**
  *
  * @author Christian
  */
-public interface IImplementBracerLogic {
+public class KeyWordElement extends LanguageElement {
     
+    public KeyWordElement(String pattern) {
+        super(LanguageElementType.KEYWORD, "\\b"+pattern+"\\b");
+    }    
 }
