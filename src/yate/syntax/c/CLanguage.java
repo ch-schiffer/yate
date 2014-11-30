@@ -39,6 +39,8 @@ public class CLanguage extends CStyleLanguage {
        new CStyleComment(),
        new CStyleOpenBracer(),
        new CStyleCloseBracer(),
+       new CKeyWord(),
+       new CDataType(),
        new CStyleIdentifier()
     ));
 

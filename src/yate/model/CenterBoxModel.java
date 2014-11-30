@@ -22,13 +22,7 @@ import yate.syntax.java.JavaLanguage;
  */
 public class CenterBoxModel {
 
-    /*
-    *-*-*-*-* TEST CHS *-*-*-*-*
-    */
-    CLanguage language = new CLanguage();
-    /*
-    *-*-*-*-* TEST CHS *-*-*-*-*
-    */
+    Language language = new CLanguage();
 
     /**
      * Document der zugehoerigen CenterBoxView;
