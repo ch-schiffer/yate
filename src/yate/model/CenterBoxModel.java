@@ -11,9 +11,11 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.syntax.c.CLanguage;
+import yate.syntax.cpp.CppLanguage;
+import yate.syntax.csharp.CSharpLanguage;
 import yate.syntax.general.*;
 import yate.syntax.general.elements.LanguageElementType;
-import yate.syntax.java.JavaLanguage;
+import yate.syntax.python.PythonLanguage;
 
 
 /**
@@ -22,7 +24,7 @@ import yate.syntax.java.JavaLanguage;
  */
 public class CenterBoxModel {
 
-    Language language = new CLanguage();
+    Language language = new PythonLanguage();
 
     /**
      * Document der zugehoerigen CenterBoxView;
@@ -170,15 +172,7 @@ public class CenterBoxModel {
     {
         currentCaretPosition = position;
         bracerIndex = position;
-        //Klammer links vom Cursor?
-        SyntaxToken token = syntaxMap.get(bracerIndex-1);
-        if (token == null) {
-            //Klammer an Cursorposition?
-            token = syntaxMap.get(bracerIndex);
-        }
-        if (token != null) {
-            SwingUtilities.invokeLater(runHighlightBracers); 
-        }
+        SwingUtilities.invokeLater(runHighlightBracers); 
     }
     
     private SyntaxToken currentHighlightedBracer = null;

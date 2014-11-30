@@ -15,5 +15,4 @@ public class CStyleMultilineCommentElement extends LanguageElement {
     public CStyleMultilineCommentElement() {
         super(LanguageElementType.COMMENT, pattern);
     }
-    
 }

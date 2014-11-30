@@ -6,27 +6,38 @@
 package yate.syntax.python;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import yate.syntax.cstyle.CStyleCloseBracer;
+import yate.syntax.cstyle.CStyleIdentifier;
+import yate.syntax.cstyle.CStyleLanguage;
+import yate.syntax.cstyle.CStyleLiteral;
+import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.general.KeyWordCollection;
-import yate.syntax.general.Language;
-import yate.syntax.general.SyntaxToken;
 
 /**
  *
  * @author Christian
  */
-public class PythonLanguage extends Language{
+public class PythonLanguage extends CStyleLanguage{
 
     public PythonLanguage() {
         super();
         languageName = "Python";
     }
-    @Override
+        @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return keyWords;
     }
 
-    @Override
-    protected void analysisHandler(SyntaxToken token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    /**
+     * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
+     */
+    private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
+       new PythonComment(),
+       new CStyleLiteral(),
+       new CStyleOpenBracer(),
+       new CStyleCloseBracer(),
+       new PythonKeyWord(),
+       new CStyleIdentifier()
+    ));
 }

@@ -6,15 +6,20 @@
 package yate.syntax.csharp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import yate.syntax.cstyle.CStyleCloseBracer;
+import yate.syntax.cstyle.CStyleComment;
+import yate.syntax.cstyle.CStyleIdentifier;
+import yate.syntax.cstyle.CStyleLanguage;
+import yate.syntax.cstyle.CStyleLiteral;
+import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.general.KeyWordCollection;
-import yate.syntax.general.Language;
-import yate.syntax.general.SyntaxToken;
 
 /**
  *
  * @author Christian
  */
-public class CSharpLanguage extends Language {
+public class CSharpLanguage extends CStyleLanguage {
 
     public CSharpLanguage() {
         super();
@@ -23,14 +28,20 @@ public class CSharpLanguage extends Language {
 
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected void analysisHandler(SyntaxToken token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return keyWords;
     }
     
-
+    /**
+     * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
+     */
+    private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
+       new CStyleLiteral(),
+       new CStyleComment(),
+       new CStyleOpenBracer(),
+       new CStyleCloseBracer(),
+       new CSharpKeyWord(),
+       new CSharpDataType(),
+       new CStyleIdentifier()
+    ));
     
 }
