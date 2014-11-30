@@ -5,6 +5,8 @@
  */
 package yate.managers;
 
+import javax.swing.text.Document;
+
 /**
  *
  * @auctor Christian
@@ -19,5 +21,32 @@ package yate.managers;
  * 
  */
 public class SearchReplaceManager {
+    private boolean regex;
     
+    //Private Instanz der Klasse selbst
+    private static SearchReplaceManager srmanager;
+    
+    private SearchReplaceManager(){
+    
+    }
+    
+    public static SearchReplaceManager getInstance() {
+        //Instanziieren, wenn interne Instanz noch NULL ist
+        if (srmanager == null){
+            srmanager = new SearchReplaceManager();
+        }
+        return srmanager;
+    }
+    
+    public void search(String keyword, Document text) {
+    
+    }
+    
+    public void replace(String keyword, String replaceWith, Document text){
+    
+    }
+    
+    public void replaceAll(String keyword, String replaceWith, Document text){
+    
+    }
 }

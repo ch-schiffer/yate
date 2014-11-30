@@ -50,6 +50,15 @@ public class CenterBoxView extends javax.swing.JPanel {
         //17.11.14 CHS
         jTP_text.requestFocus();
     }
+    
+    /**
+     * Setzt den Text des Felds
+     * @param text Text
+     */
+    public void setText(String text) {
+        //30.11.14 CAR
+        jTP_text.setText(text);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

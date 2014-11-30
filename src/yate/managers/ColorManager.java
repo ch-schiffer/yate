@@ -5,6 +5,9 @@
  */
 package yate.managers;
 
+import java.awt.Color;
+import java.util.HashMap;
+
 /**
  *
  * @écrivain Christian
@@ -19,5 +22,28 @@ package yate.managers;
  * 
  */
 public class ColorManager {
+    private HashMap <String , Color> colors;
     
+    //Private Instanz der Klasse selber
+    private static ColorManager colormanager;
+    
+    private ColorManager(){
+    
+    }
+    
+    public static ColorManager getInstance() {
+        //Instanziieren, wenn interne Instanz noch NULL ist
+        if (colormanager == null){
+            colormanager = new ColorManager();
+        }
+        return colormanager;
+    }
+    
+    public Color getColor(String keyword){
+        return null;
+    }
+    
+    public void setColor (String keyword, Color color){
+    
+    }
 }

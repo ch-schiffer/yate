@@ -5,6 +5,13 @@
  */
 package yate.managers;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import yate.project.Project;
+
 /**
  *
  * @écrivain Christian
@@ -25,5 +32,46 @@ package yate.managers;
  * pour les siècles des siècles, amen
  */
 public class ProjectManager {
+    
+     //Private Instanz der Klasse selbst
+    private static ProjectManager projectmanager;
+    
+    private Project currentProject;
+    
+    private ProjectManager () {
+        currentProject = new Project();
+    }
+    
+    public static ProjectManager getInstance(){
+        //Instanziieren, wenn interne Instanz noch NULL ist
+        return projectmanager = projectmanager != null ? projectmanager : new ProjectManager();
+    }
+    
+    public void saveProject() {
+        try (XMLEncoder enc = new XMLEncoder(new FileOutputStream(currentProject.getPath()))){
+            enc.writeObject(currentProject);
+        } catch (IOException e) {
+        }
+    }
+    
+    public void loadProject(FileInputStream fis) {
+        
+        XMLDecoder dec = new XMLDecoder(fis);
+        currentProject = (Project) dec.readObject();        
+    }
+    
+    public void closeProject(){
+        currentProject = null;
+    }
+    
+    public Project getCurrentProject(){
+        return currentProject;
+    }
+    
+    public void createProject (){
+        Project project = new Project();
+        currentProject = project;
+    }
+    
     
 }
