@@ -27,9 +27,7 @@ public class NewProjectListener extends ProjectMenuListener implements ActionLis
                 "Neues Projekt",
                 JOptionPane.PLAIN_MESSAGE);
 
-        view.setProjectName(eingabe);
-        model.setProjectName(eingabe);
-        model.getFiles().removeAllElements();
+        //Hier die Logik für das erstellen eines neuen Projekts. Achtung eingabe kann null oder leer sein !!!
     }
 
 }

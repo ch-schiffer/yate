@@ -27,8 +27,7 @@ public class EditProjectFileListener extends ProjectMenuListener implements Acti
                 "Projekt bearbeiten",
                 JOptionPane.PLAIN_MESSAGE);
 
-        view.setProjectName(eingabe);
-        model.setProjectName(eingabe);
+        //Hiew die Logik für das bearbeiten des Projektnamens. Achtung eingabe kann null oder leer sein !!!
     }
 
 }

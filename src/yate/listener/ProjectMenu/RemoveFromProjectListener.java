@@ -3,6 +3,7 @@ package yate.listener.ProjectMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import yate.model.ProjectMenuModel;
+import yate.project.File;
 import yate.view.ProjectMenuView;
 
 /**
@@ -17,7 +18,14 @@ public class RemoveFromProjectListener extends ProjectMenuListener implements Ac
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       //Abfrage ob entfernt werden soll, sollte noch hinzugefügt werden.
+        
+        File selected =  view.getSelectedItem();
+       
+       if(selected != null)
+       {
+           model.removeFile(selected);
+       }
     }
 
 }

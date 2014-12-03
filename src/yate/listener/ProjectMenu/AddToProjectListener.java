@@ -2,6 +2,9 @@ package yate.listener.ProjectMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.JFileChooser;
+import yate.managers.FileManager;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
 
@@ -17,7 +20,15 @@ public class AddToProjectListener extends ProjectMenuListener implements ActionL
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JFileChooser openFile = new JFileChooser();
+        if (openFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+            File file = openFile.getSelectedFile();
+
+            FileManager.getInstance().loadFile(file);
+
+            model.addFile(new yate.project.File(FileManager.getInstance().getCurrentFile().getPath()));
+        }   
     }
 
 }

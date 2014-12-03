@@ -71,6 +71,20 @@ public class File implements Serializable{
         return true;
     }
     
+    //3.12.2014 Laurin 
     
+    /**
+     * Die Methode toString muss überschrieben werden, 
+     * damit diese in der JList gescheit angezeigt wird.
+     * 
+     * @return Den Pfad der Datei.
+     */
+    
+    
+    @Override
+    public String toString()
+    {
+        return getPath();
+    }
     
 }

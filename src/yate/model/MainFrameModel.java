@@ -9,6 +9,10 @@ import javax.swing.SingleSelectionModel;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.controller.ProjectMenuController;
+import yate.project.File;
+import yate.project.Project;
+import yate.syntax.general.Language;
+import yate.syntax.java.JavaLanguage;
 import yate.view.CenterBoxView;
 import yate.view.ProjectMenuView;
 
@@ -109,8 +113,10 @@ public class MainFrameModel {
     public CenterBoxController addCenterBox() {
         CenterBoxView view = new CenterBoxView();
 
-        StyledDocument d = view.getStyledDocument();
-        CenterBoxModel model = new CenterBoxModel(d);
+        StyledDocument document = view.getStyledDocument();
+        Language language = new JavaLanguage();
+        
+        CenterBoxModel model = new CenterBoxModel(document,language);
 
         view.setFont(getSelectedFont(), getSelectedFontSize());
 
@@ -120,10 +126,9 @@ public class MainFrameModel {
         return cbc;
     }
 
-    public void addProjectMenu(String projectName, DefaultListModel<FileModel> fileModel) {
+    public void addProjectMenu(Project project) {
         ProjectMenuView view = new ProjectMenuView();
-
-        ProjectMenuModel model = new ProjectMenuModel("test", fileModel);
+        ProjectMenuModel model = new ProjectMenuModel(project);
 
         projectMenuController = new ProjectMenuController(view, model);
 

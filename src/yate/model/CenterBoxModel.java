@@ -10,12 +10,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import yate.listener.CenterBox.DocumentUpdateAction;
-import yate.syntax.c.CLanguage;
-import yate.syntax.cpp.CppLanguage;
-import yate.syntax.csharp.CSharpLanguage;
 import yate.syntax.general.*;
 import yate.syntax.general.elements.LanguageElementType;
-import yate.syntax.python.PythonLanguage;
 
 
 /**
@@ -24,7 +20,7 @@ import yate.syntax.python.PythonLanguage;
  */
 public class CenterBoxModel {
 
-    Language language = new PythonLanguage();
+    private Language language;
 
     /**
      * Document der zugehoerigen CenterBoxView;
@@ -47,9 +43,10 @@ public class CenterBoxModel {
     
     private int bracerIndex = 0;
     
-    public CenterBoxModel(StyledDocument document) {
+    public CenterBoxModel(StyledDocument document,Language language) {
         this.document = document;
-
+        this.language=language;
+        
         //Test ColorMap anlegen
         testColorMap.put(language.languageName+LanguageElementType.COMMENT, Color.green);
         testColorMap.put(language.languageName+LanguageElementType.DATATYPE, Color.orange);
@@ -188,4 +185,15 @@ public class CenterBoxModel {
         setBackgroundColor(color, token.getStart(), token.getLength());
         setBackgroundColor(color, token.getPair().getStart(), token.getPair().getLength());
     }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+        //todo update auf das document.
+    }
+    
+    
 }

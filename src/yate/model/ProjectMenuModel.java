@@ -1,6 +1,8 @@
 package yate.model;
 
 import javax.swing.DefaultListModel;
+import yate.project.File;
+import yate.project.Project;
 
 /**
  *
@@ -8,41 +10,45 @@ import javax.swing.DefaultListModel;
  */
 public class ProjectMenuModel {
 
-    private String projectName;
-    private final DefaultListModel<FileModel> files;
+    private Project project;
+    private DefaultListModel<File> dlm;
 
-    public ProjectMenuModel(String projectName, DefaultListModel<FileModel> files) {
-        this.projectName = projectName;
-        this.files = files;
-    }
-
-    public ProjectMenuModel() {
-        this.projectName = "Neues Projekt";
-        this.files = new DefaultListModel<>();
-    }
-
-    public DefaultListModel<FileModel> getFiles() {
-        return files;
+    public ProjectMenuModel(Project project) {
+        this.project = project;
+        this.dlm = new DefaultListModel<>();
+        
+        for (File f:project.getFiles())
+        {
+            dlm.addElement(f);
+        }
+        
     }
 
     public String getProjectName() {
-        return projectName;
+        return project.getName();
     }
 
     public void setProjectName(String projectName) {
-        this.projectName = projectName;
+        this.project.setName(projectName);
     }
 
-    public void addFile(FileModel file) {
-        files.addElement(file);
+    public void addFile(File file) {
+        project.addFile(file);
+        dlm.addElement(file);
     }
 
-    public void removeFile(FileModel file) {
-        files.removeElement(file);
+    public void removeFile(File file) {
+         project.removeFile(file);
+         dlm.removeElement(file);
+    }
+    
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public void removeFile(int index) {
-        files.remove(index);
+    public DefaultListModel<File> getDlm() {
+        return dlm;
     }
-
+    
+    
 }

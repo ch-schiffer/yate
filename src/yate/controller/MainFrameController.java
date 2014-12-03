@@ -11,6 +11,7 @@ import yate.listener.MainFrame.regex.FindPreviousListener;
 import yate.listener.MainFrame.regex.ReplaceAllListener;
 import yate.listener.MainFrame.regex.ReplaceListener;
 import yate.model.MainFrameModel;
+import yate.project.Project;
 import yate.view.MainFrameView;
 
 /**
@@ -25,8 +26,11 @@ public class MainFrameController {
     public MainFrameController(MainFrameView view, MainFrameModel model) {
         this.view = view;
         this.model = model;
-
-        model.addProjectMenu("Test", null);
+        
+        Project project = new Project();
+        project.setName("Test Project");
+        
+        model.addProjectMenu(project);
         view.addProjectMenuView(model.getProjectMenuController().getView());
         addListener();
         view.pack();
