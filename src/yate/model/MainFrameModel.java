@@ -4,12 +4,10 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.SingleSelectionModel;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.controller.ProjectMenuController;
-import yate.project.File;
 import yate.project.Project;
 import yate.syntax.general.Language;
 import yate.syntax.java.JavaLanguage;
@@ -34,7 +32,7 @@ public class MainFrameModel {
     private ArrayList<CenterBoxController> centerBoxes;
     private ProjectMenuController projectMenuController;
 
-    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes) {
+    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes,SingleSelectionModel tabedPaneModel) {
         this.availableFontSizes = new String[]{"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36"};
         regex = false;
         searchVisible = true;
@@ -42,9 +40,11 @@ public class MainFrameModel {
         availableFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
         this.fontSizes = fontSizes;
         this.fonts = fonts;
+        this.tabedPaneModel =tabedPaneModel;
 
         for (String s : getFontsAsStrings()) {
-            this.fonts.addElement(s);
+            if(s!= null && s.trim().length()>0)
+                this.fonts.addElement(s);
         }
 
         for (String s : this.availableFontSizes) {
@@ -52,11 +52,15 @@ public class MainFrameModel {
         }
 
         this.fontSizes.setSelectedItem("12");
-        this.fonts.setSelectedItem("Arial");
+    }
+    
+    public int getSelectedIndex()
+    {
+        return tabedPaneModel.getSelectedIndex();
     }
 
-    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes, boolean regex, boolean searchVisible) {
-        this(fonts, fontSizes);
+    public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes,SingleSelectionModel tabedPaneModel, boolean regex, boolean searchVisible) {
+        this(fonts, fontSizes,tabedPaneModel);
         this.regex = regex;
         this.searchVisible = searchVisible;
     }
@@ -101,11 +105,12 @@ public class MainFrameModel {
         this.projectMenuController = projectMenuController;
     }
 
-    public String[] getFontsAsStrings() {
+    private String[] getFontsAsStrings() {
         String ret[] = new String[availableFonts.length];
 
         for (int i = 0; i < availableFonts.length; i++) {
-            ret[i] = availableFonts[i].getName();
+            if(availableFonts[i].canDisplay('a'))
+                ret[i] = availableFonts[i].getName();
         }
         return ret;
     }
@@ -125,7 +130,12 @@ public class MainFrameModel {
 
         return cbc;
     }
-
+    
+    public void removeCenterBoxController(CenterBoxController cbc)
+    {
+        centerBoxes.remove(cbc);
+    }
+    
     public void addProjectMenu(Project project) {
         ProjectMenuView view = new ProjectMenuView();
         ProjectMenuModel model = new ProjectMenuModel(project);

@@ -20,7 +20,7 @@ public class NewFileListener extends MainFrameListener implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         CenterBoxController cbc = model.addCenterBox();
-        view.addCenterBoxViewToTab(cbc.getView(), "Neue Datei");
+        view.addCenterBoxViewToTab(cbc.getView(), "Neue Datei",new TabCloseListener(view, model,cbc));
         //Datei zu FileManager hinzufügen
         
         FileManager.getInstance().createFile();

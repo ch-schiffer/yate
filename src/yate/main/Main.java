@@ -76,7 +76,7 @@ public class Main {
             ex.printStackTrace();
         }
         view = new MainFrameView();
-        model = new MainFrameModel(view.getFontModel(), view.getFontSizeModel());
+        model = new MainFrameModel(view.getFontModel(), view.getFontSizeModel(),view.getJTabedPaneModel());
         controller = new MainFrameController(view, model);
 
         view.setVisible(true);

@@ -33,7 +33,7 @@ public class CenterBoxView extends javax.swing.JPanel {
     public void setFont(String font, int size) {
         jTP_text.setFont(new Font(font, 0, size));
     }
-
+    //Listener
     public void addDocumentUpdateAction(DocumentUpdateAction l) {
         jTP_text.getDocument().addDocumentListener(l);
     }
