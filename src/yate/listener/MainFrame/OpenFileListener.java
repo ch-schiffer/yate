@@ -2,7 +2,6 @@ package yate.listener.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.JFileChooser;
 import yate.controller.CenterBoxController;
 import yate.managers.FileManager;
@@ -24,12 +23,10 @@ public class OpenFileListener extends MainFrameListener implements ActionListene
         JFileChooser openFile = new JFileChooser();
         if (openFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-            File file = openFile.getSelectedFile();
+            yate.project.File newFile = FileManager.getInstance().loadFile(openFile.getSelectedFile());
 
-            FileManager.getInstance().loadFile(file);
-
-            CenterBoxController cbc = model.addCenterBox();
-            view.addCenterBoxViewToTab(cbc.getView(), FileManager.getInstance().getCurrentFile().getPath(),new TabCloseListener(view, model,cbc));
+            CenterBoxController cbc = model.addCenterBox(newFile);
+            view.addCenterBoxViewToTab(cbc.getView(), newFile.getFileName(),new TabCloseListener(view, model,cbc));
             cbc.getView().setText(FileManager.getInstance().getCurrentFile().getContent());
             cbc.getView().focusElement();
         }        

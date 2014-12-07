@@ -1,15 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.general;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import yate.autocomplete.AutoCompleteManager;
+import yate.managers.ColorManager;
 
 /**
  *
@@ -17,26 +20,40 @@ import java.util.regex.Pattern;
  * Abstrakte Basisklasse für eine Sprache
  */
 public abstract class Language implements Iterable<KeyWordCollection> {
-
+    
     /**
      * Konstruktor
+     * @param languageName Name der Sprache
      */
-    public Language() {
+    public Language(String languageName) {
+        this.languageName = languageName;
+        languageSuffixList = new ArrayList<>();
+        
+        //Sprache trägt sich beim Erzeugen selbst in den ColorManager ein
+        for (KeyWordCollection keyword : this) {
+            ColorManager.getInstance().setColor(languageName+keyword.getType().toString(), Color.black);
+        }
     }
     
-    public static String languageName;
+    private final String languageName;
+    
+    protected final ArrayList<String> languageSuffixList;   
+    
+    public String getLanguageName() {
+        return languageName;
+    }
     
     /**
      * Liste der Schlüsselwörter
      * @return Liste der Schlüsselwörter
      */
     protected abstract ArrayList<KeyWordCollection> getKeyWords();
-        
+    
     @Override
     public Iterator<KeyWordCollection> iterator() {
         return getKeyWords().iterator();
     }
-
+    
     private String patternString = null;
     
     @Override
@@ -59,10 +76,11 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      * zurück
      * @param input Eingabetext
      * @param syntaxMap Map, in die Tokens gespeichert werden
-     * 
+     * @param autoCompleteManager
+     *
      */
-    public final void analyzeSyntax(String input, NavigableMap<Integer, SyntaxToken> syntaxMap)
-    {        
+    public final void analyzeSyntax(String input, NavigableMap<Integer, SyntaxToken> syntaxMap, AutoCompleteManager autoCompleteManager) {
+        autoCompleteManager.clearSuggestions();
         syntaxMap.clear();  //Map leeren
         resetLanguage();    //Sprachspezifisch aufräumen
         String pattern = this.toString();
@@ -75,6 +93,7 @@ public abstract class Language implements Iterable<KeyWordCollection> {
                     SyntaxToken newToken = new SyntaxToken(token, matcher.group(token.getType().toString()), matcher.start(), matcher.end());
                     syntaxMap.put(newToken.getStart(), newToken);   //In Syntaxmap eintragen
                     analysisHandler(newToken);  //Sprachspezifische Abhandlungen
+                    autoCompleteManager.insertSuggestion(newToken.getContent()); //Vorschlag zum AutoCompletManager hinzufügen
                     break;
                 }
             }
@@ -93,4 +112,8 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      * diese zurückzusetzen, wenn eine neue Analyse beginnt.
      */
     protected void resetLanguage() { }
+    
+    public boolean checkSuffix(String suffix) {
+        return languageSuffixList.contains(suffix);
+    }
 }

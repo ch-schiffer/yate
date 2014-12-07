@@ -8,15 +8,17 @@ import yate.listener.MainFrame.OpenFileListener;
 import yate.listener.MainFrame.SaveAllFilesListener;
 import yate.listener.MainFrame.SaveFileListener;
 import yate.listener.MainFrame.TabCloseListener;
+import yate.listener.MainFrame.TestButtonListener;
 import yate.listener.MainFrame.regex.FindNextListener;
 import yate.listener.MainFrame.regex.FindPreviousListener;
 import yate.listener.MainFrame.regex.ReplaceAllListener;
 import yate.listener.MainFrame.regex.ReplaceListener;
+import yate.managers.FileManager;
+import yate.managers.LanguageManager;
 import yate.model.MainFrameModel;
+import yate.project.File;
 import yate.project.Project;
-import yate.syntax.c.CLanguage;
 import yate.syntax.general.Language;
-import yate.syntax.java.JavaLanguage;
 import yate.view.MainFrameView;
 
 /**
@@ -39,20 +41,17 @@ public class MainFrameController {
         view.addProjectMenuView(model.getProjectMenuController().getView());
         addListener();
         
-        //Test
-        Language java = new JavaLanguage();
-        java.languageName = "java";
-        view.addLanguage(java, new LanguageChangedListener(view,model,java));
-        
-        Language c = new CLanguage();
-        c.languageName = "C";
-        view.addLanguage(c, new LanguageChangedListener(view,model,c));
-        //Test ende
+        //06.12.14 CHS
+        //Finale Version der Sprachen-Liste
+        for (Language language : LanguageManager.getLanguageList()) {
+            view.addLanguage(language, new LanguageChangedListener(view,model,language));
+        }        
 
         //17.11.14 CHS
         //Beim Start initial eine neue Datei anzeigen
-        CenterBoxController cbc = model.addCenterBox();
-        view.addCenterBoxViewToTab(cbc.getView(), "Neue Datei",new TabCloseListener(view, model,cbc));
+        File newFile = FileManager.getInstance().createFile();
+        CenterBoxController cbc = model.addCenterBox(newFile);
+        view.addCenterBoxViewToTab(cbc.getView(), newFile.toString(),new TabCloseListener(view, model,cbc));
         cbc.getView().focusElement();
         
         //pack() muss am ende stehen, damit es korrekt funktioniert.
@@ -74,6 +73,7 @@ public class MainFrameController {
         view.addOpenFileListener(new OpenFileListener(view, model));
         view.addSaveAllFileListener(new SaveAllFilesListener(view, model));
         view.addSaveFileListener(new SaveFileListener(view, model));
+        view.addTestButtonListener(new TestButtonListener(view, model));
         //RegexListener
         view.addFindNextListener(new FindNextListener(view, model));
         view.addFindPreviousListener(new FindPreviousListener(view, model));

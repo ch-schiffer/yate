@@ -22,13 +22,13 @@ import java.util.HashMap;
  * 
  */
 public class ColorManager {
-    private HashMap <String , Color> colors;
+    private final HashMap <String , Color> colors;
     
     //Private Instanz der Klasse selber
     private static ColorManager colormanager;
     
     private ColorManager(){
-    
+        colors = new HashMap<>();
     }
     
     public static ColorManager getInstance() {
@@ -40,10 +40,16 @@ public class ColorManager {
     }
     
     public Color getColor(String keyword){
-        return null;
+        if (colors.containsKey(keyword)) {
+            return colors.get(keyword);
+        }
+        else {
+            //Standardfarbe
+            return Color.BLACK;
+        }
     }
     
-    public void setColor (String keyword, Color color){
-    
+    public void setColor(String keyword, Color color){
+        colors.put(keyword, color);
     }
 }

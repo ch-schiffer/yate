@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yate.syntax.python;
+package yate.syntax.cstyle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.CStylePreProcessorElement;
 import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
@@ -15,10 +16,10 @@ import yate.syntax.general.elements.LanguageElementType;
  *
  * @author Christian
  */
-public class PythonComment extends KeyWordCollection {
+public class CStylePreProcessorDirective extends KeyWordCollection {
 
-    public PythonComment() {
-        super(LanguageElementType.COMMENT);
+    public CStylePreProcessorDirective() {
+        super(LanguageElementType.PREPROCESSOR);
     }
 
     @Override
@@ -26,8 +27,9 @@ public class PythonComment extends KeyWordCollection {
         return keyWords;
     }
     
-    private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
-            new PythonSingleLineCommentElement(),
-            new PythonMultiLineCommentElement()
-    ));    
+        private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
+                new CStylePreProcessorElement()
+    ));
+
+    
 }

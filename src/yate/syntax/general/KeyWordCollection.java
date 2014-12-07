@@ -16,8 +16,6 @@ import yate.syntax.general.elements.LanguageElementType;
  * Gruppe von Schlüsselwörtern
  */
 public abstract class KeyWordCollection {
-
-
     public KeyWordCollection(LanguageElementType type) {   
         this.type = type;
     }

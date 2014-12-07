@@ -5,9 +5,6 @@
  */
 package yate.syntax.general.elements;
 
-import yate.syntax.general.elements.LanguageElement;
-import yate.syntax.general.elements.LanguageElementType;
-
 /**
  *
  * @author Christian
@@ -15,6 +12,6 @@ import yate.syntax.general.elements.LanguageElementType;
 public class SingleQuoteElement extends LanguageElement{
     private static final String pattern = "\'.\'";
     public SingleQuoteElement() {
-        super(LanguageElementType.LITERAL, pattern);
+        super(pattern);
     }    
 }

@@ -5,7 +5,8 @@
  */
 package yate.listener.CenterBox;
 
-import javax.swing.event.CaretEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -13,14 +14,14 @@ import yate.view.CenterBoxView;
  *
  * @author Christian
  */
-public class CaretListener extends CenterBoxListener implements javax.swing.event.CaretListener {
+public class ScrollListener extends CenterBoxListener implements AdjustmentListener {
 
-    public CaretListener(CenterBoxView view, CenterBoxModel model) {
+    public ScrollListener(CenterBoxView view, CenterBoxModel model) {
         super(view, model);
     }
-    
+
     @Override
-    public void caretUpdate(CaretEvent e) {
-        model.highlightBracers(e.getDot());
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        model.reHighlightSyntax();
     }    
 }

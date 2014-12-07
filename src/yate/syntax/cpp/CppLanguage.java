@@ -13,8 +13,8 @@ import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
+import yate.syntax.cstyle.CStylePreProcessorDirective;
 import yate.syntax.general.KeyWordCollection;
-import static yate.syntax.general.Language.languageName;
 /**
  *
  * @author Christian
@@ -22,8 +22,10 @@ import static yate.syntax.general.Language.languageName;
 public class CppLanguage extends CStyleLanguage {
 
     public CppLanguage() {
-        super();
-        languageName = "C++";
+        super("C++");
+        languageSuffixList.add(".cpp");
+        languageSuffixList.add(".h");
+        languageSuffixList.add(".t");
     }
 
     @Override
@@ -35,6 +37,7 @@ public class CppLanguage extends CStyleLanguage {
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
+       new CStylePreProcessorDirective(),
        new CStyleLiteral(),
        new CStyleComment(),
        new CStyleOpenBracer(),

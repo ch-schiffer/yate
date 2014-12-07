@@ -13,6 +13,6 @@ public class CStyleMultilineCommentElement extends LanguageElement {
     private static final String pattern = "(?s)\\/\\*((?!(\\/\\*\\*)|(\\*\\/)).)*\\*\\/";
     
     public CStyleMultilineCommentElement() {
-        super(LanguageElementType.COMMENT, pattern);
+        super(pattern);
     }
 }

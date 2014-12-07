@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.c;
 
 import java.util.ArrayList;
@@ -20,12 +20,13 @@ import yate.syntax.general.KeyWordCollection;
  * @author Christian
  */
 public class CLanguage extends CStyleLanguage {
-
+    
     public CLanguage() {
-        super();
-        languageName = "C";
+        super("C");
+        languageSuffixList.add(".c");
+        
     }
-
+    
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
@@ -35,14 +36,12 @@ public class CLanguage extends CStyleLanguage {
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
-       new CStyleLiteral(),
-       new CStyleComment(),
-       new CStyleOpenBracer(),
-       new CStyleCloseBracer(),
-       new CKeyWord(),
-       new CDataType(),
-       new CStyleIdentifier()
+            new CStyleLiteral(),
+            new CStyleComment(),
+            new CStyleOpenBracer(),
+            new CStyleCloseBracer(),
+            new CKeyWord(),
+            new CDataType(),
+            new CStyleIdentifier()
     ));
-
-    
 }

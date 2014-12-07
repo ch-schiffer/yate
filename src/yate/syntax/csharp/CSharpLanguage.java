@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.csharp;
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
+import yate.syntax.cstyle.CStylePreProcessorDirective;
 import yate.syntax.general.KeyWordCollection;
 
 /**
@@ -20,12 +21,12 @@ import yate.syntax.general.KeyWordCollection;
  * @author Christian
  */
 public class CSharpLanguage extends CStyleLanguage {
-
+    
     public CSharpLanguage() {
-        super();
-        languageName = "CSharp";
+        super("CSharp");
+        languageSuffixList.add(".cs");
     }
-
+    
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
@@ -35,13 +36,14 @@ public class CSharpLanguage extends CStyleLanguage {
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
-       new CStyleLiteral(),
-       new CStyleComment(),
-       new CStyleOpenBracer(),
-       new CStyleCloseBracer(),
-       new CSharpKeyWord(),
-       new CSharpDataType(),
-       new CStyleIdentifier()
+            new CStylePreProcessorDirective(),            
+            new CStyleLiteral(),
+            new CStyleComment(),
+            new CStyleOpenBracer(),
+            new CStyleCloseBracer(),
+            new CSharpKeyWord(),
+            new CSharpDataType(),
+            new CStyleIdentifier()
     ));
     
 }

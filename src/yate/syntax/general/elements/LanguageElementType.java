@@ -10,17 +10,29 @@ package yate.syntax.general.elements;
  * @author Christian
  */
 public enum LanguageElementType {
-    LITERAL("LITERAL"),
+    LITERAL("Literal"),
     KEYWORD("Schlüsselwort"),
     OPENBRACER("Klammer"),
     CLOSEBRACER("Klammer"),
     COMMENT("Kommentar"),
     DATATYPE("Datentyp"),
-    IDENTIFIER("Bezeichner");
+    IDENTIFIER("Bezeichner"),
+    REGISTER("Register"),
+    FLAG("Flag"),
+    MNEMONIC("Menmonic"),
+    NUMBER("Zahl"),
+    PREPROCESSOR("Präprozessor");
     
     private final String type;
     
     private LanguageElementType(final String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
+    
+    
 }
