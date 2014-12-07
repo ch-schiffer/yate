@@ -42,6 +42,11 @@ public class File implements Serializable{
         this.path = path;
     }
     
+    public String getName () {
+        java.io.File newFile = new java.io.File(this.path);
+        return newFile.getName();    
+    }
+    
     public String getContent (){
         return text;
     }

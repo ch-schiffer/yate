@@ -5,6 +5,8 @@
  */
 package yate.managers;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.text.Document;
 
 /**
@@ -46,7 +48,15 @@ public class SearchReplaceManager {
     
     }
     
-    public void replaceAll(String keyword, String replaceWith, Document text){
-    
+    public Document replaceAll(String keyword, String replaceWith, Document text){
+        String toReplace = text.toString();
+        Matcher matcher = Pattern.compile(keyword).matcher(text.toString());
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()){
+            matcher.appendReplacement(sb, replaceWith);
+        }
+        matcher.appendTail(sb);
+        System.out.println(sb);
+        return text;
     }
 }

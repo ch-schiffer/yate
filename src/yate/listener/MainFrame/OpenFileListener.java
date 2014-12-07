@@ -29,7 +29,7 @@ public class OpenFileListener extends MainFrameListener implements ActionListene
             FileManager.getInstance().loadFile(file);
 
             CenterBoxController cbc = model.addCenterBox();
-            view.addCenterBoxViewToTab(cbc.getView(), FileManager.getInstance().getCurrentFile().getPath(),new TabCloseListener(view, model,cbc));
+            view.addCenterBoxViewToTab(cbc.getView(), FileManager.getInstance().getCurrentFile().getName(),new TabCloseListener(view, model,cbc));
             cbc.getView().setText(FileManager.getInstance().getCurrentFile().getContent());
             cbc.getView().focusElement();
         }        
