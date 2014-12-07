@@ -6,6 +6,8 @@
 package yate.syntax.asm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
@@ -17,18 +19,29 @@ import yate.syntax.general.SyntaxToken;
 public class AsmLanguage extends Language{
 
     public AsmLanguage() {
-        super();
-        languageName = "Assembler";
+        super("Assembler");
+        languageSuffixList.add(".asm");
     }
 
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return keyWords;
     }
+    
 
     @Override
     protected void analysisHandler(SyntaxToken token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //ASM implementiert keine weitere Logik
     }
     
+     /**
+     * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
+     */
+    private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
+            new ASMMnemonic(),
+            new ASMRegister(),
+            new ASMFlags(),
+            new ASMNumber(),
+            new CStyleLiteral()
+    ));    
 }

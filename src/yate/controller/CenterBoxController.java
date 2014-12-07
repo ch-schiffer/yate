@@ -1,7 +1,7 @@
 package yate.controller;
 
-import javax.swing.event.CaretListener;
 import yate.listener.CenterBox.DocumentUpdateAction;
+import yate.listener.CenterBox.ScrollListener;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -31,6 +31,8 @@ public class CenterBoxController {
     private void addListener() {
         view.addDocumentUpdateAction(new DocumentUpdateAction(view, model));
         view.addCaretListener(new yate.listener.CenterBox.CaretListener(view,model));
+        view.addScrollListener(new ScrollListener(view, model));
+        view.addAutoCompleteListener(model.getAutoCompleteManager());
     }
 
 }

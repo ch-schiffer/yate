@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import yate.controller.CenterBoxController;
 import yate.managers.FileManager;
 import yate.model.MainFrameModel;
+import yate.project.File;
 import yate.view.MainFrameView;
 
 /**
@@ -19,12 +20,9 @@ public class NewFileListener extends MainFrameListener implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CenterBoxController cbc = model.addCenterBox();
-        view.addCenterBoxViewToTab(cbc.getView(), "Neue Datei",new TabCloseListener(view, model,cbc));
-        //Datei zu FileManager hinzufügen
-        
-        FileManager.getInstance().createFile();
-        
+        File newFile = FileManager.getInstance().createFile();
+        CenterBoxController cbc = model.addCenterBox(new File());
+        view.addCenterBoxViewToTab(cbc.getView(), newFile.getFileName(),new TabCloseListener(view, model,cbc));
     }
 
 }

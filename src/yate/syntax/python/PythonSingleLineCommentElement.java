@@ -5,7 +5,6 @@
  */
 package yate.syntax.python;
 import yate.syntax.general.elements.LanguageElement;
-import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -15,6 +14,6 @@ public class PythonSingleLineCommentElement extends LanguageElement {
     private static final String pattern = "#.*";
 
     public PythonSingleLineCommentElement() {
-        super(LanguageElementType.COMMENT, pattern);
+        super(pattern);
     }   
 }

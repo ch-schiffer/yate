@@ -1,8 +1,15 @@
 package yate.view;
 
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.AdjustmentListener;
+import javax.swing.KeyStroke;
 import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
+import yate.autocomplete.AutoComplete;
+import yate.autocomplete.AutoComplete.CommitAction;
+import yate.autocomplete.AutoCompleteManager;
 import yate.listener.CenterBox.DocumentUpdateAction;
 
 /*
@@ -16,6 +23,8 @@ import yate.listener.CenterBox.DocumentUpdateAction;
  */
 public class CenterBoxView extends javax.swing.JPanel {
 
+    private static final String COMMIT_ACTION = "commit";
+    
     /**
      * Creates new form CenterBox
      */
@@ -41,7 +50,18 @@ public class CenterBoxView extends javax.swing.JPanel {
     public void addCaretListener(CaretListener l) {
         jTP_text.addCaretListener(l);   //17.11.14 CHS
     }
+        
+    public void addScrollListener(AdjustmentListener l) {
+        jScrollPane1.getVerticalScrollBar().addAdjustmentListener(l); //05.12.14
+    }
     
+    public void addAutoCompleteListener(AutoCompleteManager autoCompleteManager) {
+        AutoComplete autoComplete = new AutoComplete(jTP_text, autoCompleteManager);
+        jTP_text.getDocument().addDocumentListener(autoComplete);
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+        jTP_text.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
+    }
+            
     /**
      * Fokusiert den Text des Elements
      */
@@ -58,6 +78,16 @@ public class CenterBoxView extends javax.swing.JPanel {
     public void setText(String text) {
         //30.11.14 CAR
         jTP_text.setText(text);
+    }
+    
+    public Point getCaretPosition() {
+        try {            
+            double x = jTP_text.modelToView(jTP_text.getCaretPosition()).getX() + jTP_text.getX();
+            double y = jTP_text.modelToView(jTP_text.getCaretPosition()).getY() + jTP_text.getY();
+            return new Point((int)x,(int)y);
+        } catch (BadLocationException e) {
+            return null;
+        }
     }
 
     /**

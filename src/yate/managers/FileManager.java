@@ -85,7 +85,7 @@ public class FileManager {
         currentFile = null;
     }
     
-    public void loadFile(java.io.File file) {
+    public File loadFile(java.io.File file) {
         File newFile = new File(file.getAbsolutePath());
         currentFile = newFile;
         allFiles.add(newFile);
@@ -102,12 +102,16 @@ public class FileManager {
             newFile.setValid();
         } catch (IOException e) {
         }
-    }
+        finally {
+            return newFile; //06.12.14 CHS Erstellte Datei zurückgeben
+        }
+    };
     
-    public void createFile(){
+    public File createFile(){
         File file = new File ();
         allFiles.add(file);
         currentFile = file;
+        return file;
     }
     
     

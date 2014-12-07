@@ -8,9 +8,8 @@ import javax.swing.SingleSelectionModel;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.controller.ProjectMenuController;
+import yate.project.File;
 import yate.project.Project;
-import yate.syntax.general.Language;
-import yate.syntax.java.JavaLanguage;
 import yate.view.CenterBoxView;
 import yate.view.ProjectMenuView;
 
@@ -31,7 +30,7 @@ public class MainFrameModel {
 
     private ArrayList<CenterBoxController> centerBoxes;
     private ProjectMenuController projectMenuController;
-
+    
     public MainFrameModel(DefaultComboBoxModel<String> fonts, DefaultComboBoxModel<String> fontSizes,SingleSelectionModel tabedPaneModel) {
         this.availableFontSizes = new String[]{"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36"};
         regex = false;
@@ -43,17 +42,25 @@ public class MainFrameModel {
         this.tabedPaneModel =tabedPaneModel;
 
         for (String s : getFontsAsStrings()) {
-            if(s!= null && s.trim().length()>0)
+            if(s!= null && s.trim().length()>0) {
                 this.fonts.addElement(s);
+                if (s.equals("Arial")) {
+                    //07.12.14 CHS
+                    //Wenn Arial vorhanden ist, als Standardfont nutzen
+                    //Der erste in der Liste ist Mist
+                    fonts.setSelectedItem("Arial");
+                }
+            }
         }
 
         for (String s : this.availableFontSizes) {
             this.fontSizes.addElement(s);
         }
-
+        
         this.fontSizes.setSelectedItem("12");
+        
     }
-    
+
     public int getSelectedIndex()
     {
         return tabedPaneModel.getSelectedIndex();
@@ -115,13 +122,12 @@ public class MainFrameModel {
         return ret;
     }
 
-    public CenterBoxController addCenterBox() {
+    public CenterBoxController addCenterBox(File file) {
         CenterBoxView view = new CenterBoxView();
 
         StyledDocument document = view.getStyledDocument();
-        Language language = new JavaLanguage();
         
-        CenterBoxModel model = new CenterBoxModel(document,language);
+        CenterBoxModel model = new CenterBoxModel(document,file);
 
         view.setFont(getSelectedFont(), getSelectedFontSize());
 

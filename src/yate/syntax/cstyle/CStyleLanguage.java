@@ -23,7 +23,8 @@ public abstract class CStyleLanguage extends Language {
     private final Stack<SyntaxToken> bracesStack;
 
     
-    public CStyleLanguage() {
+    public CStyleLanguage(String languageName) {
+        super(languageName);
         bracesStack = new Stack<>();
     }
 

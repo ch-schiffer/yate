@@ -21,8 +21,8 @@ import yate.syntax.general.KeyWordCollection;
 public class PythonLanguage extends CStyleLanguage{
 
     public PythonLanguage() {
-        super();
-        languageName = "Python";
+        super("Python");
+        languageSuffixList.add(".py");
     }
         @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {

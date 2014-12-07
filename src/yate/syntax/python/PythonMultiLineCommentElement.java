@@ -6,7 +6,6 @@
 package yate.syntax.python;
 
 import yate.syntax.general.elements.LanguageElement;
-import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -16,7 +15,7 @@ public class PythonMultiLineCommentElement extends LanguageElement {
     private static final String pattern = "(?s)\\\"\\\"\\\".*\\\"\\\"\\\"";
     
     public PythonMultiLineCommentElement() {
-        super(LanguageElementType.COMMENT, pattern);
+        super(pattern);
     }
 
 }

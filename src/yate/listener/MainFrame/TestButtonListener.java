@@ -17,7 +17,6 @@ public class TestButtonListener extends MainFrameListener implements ActionListe
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //View Spaß
     }
 
 }

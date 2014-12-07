@@ -9,10 +9,10 @@ package yate.syntax.general.elements;
  *
  * @author Christian
  */
-public class DoubleQuoteElement extends LanguageElement{
-    private static final String pattern = "\\\"((?!(\\\")).)*\\\"";
-    public DoubleQuoteElement() {
-        super(pattern);
+public class CaseInsensitiveKeyWordElement extends KeyWordElement {
+
+    public CaseInsensitiveKeyWordElement(String pattern) {
+        super("(?i)"+pattern);
     }
     
 }

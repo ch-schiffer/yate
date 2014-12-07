@@ -9,9 +9,10 @@ package yate.syntax.general.elements;
  *
  * @author Christian
  */
-public class DoubleQuoteElement extends LanguageElement{
-    private static final String pattern = "\\\"((?!(\\\")).)*\\\"";
-    public DoubleQuoteElement() {
+public class CStylePreProcessorElement extends LanguageElement {
+    private static final String pattern = "#.*";
+    
+    public CStylePreProcessorElement() {
         super(pattern);
     }
     

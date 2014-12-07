@@ -10,11 +10,9 @@ package yate.syntax.general.elements;
  * @author Christian
  */
 public abstract class LanguageElement {
-    private final LanguageElementType elementType;
     private final String elementPattern;
     
-    public LanguageElement(LanguageElementType type, String pattern) {
-        this.elementType = type;
+    public LanguageElement(String pattern) {
         elementPattern = pattern;
     }
 

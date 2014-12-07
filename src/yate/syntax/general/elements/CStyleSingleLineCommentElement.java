@@ -13,7 +13,7 @@ public class CStyleSingleLineCommentElement extends LanguageElement {
     private static final String pattern = "//.*";
     
     public CStyleSingleLineCommentElement() {
-        super(LanguageElementType.COMMENT, pattern);
+        super(pattern);
     }
     
 }

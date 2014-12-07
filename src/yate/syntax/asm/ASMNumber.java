@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yate.syntax.python;
+package yate.syntax.asm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
+import yate.syntax.general.elements.NumberElement;
 
 /**
  *
  * @author Christian
  */
-public class PythonComment extends KeyWordCollection {
+public class ASMNumber extends KeyWordCollection {
 
-    public PythonComment() {
-        super(LanguageElementType.COMMENT);
+    public ASMNumber() {
+        super(LanguageElementType.NUMBER);
     }
 
     @Override
@@ -26,8 +27,10 @@ public class PythonComment extends KeyWordCollection {
         return keyWords;
     }
     
+    /**
+     * Liste der Schlüsselwörter
+     */
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
-            new PythonSingleLineCommentElement(),
-            new PythonMultiLineCommentElement()
-    ));    
+            new NumberElement()
+    ));
 }

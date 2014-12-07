@@ -13,7 +13,7 @@ public class CStyleIdentifierElement extends LanguageElement{
 
     private static final String pattern = "\\b[a-zA-Z_]+[a-zA-Z0-9_]*\\b";
     public CStyleIdentifierElement() {
-        super(LanguageElementType.IDENTIFIER, pattern);
+        super(pattern);
     }
     
 }

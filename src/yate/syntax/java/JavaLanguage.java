@@ -23,12 +23,11 @@ import yate.syntax.general.KeyWordCollection;
  */
 public class JavaLanguage extends CStyleLanguage {
     
-    public final static String languageName = "Java";
-    
     /**
      * Konstruktor     */     
     public JavaLanguage() {
-        super();
+        super("Java");
+        languageSuffixList.add(".java");
     }
 
     @Override

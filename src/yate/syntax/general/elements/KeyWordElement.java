@@ -12,6 +12,6 @@ package yate.syntax.general.elements;
 public class KeyWordElement extends LanguageElement {
     
     public KeyWordElement(String pattern) {
-        super(LanguageElementType.KEYWORD, "\\b"+pattern+"\\b");
+        super("\\b"+pattern+"\\b");
     }    
 }

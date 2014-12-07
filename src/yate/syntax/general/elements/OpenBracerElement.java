@@ -12,7 +12,7 @@ package yate.syntax.general.elements;
 public class OpenBracerElement extends LanguageElement {
 
     public OpenBracerElement(String pattern) {
-        super(LanguageElementType.OPENBRACER, "\\"+pattern);
+        super("\\"+pattern);
     }
     
 }

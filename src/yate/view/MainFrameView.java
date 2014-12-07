@@ -53,7 +53,7 @@ public class MainFrameView extends javax.swing.JFrame {
 
     public void addLanguage(Language lang,LanguageChangedListener listener)
     {
-        String name = lang.languageName;
+        String name = lang.getLanguageName();
         
         javax.swing.JMenuItem JMI = new javax.swing.JMenuItem(name);
         addLanguageChangedListener(listener, JMI);

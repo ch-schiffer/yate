@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.project;
 
 import java.io.Serializable;
@@ -16,11 +16,11 @@ public class File implements Serializable{
     private String path = null;
     private String text;
     private boolean validName;
-
+    
     public boolean isValid() {
         return validName;
     }
-
+    
     public void setValid() {
         this.validName = true;
     }
@@ -33,9 +33,18 @@ public class File implements Serializable{
         this.path = path;
         validName = false;
     }
-     
+    
     public String getPath (){
         return path != null ? path : "Unbenannt";
+    }
+    
+    public String getFileName() {
+        String name = this.getPath();
+        int lastIndexOf = name.lastIndexOf("\\");
+        if (lastIndexOf == -1) {
+            return "Unbenannt";
+        }
+        return name.substring(lastIndexOf+1);
     }
     
     public void setPath (String path){
@@ -54,13 +63,13 @@ public class File implements Serializable{
     public void setContent (String content){
         this.text = content;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 3;
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -76,12 +85,12 @@ public class File implements Serializable{
         return true;
     }
     
-    //3.12.2014 Laurin 
+    //3.12.2014 Laurin
     
     /**
-     * Die Methode toString muss überschrieben werden, 
+     * Die Methode toString muss überschrieben werden,
      * damit diese in der JList gescheit angezeigt wird.
-     * 
+     *
      * @return Den Pfad der Datei.
      */
     
@@ -90,6 +99,17 @@ public class File implements Serializable{
     public String toString()
     {
         return getPath();
+    }
+    
+    
+    
+    public String getFileExtension() {
+        String name = this.getPath();
+        int lastIndexOf = name.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return "";
+        }
+        return name.substring(lastIndexOf);
     }
     
 }
