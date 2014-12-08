@@ -24,14 +24,9 @@ public class OpenFileListener extends MainFrameListener implements ActionListene
         if (openFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
             yate.project.File newFile = FileManager.getInstance().loadFile(openFile.getSelectedFile());
-
             CenterBoxController cbc = model.addCenterBox(newFile);
-            view.addCenterBoxViewToTab(cbc.getView(), newFile.getFileName(),new TabCloseListener(view, model,cbc));
-            FileManager.getInstance().loadFile(file);
-
-            CenterBoxController cbc = model.addCenterBox();
-            view.addCenterBoxViewToTab(cbc.getView(), FileManager.getInstance().getCurrentFile().getName(),new TabCloseListener(view, model,cbc));
-            cbc.getView().setText(FileManager.getInstance().getCurrentFile().getContent());
+            view.addCenterBoxViewToTab(cbc.getView(), newFile.getName(),new TabCloseListener(view, model,cbc));
+            cbc.getView().setText(newFile.getContent());
             cbc.getView().focusElement();
         }        
     }

@@ -20,7 +20,6 @@ import javax.swing.text.BadLocationException;
  *
  * @author Christian
  */
-
 public class AutoComplete implements DocumentListener {
     
     private static enum Mode {
@@ -91,10 +90,9 @@ public class AutoComplete implements DocumentListener {
         public void actionPerformed(ActionEvent ev) {
             if (mode == Mode.COMPLETION) {
                 int pos = textPane.getSelectionEnd();
-                StringBuilder sb = new StringBuilder(textPane.getText());
-                sb.insert(pos, " ");
-                textPane.setText(sb.toString());
-                textPane.setCaretPosition(pos + 1);
+                String sb = textPane.getText();
+                textPane.setText(sb);
+                textPane.setCaretPosition(pos);
                 mode = Mode.INSERT;
             } else {
                 textPane.replaceSelection("\t");
@@ -111,6 +109,7 @@ public class AutoComplete implements DocumentListener {
             this.position = position;
         }
         
+        @Override
         public void run() {
             try {
                 textPane.getDocument().insertString(position, completion, null);
