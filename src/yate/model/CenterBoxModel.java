@@ -1,6 +1,7 @@
 package yate.model;
 import javax.swing.text.StyledDocument;
 import yate.autocomplete.AutoCompleteManager;
+import yate.managers.SearchReplaceManager;
 import yate.managers.SyntaxManager;
 import yate.project.File;
 import yate.syntax.general.*;

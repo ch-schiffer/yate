@@ -1,7 +1,9 @@
 package yate.listener.CenterBox;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import yate.managers.SearchReplaceManager;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -32,6 +34,7 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
 
     @Override
     public void insertUpdate(DocumentEvent e) {
+        SwingUtilities.invokeLater(resetSearchReplaceManager);
         action();
     }
 
@@ -44,5 +47,12 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     public void changedUpdate(DocumentEvent e) {
         action();
     }
+    
+    private Runnable resetSearchReplaceManager = new Runnable() {
 
+        @Override
+        public void run() {
+            SearchReplaceManager.getInstance().reset(view.getStyledDocument());
+        }
+    };
 }

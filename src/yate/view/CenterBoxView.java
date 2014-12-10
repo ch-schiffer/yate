@@ -3,6 +3,7 @@ package yate.view;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.AdjustmentListener;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
@@ -88,6 +89,10 @@ public class CenterBoxView extends javax.swing.JPanel {
         } catch (BadLocationException e) {
             return null;
         }
+    }
+    
+    public JTextPane getTextPane(){
+        return jTP_text;
     }
 
     /**
