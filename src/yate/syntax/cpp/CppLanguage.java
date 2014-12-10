@@ -8,11 +8,13 @@ package yate.syntax.cpp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.cstyle.CStyleCloseBracer;
+import yate.syntax.cstyle.CStyleCloseIndentionBracer;
 import yate.syntax.cstyle.CStyleComment;
 import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
+import yate.syntax.cstyle.CStyleOpenIndentionBracer;
 import yate.syntax.cstyle.CStylePreProcessorDirective;
 import yate.syntax.general.KeyWordCollection;
 /**
@@ -40,6 +42,8 @@ public class CppLanguage extends CStyleLanguage {
        new CStylePreProcessorDirective(),
        new CStyleLiteral(),
        new CStyleComment(),
+       new CStyleOpenIndentionBracer(),
+       new CStyleCloseIndentionBracer(),
        new CStyleOpenBracer(),
        new CStyleCloseBracer(),
        new CPPKeyWord(),

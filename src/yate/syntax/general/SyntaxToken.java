@@ -5,8 +5,6 @@
  */
 package yate.syntax.general;
 
-import yate.autocomplete.AutoCompleteManager;
-
 /**
  * Diese Klasse enthält Informationen über ein einzelnes Token einer Sprache
  * @author Christian

@@ -5,22 +5,23 @@
  */
 package yate.syntax.cstyle;
 
-import yate.syntax.general.elements.OpenIndentionBracerElement;
-import yate.syntax.general.elements.LanguageElement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import yate.syntax.general.IOpenBracer;
+import yate.syntax.general.ICloseBracer;
+import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.CloseIndentionBracerElement;
+import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
-import yate.syntax.general.elements.OpenBracerElement;
 
 /**
  *
  * @author Christian
  */
-public class CStyleOpenBracer extends KeyWordCollection implements IOpenBracer {
-    public CStyleOpenBracer() {
-        super(LanguageElementType.OPENBRACER);
+public class CStyleCloseIndentionBracer extends KeyWordCollection implements ICloseBracer, IIndentionBracer {
+
+    public CStyleCloseIndentionBracer() {
+        super(LanguageElementType.CLOSEINDBRACER);
     }
 
     @Override
@@ -29,8 +30,7 @@ public class CStyleOpenBracer extends KeyWordCollection implements IOpenBracer {
     }
     
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
-            new OpenIndentionBracerElement("{"),
-            new OpenBracerElement("("),
-            new OpenBracerElement("[")
-            ));
+            new CloseIndentionBracerElement("}")
+            ));    
+    
 }
