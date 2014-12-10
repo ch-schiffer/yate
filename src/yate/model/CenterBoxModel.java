@@ -1,4 +1,5 @@
 package yate.model;
+import javax.swing.JTextPane;
 import javax.swing.text.StyledDocument;
 import yate.autocomplete.AutoCompleteManager;
 import yate.managers.SearchReplaceManager;
@@ -16,15 +17,20 @@ public class CenterBoxModel {
     
     private final SyntaxManager syntaxManager;
     private final AutoCompleteManager autoCompleteManager;
-    
+    private final SearchReplaceManager searchReplaceManager;
+
+    public SearchReplaceManager getSearchReplaceManager() {
+        return searchReplaceManager;
+    }
     /**
      * Konstruktor
      * @param document Dokument des Text-Elements
      * @param file Datei, die dargestellt wird
      */
-    public CenterBoxModel(StyledDocument document, File file) {
+    public CenterBoxModel(StyledDocument document, File file, JTextPane textPane) {
         autoCompleteManager = new AutoCompleteManager();
         syntaxManager = new SyntaxManager(document,file,autoCompleteManager);
+        searchReplaceManager = new SearchReplaceManager(textPane, document);
     }
     
     /**

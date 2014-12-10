@@ -3,6 +3,7 @@ package yate.listener.MainFrame.regex;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.text.Document;
+import yate.controller.CenterBoxController;
 import yate.listener.MainFrame.MainFrameListener;
 import yate.managers.SearchReplaceManager;
 import yate.model.MainFrameModel;
@@ -25,10 +26,10 @@ public class ReplaceListener extends MainFrameListener implements ActionListener
             int selectedIndex = view.getSelectedTabIndex();
             //Prüfen on der Index gültig ist.
             if(selectedIndex >=0 && selectedIndex<model.getCenterBoxes().size()) {
-                Document doc = model.getCenterBoxes().get(selectedIndex).getView().getStyledDocument();
+                CenterBoxController cbc = model.getCenterBoxes().get(selectedIndex);
                 String keyword = view.getSearchText();
                 String replaceWith = view.getReplaceText();
-                SearchReplaceManager.getInstance().replace(keyword, replaceWith, doc);
+                cbc.getModel().getSearchReplaceManager().replace(keyword, replaceWith);
             }
             
         }catch (Exception ex) {

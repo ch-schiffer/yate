@@ -13,8 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
-import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -37,29 +35,21 @@ public class SearchReplaceManager {
     private String actualKeyword;
     private int index;
     private final ArrayList<Integer> positions = new ArrayList();
+    private final JTextPane textPane;
+    private final StyledDocument doc;
     
-    //Private Instanz der Klasse selbst
-    private static SearchReplaceManager srmanager;
-    
-    private SearchReplaceManager(){
-        
+    public SearchReplaceManager(JTextPane textPane, StyledDocument doc){
+        this.textPane = textPane;
+        this.doc = doc;
     }
     
-    public static SearchReplaceManager getInstance() {
-        //Instanziieren, wenn interne Instanz noch NULL ist
-        if (srmanager == null){
-            srmanager = new SearchReplaceManager();
-        }
-        return srmanager;
-    }
-    
-    public void search(String keyword, StyledDocument text, JTextPane textPane, boolean findNext) {
+    public void search(String keyword, boolean findNext) {
         try {
             // übergebenes Keyword ist immer noch das gleiche nachdem vorher auch schon gesucht wurde
             // dann ist der Text schon markiert, der Cursor muss einfach aanders gesetzt werden
             if (keyword.equals(actualKeyword)){                
                 // Vorwärtssuche
-                setBackgroundColor(Color.yellow, positions.get(index), positions.get(index)+keyword.length(), text);
+                setBackgroundColor(Color.yellow, positions.get(index), positions.get(index)+keyword.length());
                 if (findNext){             
                     index = (index + 1 < positions.size() ? index + 1 : 0);
                 } else {
@@ -67,7 +57,7 @@ public class SearchReplaceManager {
                     
                     index = (index - 1 >= 0 ? index - 1 : positions.size()-1);
                 }
-                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length(), text);
+                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length());
                 textPane.setCaretPosition(positions.get(index));
                 textPane.moveCaretPosition(positions.get(index));
                 // nach dem übergebenen Keyword wird zum ersten Mal gesucht
@@ -77,14 +67,14 @@ public class SearchReplaceManager {
                 index = ( findNext ? 0 : positions.size() - 1);
                 actualKeyword = keyword;
                 
-                String toSearch = text.getText(0, text.getLength());
+                String toSearch = doc.getText(0, doc.getLength());
                 Matcher matcher = Pattern.compile(keyword).matcher(toSearch);
                 
                 while (matcher.find()) {
-                    setBackgroundColor(Color.yellow, matcher.start(), matcher.end(), text);
+                    setBackgroundColor(Color.yellow, matcher.start(), matcher.end());
                     positions.add(matcher.start());
                 }
-                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length(), text);
+                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length());
                 textPane.setCaretPosition(positions.get(index));
                 textPane.moveCaretPosition(positions.get(index));
             }
@@ -93,18 +83,18 @@ public class SearchReplaceManager {
         }
     }
     
-    private void setBackgroundColor(Color c, int start, int end, StyledDocument doc){
+    private void setBackgroundColor(Color c, int start, int end){
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setBackground(sas, c);
         doc.setCharacterAttributes(start, end-start, sas, false);
     }
     
-    public void replace(String keyword, String replaceWith, Document text){
+    public void replace(String keyword, String replaceWith){
         try {
             if (actualKeyword == null) {
-                search(keyword, text,)
+             //   search(keyword, text,)
             }
-            String toReplace = text.getText(0, text.getLength());
+            String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
             if (matcher.find()){
@@ -112,17 +102,17 @@ public class SearchReplaceManager {
             }
             matcher.appendTail(sb);
             System.out.println(sb);
-            text.remove(0, text.getLength());
-            text.insertString(0, sb.toString(), null);
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, sb.toString(), null);
             
         } catch (BadLocationException ex) {
         }
     }
     
-    public void replaceAll(String keyword, String replaceWith, Document text){
+    public void replaceAll(String keyword, String replaceWith){
         
         try {
-            String toReplace = text.getText(0, text.getLength());
+            String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
             while (matcher.find()){
@@ -130,15 +120,15 @@ public class SearchReplaceManager {
             }
             matcher.appendTail(sb);
             System.out.println(sb);
-            text.remove(0, text.getLength());
-            text.insertString(0, sb.toString(), null);
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, sb.toString(), null);
         } catch (BadLocationException ex) {
         }        
     }
     
-    public void reset(StyledDocument doc) {
+    public void reset() {
         for (Integer position : positions) {
-            setBackgroundColor(Color.white, 0, doc.getLength(), doc);
+            setBackgroundColor(Color.white, 0, doc.getLength());
         }
         actualKeyword=null;
         positions.clear();

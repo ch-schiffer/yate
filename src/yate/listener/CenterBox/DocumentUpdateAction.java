@@ -52,7 +52,7 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
 
         @Override
         public void run() {
-            SearchReplaceManager.getInstance().reset(view.getStyledDocument());
+            model.getSearchReplaceManager().reset();
         }
     };
 }

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextPane;
 import javax.swing.SingleSelectionModel;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
@@ -127,7 +128,7 @@ public class MainFrameModel {
 
         StyledDocument document = view.getStyledDocument();
         
-        CenterBoxModel model = new CenterBoxModel(document,file);
+        CenterBoxModel model = new CenterBoxModel(document,file,view.getTextPane());
 
         view.setFont(getSelectedFont(), getSelectedFontSize());
 
