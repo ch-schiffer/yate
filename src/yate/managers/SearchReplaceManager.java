@@ -5,8 +5,11 @@
  */
 package yate.managers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 /**
@@ -48,15 +51,21 @@ public class SearchReplaceManager {
     
     }
     
-    public Document replaceAll(String keyword, String replaceWith, Document text){
-        String toReplace = text.toString();
-        Matcher matcher = Pattern.compile(keyword).matcher(text.toString());
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()){
-            matcher.appendReplacement(sb, replaceWith);
+    public void replaceAll(String keyword, String replaceWith, Document text){
+        
+        try {
+            String toReplace = text.getText(0, text.getLength());
+            Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
+            StringBuffer sb = new StringBuffer();
+            while (matcher.find()){
+                matcher.appendReplacement(sb, replaceWith);
+            }
+            matcher.appendTail(sb);
+            System.out.println(sb);
+            text.remove(0, text.getLength());
+            text.insertString(0, sb.toString(), null);
+        } catch (BadLocationException ex) {
         }
-        matcher.appendTail(sb);
-        System.out.println(sb);
-        return text;
+        
     }
 }

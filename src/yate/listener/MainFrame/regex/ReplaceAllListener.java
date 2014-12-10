@@ -2,6 +2,7 @@ package yate.listener.MainFrame.regex;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.text.Document;
 import yate.listener.MainFrame.MainFrameListener;
 import yate.managers.SearchReplaceManager;
 import yate.model.MainFrameModel;
@@ -20,7 +21,16 @@ public class ReplaceAllListener extends MainFrameListener implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            SearchReplaceManager.getInstance().replaceAll(null, null, null);
+            //Index des ausgewählten tabs.
+        int selectedIndex = view.getSelectedTabIndex();
+        //Prüfen on der Index gültig ist.
+        if(selectedIndex >=0 && selectedIndex<model.getCenterBoxes().size()) {
+            Document doc = model.getCenterBoxes().get(selectedIndex).getView().getStyledDocument();
+            String keyword = view.getSearchText();
+            String replaceWith = view.getReplaceText();
+            SearchReplaceManager.getInstance().replaceAll(keyword, replaceWith, doc);
+        }
+            
         }catch (Exception ex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

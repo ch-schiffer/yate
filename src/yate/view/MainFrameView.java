@@ -50,7 +50,20 @@ public class MainFrameView extends javax.swing.JFrame {
     {
         return jTP_tabed.getSelectedIndex();
     }
+    
+    // Schnittstelle CAR 7.12.14
+    public String getSearchText () {
+        return jTF_search.getText();
+    }
 
+    public String getReplaceText () {
+        return jTF_replace.getText();
+    }
+    
+    public boolean isRegex() {
+        return jbCB_regex.isEnabled();
+    }
+    
     public void addLanguage(Language lang,LanguageChangedListener listener)
     {
         String name = lang.getLanguageName();

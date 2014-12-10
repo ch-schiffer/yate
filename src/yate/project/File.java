@@ -16,6 +16,7 @@ public class File implements Serializable{
     private String path = null;
     private String text;
     private boolean validName;
+    private java.io.File internalFile;
     
     public boolean isValid() {
         return validName;
@@ -38,22 +39,14 @@ public class File implements Serializable{
         return path != null ? path : "Unbenannt";
     }
     
-    public String getFileName() {
-        String name = this.getPath();
-        int lastIndexOf = name.lastIndexOf("\\");
-        if (lastIndexOf == -1) {
-            return "Unbenannt";
-        }
-        return name.substring(lastIndexOf+1);
-    }
     
     public void setPath (String path){
         this.path = path;
     }
     
     public String getName () {
-        java.io.File newFile = new java.io.File(this.path);
-        return newFile.getName();    
+        internalFile = internalFile != null ? internalFile : new java.io.File(this.getPath());
+        return internalFile != null ? internalFile.getName() : "Unbekannt";    
     }
     
     public String getContent (){
