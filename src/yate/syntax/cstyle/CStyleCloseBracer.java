@@ -5,6 +5,7 @@
  */
 package yate.syntax.cstyle;
 
+import yate.syntax.general.elements.CloseIndentionBracerElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.ICloseBracer;
@@ -30,7 +31,6 @@ public class CStyleCloseBracer extends KeyWordCollection implements ICloseBracer
     
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
             new CloseBracerElement(")"),
-            new CloseBracerElement("}"),
             new CloseBracerElement("]")
             ));    
 }

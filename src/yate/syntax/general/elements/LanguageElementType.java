@@ -14,6 +14,8 @@ public enum LanguageElementType {
     KEYWORD("Schlüsselwort"),
     OPENBRACER("Klammer"),
     CLOSEBRACER("Klammer"),
+    OPENINDBRACER("Klammer"),
+    CLOSEINDBRACER("Klammer"),
     COMMENT("Kommentar"),
     DATATYPE("Datentyp"),
     IDENTIFIER("Bezeichner"),

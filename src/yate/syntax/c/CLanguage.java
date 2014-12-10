@@ -8,11 +8,13 @@ package yate.syntax.c;
 import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.cstyle.CStyleCloseBracer;
+import yate.syntax.cstyle.CStyleCloseIndentionBracer;
 import yate.syntax.cstyle.CStyleComment;
 import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
+import yate.syntax.cstyle.CStyleOpenIndentionBracer;
 import yate.syntax.general.KeyWordCollection;
 
 /**
@@ -38,6 +40,8 @@ public class CLanguage extends CStyleLanguage {
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
             new CStyleLiteral(),
             new CStyleComment(),
+            new CStyleOpenIndentionBracer(),
+            new CStyleCloseIndentionBracer(),
             new CStyleOpenBracer(),
             new CStyleCloseBracer(),
             new CKeyWord(),
