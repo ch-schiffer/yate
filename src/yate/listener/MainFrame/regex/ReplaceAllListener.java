@@ -2,11 +2,8 @@ package yate.listener.MainFrame.regex;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.text.Document;
-import javax.swing.text.StyledDocument;
-import yate.controller.CenterBoxController;
 import yate.listener.MainFrame.MainFrameListener;
-import yate.managers.SearchReplaceManager;
+import yate.model.CenterBoxModel;
 import yate.model.MainFrameModel;
 import yate.view.MainFrameView;
 
@@ -23,14 +20,11 @@ public class ReplaceAllListener extends MainFrameListener implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            //Index des ausgewählten tabs.
-            int selectedIndex = view.getSelectedTabIndex();
-            //Prüfen on der Index gültig ist.
-            if(selectedIndex >=0 && selectedIndex<model.getCenterBoxes().size()) {
-                CenterBoxController cbc = model.getCenterBoxes().get(selectedIndex);
+            CenterBoxModel cbc = model.getCurrentCenterBox();
+            if (cbc != null) {
                 String keyword = view.getSearchText();
                 String replaceWith = view.getReplaceText();
-                cbc.getModel().getSearchReplaceManager().replaceAll(keyword, replaceWith);
+                cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
             }
             
         }catch (Exception ex) {

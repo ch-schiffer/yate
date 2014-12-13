@@ -6,8 +6,11 @@
 package yate.managers;
 
 import java.awt.Color;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -18,6 +21,7 @@ import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.project.File;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.general.ICloseBracer;
+import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
@@ -41,14 +45,21 @@ public class SyntaxManager {
      * So kann in konstanter Zeit abgefragt werden, welchem Tokentyp ein Element
      * angehört.
      */
-    private final NavigableMap<Integer,SyntaxToken> syntaxMap = new TreeMap<>();
+    private final NavigableMap<Integer,SyntaxToken> syntaxMap = new TreeMap<>();    
+    private int currentCaretPosition = 0;    
+    private SyntaxToken currentHighlightedBracer = null;    
+    private final AutoCompleteManager autoCompleteManager;    
     
-    private int currentCaretPosition = 0;
-    
-    private SyntaxToken currentHighlightedBracer = null;
-    
-    private final AutoCompleteManager autoCompleteManager;
-    
+    private int visibleIndexStart = 0;
+    private int visibleIndexEnd = 0;
+
+    public void setVisibleIndexStart(int visibleIndexStart) {
+        this.visibleIndexStart = visibleIndexStart;
+    }
+
+    public void setVisibleIndexEnd(int visibleIndexEnd) {
+        this.visibleIndexEnd = visibleIndexEnd;
+    }
     
     public SyntaxManager(StyledDocument document, File file, AutoCompleteManager autoCompleteManager) {
         this.document = document;
@@ -81,6 +92,28 @@ public class SyntaxManager {
     
     public void reHighlightSyntax() {
         SwingUtilities.invokeLater(runReHighlightSyntax);
+    }
+    
+    private int indentCounter = 0;
+    private
+    
+    public void indentCode() {
+        TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
+        Pattern linePattern = Pattern.compile(".*(\\n|$)");
+        Matcher matcher = linePattern.matcher(getDocumentText());
+        int currentLine = 0;
+        while(matcher.find()) {
+            positionLineMap.put(matcher.start(), currentLine);
+            positionLineMap.put(matcher.end(), currentLine++);
+        }    
+    }
+    
+    private void indentBlock(SyntaxToken openBracerToken) {
+        if (!(openBracerToken instanceof IIndentionBracer) || !(openBracerToken instanceof IOpenBracer)) return;
+        if (openBracerToken.getPair() == null) return;
+        SyntaxToken closeBracerToken = openBracerToken.getPair();
+        int startIndex = openBracerToken.getStart();
+        int endIndex = closeBracerToken.getStart();
     }
     
     private final Runnable runHighlightSyntax = new Runnable() {
@@ -166,10 +199,7 @@ public class SyntaxManager {
         setBackgroundColor(color, token.getPair().getStart(), token.getPair().getLength());
     }
     
-    static int i = 0;
-    
     public void setForegroundColor(Color c, int start, int length) {
-        if (start < currentCaretPosition-1000 || start+length > currentCaretPosition+1000) return;
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
@@ -182,9 +212,13 @@ public class SyntaxManager {
     }
     
     private void setSyntaxColors() {
-        //Standardfarbe einstellen (Schwarz auf weiß)
-        //clearColors();
-        for (SyntaxToken token : syntaxMap.values()) {
+        for (SyntaxToken token : syntaxMap.subMap(visibleIndexStart,true, visibleIndexEnd,true).values()) {
+            setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().toString()), token.getStart(), token.getLength());
+        }
+        //Um nicht vollständig dargestellte Tokens zu färben (z.B. mehrzeilige Kommentare) werden diese extra behandelt
+        Entry<Integer,SyntaxToken> headToken = syntaxMap.floorEntry(visibleIndexStart);
+        if (headToken != null) {
+            SyntaxToken token = headToken.getValue();
             setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().toString()), token.getStart(), token.getLength());
         }
     }

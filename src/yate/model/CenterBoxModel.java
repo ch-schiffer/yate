@@ -18,10 +18,19 @@ public class CenterBoxModel {
     private final SyntaxManager syntaxManager;
     private final AutoCompleteManager autoCompleteManager;
     private final SearchReplaceManager searchReplaceManager;
+    
+    public void setVisibleIndexStart(int visibleIndexStart) {
+        syntaxManager.setVisibleIndexStart(visibleIndexStart);
+    }
+
+    public void setVisibleIndexEnd(int visibleIndexEnd) {
+        syntaxManager.setVisibleIndexEnd(visibleIndexEnd);
+    }
 
     public SearchReplaceManager getSearchReplaceManager() {
         return searchReplaceManager;
     }
+    
     /**
      * Konstruktor
      * @param document Dokument des Text-Elements
@@ -58,6 +67,10 @@ public class CenterBoxModel {
         syntaxManager.reHighlightSyntax();
     }
     
+    public void indentCode() {
+        syntaxManager.indentCode();
+    }
+    
     /**
      * Getter für die Sprache
      * @return Sprache
@@ -81,7 +94,6 @@ public class CenterBoxModel {
      */
     public AutoCompleteManager getAutoCompleteManager() {
         return autoCompleteManager;
-    }
-    
+    }   
     
 }
