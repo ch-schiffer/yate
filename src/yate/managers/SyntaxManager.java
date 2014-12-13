@@ -6,9 +6,13 @@
 package yate.managers;
 
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
@@ -45,18 +49,18 @@ public class SyntaxManager {
      * So kann in konstanter Zeit abgefragt werden, welchem Tokentyp ein Element
      * angehört.
      */
-    private final NavigableMap<Integer,SyntaxToken> syntaxMap = new TreeMap<>();    
-    private int currentCaretPosition = 0;    
-    private SyntaxToken currentHighlightedBracer = null;    
-    private final AutoCompleteManager autoCompleteManager;    
+    private final NavigableMap<Integer,SyntaxToken> syntaxMap = new TreeMap<>();
+    private int currentCaretPosition = 0;
+    private SyntaxToken currentHighlightedBracer = null;
+    private final AutoCompleteManager autoCompleteManager;
     
     private int visibleIndexStart = 0;
     private int visibleIndexEnd = 0;
-
+    
     public void setVisibleIndexStart(int visibleIndexStart) {
         this.visibleIndexStart = visibleIndexStart;
     }
-
+    
     public void setVisibleIndexEnd(int visibleIndexEnd) {
         this.visibleIndexEnd = visibleIndexEnd;
     }
@@ -94,10 +98,11 @@ public class SyntaxManager {
         SwingUtilities.invokeLater(runReHighlightSyntax);
     }
     
-    private int indentCounter = 0;
-    private
+    int insertedCount = 0;
+
     
     public void indentCode() {
+        TreeMap<Integer,Integer> tabPositions = new TreeMap<>();
         TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
         Pattern linePattern = Pattern.compile(".*(\\n|$)");
         Matcher matcher = linePattern.matcher(getDocumentText());
@@ -105,16 +110,48 @@ public class SyntaxManager {
         while(matcher.find()) {
             positionLineMap.put(matcher.start(), currentLine);
             positionLineMap.put(matcher.end(), currentLine++);
-        }    
+        }
+        for (SyntaxToken token : syntaxMap.values()) {
+            if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer)
+            {
+                if (token.getPair() == null) continue;
+                SyntaxToken closeBracerToken = token.getPair();
+                int startIndex = token.getStart();
+                int endIndex = closeBracerToken.getStart();
+                int startLine = positionLineMap.floorEntry(startIndex).getValue();
+                int endLine = positionLineMap.floorEntry(endIndex).getValue();
+                SortedMap<Integer, SyntaxToken> block = syntaxMap.subMap(startIndex, endIndex);
+                for (Integer pos : block.keySet()) {
+                    int posLine = positionLineMap.floorEntry(pos).getValue();
+                    if (posLine > startLine && posLine < endLine) {
+                        if (tabPositions.containsKey(pos)) {
+                            tabPositions.put(pos, tabPositions.get(pos)+1);
+                        }
+                        else {
+                            tabPositions.put(pos, 1);
+                        }
+                    }
+                }
+            }
+        }
+        
+        for (int pos : tabPositions.keySet()) {
+            insertTab(pos, tabPositions.get(pos));
+        }        
     }
     
-    private void indentBlock(SyntaxToken openBracerToken) {
-        if (!(openBracerToken instanceof IIndentionBracer) || !(openBracerToken instanceof IOpenBracer)) return;
-        if (openBracerToken.getPair() == null) return;
-        SyntaxToken closeBracerToken = openBracerToken.getPair();
-        int startIndex = openBracerToken.getStart();
-        int endIndex = closeBracerToken.getStart();
+    private void insertTab(int position, int count) {
+        try {
+            for (int i=0; i<count; i++) {
+                document.insertString(position+insertedCount, "\t", null);
+                insertedCount++;
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(SyntaxManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
+    
     
     private final Runnable runHighlightSyntax = new Runnable() {
         @Override
