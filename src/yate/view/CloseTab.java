@@ -18,6 +18,10 @@ public class CloseTab extends javax.swing.JPanel {
         jL_titel.setText(titel);
         jB_close.addActionListener(l);
     }
+    
+        public void setTitle (String title) {
+        jL_titel.setText(title);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

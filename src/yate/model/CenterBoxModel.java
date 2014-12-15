@@ -1,5 +1,6 @@
 package yate.model;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import yate.autocomplete.AutoCompleteManager;
 import yate.managers.SearchReplaceManager;
@@ -18,6 +19,7 @@ public class CenterBoxModel {
     private final SyntaxManager syntaxManager;
     private final AutoCompleteManager autoCompleteManager;
     private final SearchReplaceManager searchReplaceManager;
+    private final StyledDocument document;
     
     public void setVisibleIndexStart(int visibleIndexStart) {
         syntaxManager.setVisibleIndexStart(visibleIndexStart);
@@ -31,6 +33,14 @@ public class CenterBoxModel {
         return searchReplaceManager;
     }
     
+    public String getText(){
+        try {
+            return document.getText(0, document.getLength());
+        } catch (BadLocationException ex) {
+            return null;
+        }
+    }
+    
     /**
      * Konstruktor
      * @param document Dokument des Text-Elements
@@ -40,6 +50,7 @@ public class CenterBoxModel {
         autoCompleteManager = new AutoCompleteManager();
         syntaxManager = new SyntaxManager(document,file,autoCompleteManager);
         searchReplaceManager = new SearchReplaceManager(textPane, document);
+        this.document = document;
     }
     
     /**

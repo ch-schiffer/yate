@@ -19,17 +19,13 @@ public class ReplaceListener extends MainFrameListener implements ActionListener
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            CenterBoxModel cbc = model.getCurrentCenterBox();
-            if (cbc != null) {
-                String keyword = view.getSearchText();
-                String replaceWith = view.getReplaceText();
-                cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
-            }
-            
-        }catch (Exception ex) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CenterBoxModel cbc = model.getCurrentCenterBox();
+        if (cbc != null) {
+            String keyword = view.getSearchText();
+            String replaceWith = view.getReplaceText();
+            cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
         }
+        
     }
     
 }

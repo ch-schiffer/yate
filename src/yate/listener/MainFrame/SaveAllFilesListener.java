@@ -2,6 +2,7 @@ package yate.listener.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import yate.managers.FileManager;
 import yate.model.MainFrameModel;
 import yate.view.MainFrameView;
 
@@ -17,7 +18,7 @@ public class SaveAllFilesListener extends MainFrameListener implements ActionLis
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FileManager.getInstance().saveAllFiles();
     }
 
 }

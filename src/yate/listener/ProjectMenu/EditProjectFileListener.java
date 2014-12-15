@@ -8,12 +8,13 @@ package yate.listener.ProjectMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import yate.managers.ProjectManager;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
 
 /**
  *
- * @author Laurin
+ * @author Carina
  */
 public class EditProjectFileListener extends ProjectMenuListener implements ActionListener {
 
@@ -27,7 +28,11 @@ public class EditProjectFileListener extends ProjectMenuListener implements Acti
                 "Projekt bearbeiten",
                 JOptionPane.PLAIN_MESSAGE);
 
-        //Hiew die Logik für das bearbeiten des Projektnamens. Achtung eingabe kann null oder leer sein !!!
+         if (eingabe != null && !eingabe.equals("")) {
+            ProjectManager.getInstance().getCurrentProject().setName(eingabe);
+            model.setProject(ProjectManager.getInstance().getCurrentProject());
+            view.setProjectName(ProjectManager.getInstance().getCurrentProject().getName());
+        }
     }
 
 }

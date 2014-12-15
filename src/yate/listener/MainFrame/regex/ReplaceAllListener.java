@@ -9,7 +9,7 @@ import yate.view.MainFrameView;
 
 /**
  *
- * @author Laurin
+ * @author Carina
  */
 public class ReplaceAllListener extends MainFrameListener implements ActionListener {
     
@@ -19,17 +19,13 @@ public class ReplaceAllListener extends MainFrameListener implements ActionListe
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            CenterBoxModel cbc = model.getCurrentCenterBox();
-            if (cbc != null) {
-                String keyword = view.getSearchText();
-                String replaceWith = view.getReplaceText();
-                cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
-            }
-            
-        }catch (Exception ex) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+        CenterBoxModel cbc = model.getCurrentCenterBox();
+        if (cbc != null) {
+            String keyword = view.getSearchText();
+            String replaceWith = view.getReplaceText();
+            cbc.getSearchReplaceManager().setRegex(model.isRegex());
+            cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
+        }       
     }
     
 }

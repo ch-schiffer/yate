@@ -2,7 +2,6 @@ package yate.listener.MainFrame.regex;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextPane;
 import javax.swing.text.StyledDocument;
 import yate.controller.CenterBoxController;
 import yate.listener.MainFrame.MainFrameListener;
@@ -11,7 +10,7 @@ import yate.view.MainFrameView;
 
 /**
  *
- * @author Laurin
+ * @author Carina
  */
 public class FindNextListener extends MainFrameListener implements ActionListener {
     
@@ -21,7 +20,6 @@ public class FindNextListener extends MainFrameListener implements ActionListene
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
             //Index des ausgewählten tabs.
             int selectedIndex = view.getSelectedTabIndex();
             //Prüfen on der Index gültig ist.
@@ -29,12 +27,9 @@ public class FindNextListener extends MainFrameListener implements ActionListene
                 CenterBoxController cbc = model.getCenterBoxes().get(selectedIndex);
                 StyledDocument doc = cbc.getView().getStyledDocument();
                 String keyword = view.getSearchText();
+                cbc.getModel().getSearchReplaceManager().setRegex(model.isRegex());
                 cbc.getModel().getSearchReplaceManager().search(keyword, true);
-            }
-            
-        }catch (Exception ex) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+            }          
     }
 }
  

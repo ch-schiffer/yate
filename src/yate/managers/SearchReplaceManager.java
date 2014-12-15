@@ -7,6 +7,7 @@ package yate.managers;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -16,10 +17,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import yate.misc.Pair;
 
 /**
  *
- * @auctor Christian
+ * @auctor Carina
  *
  * Locus communis Gryffindorensis illo vespere
  * strepitu resonabat. Harrius et Ronaldus et Hermione
@@ -34,7 +36,7 @@ public class SearchReplaceManager {
     private boolean regex;
     private String actualKeyword;
     private int index;
-    private final ArrayList<Integer> positions = new ArrayList();
+    private final ArrayList<Pair> positions = new ArrayList();
     private final JTextPane textPane;
     private final StyledDocument doc;
     
@@ -43,40 +45,55 @@ public class SearchReplaceManager {
         this.doc = doc;
     }
     
+    public void setRegex(boolean regex) {
+        if (regex != this.regex) {
+            this.regex = regex;
+            reset();
+        }
+    }
+ 
     public void search(String keyword, boolean findNext) {
         try {
             // übergebenes Keyword ist immer noch das gleiche nachdem vorher auch schon gesucht wurde
             // dann ist der Text schon markiert, der Cursor muss einfach aanders gesetzt werden
-            if (keyword.equals(actualKeyword)){                
+            if (keyword.equals(actualKeyword)){
                 // Vorwärtssuche
-                setBackgroundColor(Color.yellow, positions.get(index), positions.get(index)+keyword.length());
-                if (findNext){             
+                if (positions.size() > 0){
+                    setBackgroundColor(Color.yellow, positions.get(index).getFirst(), positions.get(index).getSecond());
+                }
+                if (findNext){
                     index = (index + 1 < positions.size() ? index + 1 : 0);
                 } else {
                     // Rückwärtssuche
                     
                     index = (index - 1 >= 0 ? index - 1 : positions.size()-1);
                 }
-                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length());
-                textPane.setCaretPosition(positions.get(index));
-                textPane.moveCaretPosition(positions.get(index));
+                if (positions.size() > 0){
+                    setBackgroundColor(Color.green, positions.get(index).getFirst(), positions.get(index).getSecond());
+                    textPane.setCaretPosition(positions.get(index).getFirst());
+                    textPane.moveCaretPosition(positions.get(index).getFirst());
+                }
                 // nach dem übergebenen Keyword wird zum ersten Mal gesucht
                 // Document muss farbig markiert werden, Liste der Keywords muss gesetzt werden
             }else {
+                reset();
                 positions.clear();
                 index = ( findNext ? 0 : positions.size() - 1);
                 actualKeyword = keyword;
                 
                 String toSearch = doc.getText(0, doc.getLength());
-                Matcher matcher = Pattern.compile(keyword).matcher(toSearch);
+                //Matcher matcher = Pattern.compile(keyword).matcher(toSearch);
+                Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toSearch);
                 
                 while (matcher.find()) {
                     setBackgroundColor(Color.yellow, matcher.start(), matcher.end());
-                    positions.add(matcher.start());
+                    positions.add(new Pair(matcher.start(), matcher.end()));
                 }
-                setBackgroundColor(Color.green, positions.get(index), positions.get(index)+keyword.length());
-                textPane.setCaretPosition(positions.get(index));
-                textPane.moveCaretPosition(positions.get(index));
+                if (positions.size() > 0){
+                    setBackgroundColor(Color.green, positions.get(index).getFirst(), positions.get(index).getSecond());
+                    textPane.setCaretPosition(positions.get(index).getFirst());
+                    textPane.moveCaretPosition(positions.get(index).getSecond());
+                }
             }
         } catch (BadLocationException ex) {
             Logger.getLogger(SearchReplaceManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,16 +109,15 @@ public class SearchReplaceManager {
     public void replace(String keyword, String replaceWith){
         try {
             if (actualKeyword == null) {
-             //   search(keyword, text,)
+                //   search(keyword, text,)
             }
             String toReplace = doc.getText(0, doc.getLength());
-            Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
+            Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
             if (matcher.find()){
                 matcher.appendReplacement(sb, replaceWith);
             }
             matcher.appendTail(sb);
-            System.out.println(sb);
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
             
@@ -109,25 +125,35 @@ public class SearchReplaceManager {
         }
     }
     
+    private String escapeRegex(String toReplace, String keyword){
+        
+        Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
+        StringBuffer sb = new StringBuffer();
+        if (matcher.find()){
+            matcher.appendReplacement(sb, "\\"+keyword);
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+    
     public void replaceAll(String keyword, String replaceWith){
         
         try {
             String toReplace = doc.getText(0, doc.getLength());
-            Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
+            Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
             while (matcher.find()){
                 matcher.appendReplacement(sb, replaceWith);
             }
-            matcher.appendTail(sb);
-            System.out.println(sb);
+            matcher.appendTail(sb);   
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
         } catch (BadLocationException ex) {
-        }        
+        }
     }
     
     public void reset() {
-        for (Integer position : positions) {
+        for (Pair position : positions) {
             setBackgroundColor(Color.white, 0, doc.getLength());
         }
         actualKeyword=null;

@@ -2,6 +2,7 @@ package yate.listener.ProjectMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import yate.managers.ProjectManager;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;
 
@@ -17,7 +18,7 @@ public class SaveProjectListener extends ProjectMenuListener implements ActionLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ProjectManager.getInstance().saveProject();
     }
     
 }

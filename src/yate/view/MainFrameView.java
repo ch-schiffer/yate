@@ -1,5 +1,6 @@
 package yate.view;
 
+import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SingleSelectionModel;
 import yate.listener.MainFrame.FontChangedListener;
@@ -44,6 +45,10 @@ public class MainFrameView extends javax.swing.JFrame {
     public void removeTab(java.awt.Component c)
     {
         jTP_tabed.remove(c);
+    }
+    
+    public void setCurrentTabTitle(String title) {
+       ((CloseTab) jTP_tabed.getTabComponentAt(getSelectedTabIndex())).setTitle(title);
     }
     
     public int getSelectedTabIndex()
@@ -139,6 +144,11 @@ public class MainFrameView extends javax.swing.JFrame {
 
     public void addReplaceListener(ReplaceListener l) {
         jB_replace.addActionListener(l);
+    }
+    
+        //13.12.14 CAR
+    public void addRegexChangedListener(ActionListener l) {
+        jbCB_regex.addActionListener(l);
     }
 
     /**
