@@ -1,24 +1,20 @@
 package yate.view;
 
 import java.awt.Font;
-import java.awt.Point;
-import java.awt.event.AdjustmentListener;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
-import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.TabSet;
+import javax.swing.text.TabStop;
 import yate.autocomplete.AutoComplete;
 import yate.autocomplete.AutoComplete.CommitAction;
 import yate.autocomplete.AutoCompleteManager;
 import yate.listener.CenterBox.DocumentUpdateAction;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Laurin
@@ -35,6 +31,18 @@ public class CenterBoxView extends javax.swing.JPanel {
         TextLineNumberComponent tln = new TextLineNumberComponent(jTP_text);
         tln.setUpdateFont(true);
         jScrollPane1.setRowHeaderView(tln);
+        
+        TabStop[] tabs = new TabStop[100];
+        for (int i =0; i<tabs.length;i++)
+            tabs[i] = new TabStop(30+30*i, TabStop.ALIGN_LEFT, TabStop.LEAD_NONE);
+        
+        TabSet tabset = new TabSet(tabs);
+
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
+        StyleConstants.TabSet, tabset);
+        jTP_text.setParagraphAttributes(aset, false);
+        
     }
 
     public StyledDocument getStyledDocument() {
@@ -106,9 +114,4 @@ public class CenterBoxView extends javax.swing.JPanel {
     private javax.swing.JTextPane jTP_text;
     // End of variables declaration//GEN-END:variables
 
-
-    /* @Override
-     public JComponent getComponent(String Name) {
-     return components.get(Name);
-     }*/
 }

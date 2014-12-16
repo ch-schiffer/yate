@@ -10,6 +10,7 @@ import yate.listener.MainFrame.NewFileListener;
 import yate.listener.MainFrame.OpenFileListener;
 import yate.listener.MainFrame.SaveAllFilesListener;
 import yate.listener.MainFrame.SaveFileListener;
+import yate.listener.MainFrame.TabChangedListener;
 import yate.listener.MainFrame.TabCloseListener;
 import yate.listener.MainFrame.TestButtonListener;
 import yate.listener.MainFrame.regex.FindNextListener;
@@ -128,6 +129,10 @@ public class MainFrameView extends javax.swing.JFrame {
     {
         item.addActionListener(l);
     }
+    public void addTabChangedListener(TabChangedListener l) {
+        jTP_tabed.addChangeListener(l);
+    }
+    
 
     //RegexListener
     public void addFindNextListener(FindNextListener l) {
