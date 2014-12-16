@@ -3,6 +3,7 @@ package yate.view;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SingleSelectionModel;
+import yate.listener.MainFrame.ColorChangedListener;
 import yate.listener.MainFrame.FontChangedListener;
 import yate.listener.MainFrame.FontSizeChangedListener;
 import yate.listener.MainFrame.LanguageChangedListener;
@@ -129,11 +130,15 @@ public class MainFrameView extends javax.swing.JFrame {
     {
         item.addActionListener(l);
     }
+    
     public void addTabChangedListener(TabChangedListener l) {
         jTP_tabed.addChangeListener(l);
     }
     
-
+     public void addColorChangedListener(ColorChangedListener l) {
+        jMI_editColors.addActionListener(l);
+    }
+    
     //RegexListener
     public void addFindNextListener(FindNextListener l) {
         jB_next.addActionListener(l);
