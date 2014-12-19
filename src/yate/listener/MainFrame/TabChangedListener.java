@@ -2,6 +2,7 @@ package yate.listener.MainFrame;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import yate.managers.FileManager;
 import yate.model.MainFrameModel;
 import yate.view.MainFrameView;
 
@@ -22,6 +23,8 @@ public class TabChangedListener extends MainFrameListener implements ChangeListe
         //Dies liegt am request Focus in MainFrame addCenterBox()
         //Somit wir beim starten das event aufgerufen, 
         //da immer eine leere Datei geöffnet wird.
+        
+        FileManager.getInstance().setCurrentFile(model.getCurrentCenterBox().);
     }
     
 }
