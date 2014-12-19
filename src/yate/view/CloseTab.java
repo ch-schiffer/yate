@@ -2,7 +2,6 @@ package yate.view;
 
 import yate.listener.MainFrame.TabCloseListener;
 
-
 /**
  *
  * @author Laurin
@@ -11,16 +10,22 @@ public class CloseTab extends javax.swing.JPanel {
 
     /**
      * Creates new form CloseTab
+     *
      * @param titel
+     * @param l
      */
-    public CloseTab(String titel,TabCloseListener l) {
+    public CloseTab(String titel, TabCloseListener l) {
         initComponents();
         jL_titel.setText(titel);
         jB_close.addActionListener(l);
     }
-    
-        public void setTitle (String title) {
+
+    public void setTitle(String title) {
         jL_titel.setText(title);
+    }
+
+    public String getTitle() {
+        return jL_titel.getText();
     }
 
     /**
@@ -44,7 +49,6 @@ public class CloseTab extends javax.swing.JPanel {
         jB_close.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         add(jB_close);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jB_close;

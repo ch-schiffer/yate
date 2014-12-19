@@ -3,6 +3,7 @@ package yate.view;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 
@@ -11,7 +12,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Laurin
  */
 public class ChangeColorDialog extends javax.swing.JDialog {
-    
+
     /**
      * Creates new form ChangeColorDialog
      *
@@ -22,58 +23,49 @@ public class ChangeColorDialog extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(parent);
         jL_list.setCellRenderer(new SimpleCellRenderer());
+        jCC_colorChooser.setPreviewPanel(new JPanel());
     }
-    
-    public Color getChosenColor()
-    {
+
+    public Color getChosenColor() {
         return jCC_colorChooser.getColor();
     }
-    
-    public void repaintList()
-    {
+
+    public void repaintList() {
         jL_list.repaint();
     }
-    
-    public void setChoserColor(Color c)
-    {
+
+    public void setChoserColor(Color c) {
         jCC_colorChooser.setColor(c);
     }
-    
-    public int getSelectedIndex()
-    {
+
+    public int getSelectedIndex() {
         return jL_list.getSelectedIndex();
     }
-    
-    public void setDefaultListModel(DefaultListModel dlm)
-    {
+
+    public void setDefaultListModel(DefaultListModel dlm) {
         jL_list.setModel(dlm);
-        if(dlm != null && dlm.size() > 0)
-        {
+        if (dlm != null && dlm.size() > 0) {
             jL_list.setSelectedIndex(0);
         }
     }
-    
+
     //Listener
-    public void addCancelButtonListener(ActionListener l)
-    {
+    public void addCancelButtonListener(ActionListener l) {
         jB_cancel.addActionListener(l);
     }
-    
-    public void addConfirmButtonListener(ActionListener l)
-    {
+
+    public void addConfirmButtonListener(ActionListener l) {
         jB_oK.addActionListener(l);
     }
-    
-    public void addSelectedItemChangedListener(ListSelectionListener l)
-    {
+
+    public void addSelectedItemChangedListener(ListSelectionListener l) {
         jL_list.addListSelectionListener(l);
     }
 
-    public void addColorChangedListener(ChangeListener l)
-    {
+    public void addColorChangedListener(ChangeListener l) {
         jCC_colorChooser.getSelectionModel().addChangeListener(l);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

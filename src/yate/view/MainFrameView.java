@@ -1,6 +1,11 @@
 package yate.view;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SingleSelectionModel;
 import yate.listener.MainFrame.ColorChangedListener;
@@ -26,60 +31,84 @@ import yate.syntax.general.Language;
  */
 public class MainFrameView extends javax.swing.JFrame {
 
+    private final ButtonGroup buttonGroup;
+
     /**
      * Creates new form MainFrame
      */
     public MainFrameView() {
+        buttonGroup = new ButtonGroup();
         initComponents();
     }
 
-    public void addCenterBoxViewToTab(CenterBoxView view, String name,TabCloseListener l) {
+    public void addCenterBoxViewToTab(CenterBoxView view, String name, TabCloseListener l) {
         jTP_tabed.add(view, name);
         jTP_tabed.setSelectedComponent(view); //17.11.14 Neuen Tab fokussieren CHS
-        CloseTab t = new CloseTab(name,l);
-        jTP_tabed.setTabComponentAt(jTP_tabed.getTabCount()-1, t);
+        CloseTab t = new CloseTab(name, l);
+        jTP_tabed.setTabComponentAt(jTP_tabed.getTabCount() - 1, t);
+    }
+
+    public void setSelectedLanguage(String language) {
+        Enumeration<AbstractButton> elements = buttonGroup.getElements();
+
+        for (AbstractButton abs : Collections.list(elements)) {
+            if (abs.getText().equals(language)) {
+                abs.setSelected(true);
+            }
+        }
     }
 
     public void addProjectMenuView(ProjectMenuView view) {
         jP_Pmv.add(view);
     }
-    
-    public void removeTab(java.awt.Component c)
-    {
+
+    public void removeTab(java.awt.Component c) {
         jTP_tabed.remove(c);
     }
-    
+
     public void setCurrentTabTitle(String title) {
-       ((CloseTab) jTP_tabed.getTabComponentAt(getSelectedTabIndex())).setTitle(title);
+        ((CloseTab) jTP_tabed.getTabComponentAt(getSelectedTabIndex())).setTitle(title);
     }
-    
-    public int getSelectedTabIndex()
-    {
+
+    public ArrayList<CloseTab> getTabs() {
+        ArrayList<CloseTab> tabs = new ArrayList<>();
+
+        for (int i = 0; i < jTP_tabed.getTabCount(); i++) {
+            tabs.add((CloseTab) jTP_tabed.getTabComponentAt(i));
+        }
+        return tabs;
+    }
+
+    public int getSelectedTabIndex() {
         return jTP_tabed.getSelectedIndex();
     }
-    
+
     // Schnittstelle CAR 7.12.14
-    public String getSearchText () {
+    public String getSearchText() {
         return jTF_search.getText();
     }
 
-    public String getReplaceText () {
+    public String getReplaceText() {
         return jTF_replace.getText();
     }
-    
+
     public boolean isRegex() {
         return jbCB_regex.isEnabled();
     }
-    
-    public void addLanguage(Language lang,LanguageChangedListener listener)
-    {
+
+    public void addLanguage(Language lang, LanguageChangedListener listener) {
         String name = lang.getLanguageName();
-        
-        javax.swing.JMenuItem JMI = new javax.swing.JMenuItem(name);
+
+        javax.swing.JRadioButtonMenuItem JMI = new javax.swing.JRadioButtonMenuItem(name);
         addLanguageChangedListener(listener, JMI);
+
+        if (buttonGroup.getButtonCount() == 0) {
+            JMI.setSelected(true);
+        }
+        buttonGroup.add(JMI);
         jMI_languageSub.add(JMI);
     }
-    
+
     public SingleSelectionModel getJTabedPaneModel() {
         return jTP_tabed.getModel();
     }
@@ -125,20 +154,19 @@ public class MainFrameView extends javax.swing.JFrame {
     public void addTestButtonListener(TestButtonListener l) {
         jB_testButton.addActionListener(l);
     }
-    
-    private void addLanguageChangedListener(LanguageChangedListener l,javax.swing.JMenuItem item)
-    {
+
+    private void addLanguageChangedListener(LanguageChangedListener l, javax.swing.JMenuItem item) {
         item.addActionListener(l);
     }
-    
+
     public void addTabChangedListener(TabChangedListener l) {
         jTP_tabed.addChangeListener(l);
     }
-    
-     public void addColorChangedListener(ColorChangedListener l) {
+
+    public void addColorChangedListener(ColorChangedListener l) {
         jMI_editColors.addActionListener(l);
     }
-    
+
     //RegexListener
     public void addFindNextListener(FindNextListener l) {
         jB_next.addActionListener(l);
@@ -155,12 +183,12 @@ public class MainFrameView extends javax.swing.JFrame {
     public void addReplaceListener(ReplaceListener l) {
         jB_replace.addActionListener(l);
     }
-    
-        //13.12.14 CAR
+
+    //13.12.14 CAR
     public void addRegexChangedListener(ActionListener l) {
         jbCB_regex.addActionListener(l);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

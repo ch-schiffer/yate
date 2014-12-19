@@ -32,7 +32,7 @@ public class SimpleCellRenderer implements ListCellRenderer {
             Object values[] = (Object[]) value;
             theForeground = (Color) values[0];
             theIcon = (Icon) values[1];
-            theText = (String) values[2];
+            theText = "     " + (String) values[2];
         } else {
             theFont = list.getFont();
             theForeground = list.getForeground();
