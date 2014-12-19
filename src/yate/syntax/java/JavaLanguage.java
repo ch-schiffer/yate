@@ -5,6 +5,7 @@
 */
 package yate.syntax.java;
 
+import java.awt.Color;
 import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleComment;
@@ -12,10 +13,12 @@ import yate.syntax.cstyle.CStyleCloseBracer;
 import yate.syntax.cstyle.CStyleLiteral;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import yate.syntax.cstyle.CStyleCloseIndentionBracer;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleOpenIndentionBracer;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -51,4 +54,17 @@ public class JavaLanguage extends CStyleLanguage {
             new JavaDataType(),
             new CStyleIdentifier()
     ));
+    
+    private HashMap<String, Color> defaultColors = null;
+    
+    @Override
+    public HashMap<String, Color> getDefaultColors() {
+        if (defaultColors != null) return defaultColors;
+        defaultColors = new HashMap<>();
+        defaultColors.put(getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.RED);
+        defaultColors.put(getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.GREEN);
+        defaultColors.put(getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.BLUE);
+        defaultColors.put(getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.ORANGE);
+        return defaultColors;
+    }
 }

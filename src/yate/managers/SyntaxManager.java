@@ -27,7 +27,6 @@ import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
-import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *

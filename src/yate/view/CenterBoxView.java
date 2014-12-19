@@ -23,6 +23,8 @@ import yate.listener.CenterBox.DocumentUpdateAction;
 public class CenterBoxView extends javax.swing.JPanel {
     
     private static final String COMMIT_ACTION = "commit";
+    private static final String SELECT_NEXT_ACTION = "next";
+    private static final String SELECT_PREV_ACTION = "prev";
     
     /**
      * Creates new form CenterBox
@@ -61,8 +63,12 @@ public class CenterBoxView extends javax.swing.JPanel {
     public void addAutoCompleteListener(AutoCompleteManager autoCompleteManager) {
         AutoComplete autoComplete = new AutoComplete(jTP_text, autoCompleteManager);
         jTP_text.getDocument().addDocumentListener(autoComplete);
-        jTP_text.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+        /*jTP_text.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
         jTP_text.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), SELECT_NEXT_ACTION);
+        jTP_text.getActionMap().put(SELECT_NEXT_ACTION, autoComplete.new SelectNextAction());
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke("UP"), SELECT_NEXT_ACTION);
+        jTP_text.getActionMap().put(SELECT_NEXT_ACTION, autoComplete.new SelectPrevAction());*/
     }
     
     public void addViewPortChangeListener(ChangeListener listener) {

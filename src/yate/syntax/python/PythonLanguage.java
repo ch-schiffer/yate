@@ -5,14 +5,17 @@
  */
 package yate.syntax.python;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import yate.syntax.cstyle.CStyleCloseBracer;
 import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.general.KeyWordCollection;
+import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -40,4 +43,17 @@ public class PythonLanguage extends CStyleLanguage{
        new PythonKeyWord(),
        new CStyleIdentifier()
     ));
+    
+    private HashMap<String, Color> defaultColors = null;
+    
+    @Override
+    public HashMap<String, Color> getDefaultColors() {
+        if (defaultColors != null) return defaultColors;
+        defaultColors = new HashMap<>();
+        defaultColors.put(getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.RED);
+        defaultColors.put(getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.GREEN);
+        defaultColors.put(getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.BLUE);
+        defaultColors.put(getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.ORANGE);
+        return defaultColors;
+    }
 }
