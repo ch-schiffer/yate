@@ -49,7 +49,7 @@ public class ProjectManager {
     
     public void saveProject() {
         try (XMLEncoder enc = new XMLEncoder(new FileOutputStream(currentProject.getPath()))){
-            enc.writeObject(currentProject);
+            enc.writeObject(currentProject);       
         } catch (IOException e) {
         }
     }
