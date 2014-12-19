@@ -80,6 +80,19 @@ public class FileManager {
         
     }
     
+    public void closeFile(File file){
+        int index = allFiles.indexOf(file);
+        allFiles.remove(file);
+        if (file != currentFile) return;                
+        if (index > 0) {
+            currentFile = allFiles.get(index-1);
+        } else if (allFiles.size() > 0){
+            currentFile = allFiles.get(0);
+        } else {
+            createFile();
+        }
+        
+    }
     public void closeAllFiles(){
         allFiles.clear();
         currentFile = null;

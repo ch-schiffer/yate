@@ -45,8 +45,8 @@ public class File implements Serializable{
     }
     
     public String getName () {
-        internalFile = internalFile != null ? internalFile : new java.io.File(this.getPath());
-        return internalFile != null ? internalFile.getName() : "Unbekannt";    
+        internalFile = internalFile != null && !internalFile.getPath().equals("Unbenannt") ? internalFile : new java.io.File(this.getPath());
+        return internalFile != null ? internalFile.getName() : "Unbenannt";    
     }
     
     public String getContent (){
