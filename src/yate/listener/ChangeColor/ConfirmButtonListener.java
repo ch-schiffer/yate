@@ -9,7 +9,7 @@ import yate.view.ChangeColorDialog;
  *
  * @author Laurin
  */
-public class ConfirmButtonListener extends ChangeColorListener implements ActionListener{
+public class ConfirmButtonListener extends ChangeColorListener implements ActionListener {
 
     public ConfirmButtonListener(ChangeColorDialog view, ChangeColorModel model) {
         super(view, model);
@@ -17,9 +17,9 @@ public class ConfirmButtonListener extends ChangeColorListener implements Action
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         //Hier die aktuellen Farben und identifier aus dem model abholen.
-        
+        model.setConfirmed(true);
         view.dispose();
     }
 
