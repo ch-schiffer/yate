@@ -123,6 +123,8 @@ public class FileManager {
         this.currentFile = currentFile;
     }
     
-    
+    public List<File> getAllFiles() {
+        return allFiles;
+    }
     
 }
