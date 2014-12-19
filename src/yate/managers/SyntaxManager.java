@@ -278,13 +278,13 @@ public class SyntaxManager {
     
     private void setSyntaxColors() {
         for (SyntaxToken token : syntaxMap.subMap(visibleIndexStart,true, visibleIndexEnd,true).values()) {
-            setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().toString()), token.getStart(), token.getLength());
+            setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().getDisplayName()), token.getStart(), token.getLength());
         }
         //Um nicht vollständig dargestellte Tokens zu färben (z.B. mehrzeilige Kommentare) werden diese extra behandelt
         Entry<Integer,SyntaxToken> headToken = syntaxMap.floorEntry(visibleIndexStart);
         if (headToken != null) {
             SyntaxToken token = headToken.getValue();
-            setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().toString()), token.getStart(), token.getLength());
+            setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().getDisplayName()), token.getStart(), token.getLength());
         }
     }
     

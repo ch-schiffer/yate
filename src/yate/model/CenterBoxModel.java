@@ -21,6 +21,7 @@ public class CenterBoxModel {
     private final AutoCompleteManager autoCompleteManager;
     private final SearchReplaceManager searchReplaceManager;
     private final StyledDocument document;
+    private final File file;
     
     public void setVisibleIndexStart(int visibleIndexStart) {
         syntaxManager.setVisibleIndexStart(visibleIndexStart);
@@ -52,8 +53,9 @@ public class CenterBoxModel {
         syntaxManager = new SyntaxManager(document,file,autoCompleteManager);
         searchReplaceManager = new SearchReplaceManager(textPane, document);
         this.document = document;
+        this.file = file;
     }
-    
+   
     /**
      * Analysiert die Syntax und hebt sie entsprechend den Einstellungen farbig
      * hervor
@@ -96,6 +98,15 @@ public class CenterBoxModel {
     public Language getLanguage() {
         return syntaxManager.getLanguage();
     }
+
+    /**
+     * Ruft das File ab, das an die CenterBox geknüpft ist
+     * @return File
+     */
+    public File getFile() {
+        return file;
+    }    
+    
     
     /**
      * Setter für die Sprache
