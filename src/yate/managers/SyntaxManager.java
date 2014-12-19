@@ -27,7 +27,6 @@ import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
-import yate.syntax.general.elements.LanguageElementType;
 
 /**
  *
@@ -52,20 +51,36 @@ public class SyntaxManager {
     private SyntaxToken currentHighlightedBracer = null;
     private final AutoCompleteManager autoCompleteManager;
     
+    //Indizes müssen initialisiert werden, da vor der ersten Änderung durch Scrollen
+    //bereits Syntax in dem sichtbaren Bereich eingefärbt werden muss
     private int visibleIndexStart = 0;
     private int visibleIndexEnd = 10000;
     
+    /**
+     * Legt den Index fest, ab dem der sichtbare Text beginnt
+     * @param visibleIndexStart  Anfang des sichtbaren Bereichs
+     */
     public void setVisibleIndexStart(int visibleIndexStart) {
         this.visibleIndexStart = visibleIndexStart;
     }
     
+    /**
+     * Legt den Index fest, an dem der sichtbare Text endet
+     * @param visibleIndexEnd  Ende des sichtbaren Bereichs
+     */
     public void setVisibleIndexEnd(int visibleIndexEnd) {
         this.visibleIndexEnd = visibleIndexEnd;
     }
     
+    /**
+     * Legt ein neues Objekt vom Typ SyntaxManager an
+     * @param document Dokument, das abgebildet wird
+     * @param file Datei, die gebunden ist
+     * @param autoCompleteManager AutoCompleteManager, der die CheckBox verwaltet
+     */
     public SyntaxManager(StyledDocument document, File file, AutoCompleteManager autoCompleteManager) {
         this.document = document;
-        setLanguage(LanguageManager.evaluateLanguage(file));
+        language = LanguageManager.evaluateLanguage(file);
         this.autoCompleteManager = autoCompleteManager;
     }
     
@@ -96,7 +111,14 @@ public class SyntaxManager {
         SwingUtilities.invokeLater(runReHighlightSyntax);
     }
     
-    int insertedCount = 0;
+    private int insertedCount = 0;
+    
+    /**
+     * Rückt den Code ein
+     */
+    public void indentCode() {
+        SwingUtilities.invokeLater(runIndentCode);
+    }
     
     private final Runnable runIndentCode = new Runnable() {
         @Override
@@ -146,13 +168,9 @@ public class SyntaxManager {
                 document.remove(0, document.getLength());
                 document.insertString(0,builder.toString(),null);
             } catch (BadLocationException ex) {
-            }            
+            }
         }
     };
-    
-    public void indentCode() {
-        SwingUtilities.invokeLater(runIndentCode);
-    }
     
     private void insertTab(StringBuilder sb, int position, int count) {
         for (int i=0; i<count; i++) {
@@ -288,24 +306,20 @@ public class SyntaxManager {
         }
     }
     
+    /**
+     * Ruft die aktuell ausgewählte Sprache ab
+     * @return Ausgewählte Sprache
+     */
     public Language getLanguage() {
         return language;
     }
     
+    /**
+     * Legt die Sprache fest
+     * @param language Festzulegende Sprache
+     */
     public void setLanguage(Language language) {
         this.language = language;
-        
-        //TEST
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC.getDisplayName(), Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG.getDisplayName(), Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER.getDisplayName(), Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER.getDisplayName(), Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR.getDisplayName(), Color.red);
-        //TEST
     }
 }
 

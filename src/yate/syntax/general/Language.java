@@ -34,6 +34,9 @@ public abstract class Language implements Iterable<KeyWordCollection> {
         for (KeyWordCollection keyword : this) {
             ColorManager.getInstance().setColor(languageName+keyword.getType().toString(), Color.black);
         }
+        for (String key : getDefaultColors().keySet()) {
+            ColorManager.getInstance().setColor(key, getDefaultColors().get(key));
+        }
     }
     
     private final String languageName;
@@ -128,4 +131,6 @@ public abstract class Language implements Iterable<KeyWordCollection> {
         }
         return languageKeys;
     }
+    
+    public abstract HashMap<String, Color> getDefaultColors();
 }

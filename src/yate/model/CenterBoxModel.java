@@ -47,6 +47,7 @@ public class CenterBoxModel {
      * Konstruktor
      * @param document Dokument des Text-Elements
      * @param file Datei, die dargestellt wird
+     * @param textPane Gibt das verknüpfte TextPane an, um auf Caret-Infos zuzugreifen
      */
     public CenterBoxModel(StyledDocument document, File file, JTextPane textPane) {
         autoCompleteManager = new AutoCompleteManager();
@@ -60,8 +61,7 @@ public class CenterBoxModel {
      * Analysiert die Syntax und hebt sie entsprechend den Einstellungen farbig
      * hervor
      */
-    public void analyseSyntax()
-    {
+    public void analyseSyntax() {
         autoCompleteManager.clearSuggestions();
         syntaxManager.highlightSyntax();
     }
