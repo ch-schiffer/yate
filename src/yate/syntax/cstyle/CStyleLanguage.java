@@ -40,7 +40,6 @@ public abstract class CStyleLanguage extends Language {
             bracesStack.push(token);
             if (token.getTokenType() instanceof IIndentionBracer) {
                 token.setIndentionLevel(++indentionCounter);
-                System.err.println(indentionCounter);
             }
         }
         //Schließende Klammer
@@ -61,7 +60,6 @@ public abstract class CStyleLanguage extends Language {
                 if (token.getTokenType() instanceof IIndentionBracer) {
                     //Einrückungslevel setzen
                     token.setIndentionLevel(open.getIndentionLevel()*(-1));
-                    System.err.println(indentionCounter);
                     indentionCounter--;
                 }
             }

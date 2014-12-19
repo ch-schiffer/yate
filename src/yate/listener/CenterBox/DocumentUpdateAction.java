@@ -26,7 +26,7 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     
     
     private void action() {
-        if (isEnabled)
+        if (isEnabled) 
         {
             model.analyseSyntax();
         }
