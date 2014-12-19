@@ -20,12 +20,15 @@ import yate.view.CenterBoxView;
  */
 public class ViewPortChangedListener extends CenterBoxListener implements ChangeListener{
     
+    public static boolean isEnabled = true;
+    
     public ViewPortChangedListener(CenterBoxView view, CenterBoxModel model) {
         super(view, model);
     }
     
     @Override
     public void stateChanged(ChangeEvent e) {
+        if (!isEnabled) return;
         JTextPane textPane = view.getTextPane();
         if (textPane.getText().length() > 0) {
             JViewport viewport = (JViewport) e.getSource();

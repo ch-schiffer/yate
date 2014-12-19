@@ -3,6 +3,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import yate.autocomplete.AutoCompleteManager;
+import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.managers.SearchReplaceManager;
 import yate.managers.SyntaxManager;
 import yate.project.File;
@@ -24,11 +25,11 @@ public class CenterBoxModel {
     public void setVisibleIndexStart(int visibleIndexStart) {
         syntaxManager.setVisibleIndexStart(visibleIndexStart);
     }
-
+    
     public void setVisibleIndexEnd(int visibleIndexEnd) {
         syntaxManager.setVisibleIndexEnd(visibleIndexEnd);
     }
-
+    
     public SearchReplaceManager getSearchReplaceManager() {
         return searchReplaceManager;
     }
@@ -79,7 +80,13 @@ public class CenterBoxModel {
     }
     
     public void indentCode() {
-        syntaxManager.indentCode();
+        try {
+            DocumentUpdateAction.isEnabled = false;
+            syntaxManager.indentCode();
+        }
+        finally {
+            DocumentUpdateAction.isEnabled = true;
+        }
     }
     
     /**
@@ -105,6 +112,6 @@ public class CenterBoxModel {
      */
     public AutoCompleteManager getAutoCompleteManager() {
         return autoCompleteManager;
-    }   
+    }
     
 }

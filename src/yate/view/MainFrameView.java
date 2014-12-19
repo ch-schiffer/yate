@@ -161,7 +161,7 @@ public class MainFrameView extends javax.swing.JFrame {
     public void addRegexChangedListener(ActionListener l) {
         jbCB_regex.addActionListener(l);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

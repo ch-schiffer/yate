@@ -6,13 +6,10 @@
 package yate.managers;
 
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
@@ -22,6 +19,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import yate.autocomplete.AutoCompleteManager;
 import yate.listener.CenterBox.DocumentUpdateAction;
+import yate.listener.CenterBox.ViewPortChangedListener;
 import yate.project.File;
 import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.general.ICloseBracer;
@@ -55,7 +53,7 @@ public class SyntaxManager {
     private final AutoCompleteManager autoCompleteManager;
     
     private int visibleIndexStart = 0;
-    private int visibleIndexEnd = 0;
+    private int visibleIndexEnd = 10000;
     
     public void setVisibleIndexStart(int visibleIndexStart) {
         this.visibleIndexStart = visibleIndexStart;
@@ -99,57 +97,85 @@ public class SyntaxManager {
     }
     
     int insertedCount = 0;
-
     
-    public void indentCode() {
-        TreeMap<Integer,Integer> tabPositions = new TreeMap<>();
-        TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
-        Pattern linePattern = Pattern.compile(".*(\\n|$)");
-        Matcher matcher = linePattern.matcher(getDocumentText());
-        int currentLine = 0;
-        while(matcher.find()) {
-            positionLineMap.put(matcher.start(), currentLine);
-            positionLineMap.put(matcher.end(), currentLine++);
-        }
-        for (SyntaxToken token : syntaxMap.values()) {
-            if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer)
-            {
-                if (token.getPair() == null) continue;
-                SyntaxToken closeBracerToken = token.getPair();
-                int startIndex = token.getStart();
-                int endIndex = closeBracerToken.getStart();
-                int startLine = positionLineMap.floorEntry(startIndex).getValue();
-                int endLine = positionLineMap.floorEntry(endIndex).getValue();
-                SortedMap<Integer, SyntaxToken> block = syntaxMap.subMap(startIndex, endIndex);
-                for (Integer pos : block.keySet()) {
-                    int posLine = positionLineMap.floorEntry(pos).getValue();
-                    if (posLine > startLine && posLine < endLine) {
-                        if (tabPositions.containsKey(pos)) {
-                            tabPositions.put(pos, tabPositions.get(pos)+1);
-                        }
-                        else {
-                            tabPositions.put(pos, 1);
+    private final Runnable runIndentCode = new Runnable() {
+        @Override
+        public void run() {
+            String text = removeLeadingWhitespace();
+            language.analyzeSyntax(text, syntaxMap, autoCompleteManager);
+            insertedCount = 0;
+            TreeMap<Integer,Integer> tabPositions = new TreeMap<>();
+            TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
+            Pattern linePattern = Pattern.compile(".*(\\n|$)");
+            Matcher matcher = linePattern.matcher(text);
+            int currentLine = 0;
+            while(matcher.find()) {
+                positionLineMap.put(matcher.start(), currentLine);
+                positionLineMap.put(matcher.end(), currentLine++);
+            }
+            for (SyntaxToken token : syntaxMap.values()) {
+                if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer)
+                {
+                    if (token.getPair() == null) continue;  //Klammer hat keinen Partner -> ignorieren
+                    SyntaxToken closeBracerToken = token.getPair();
+                    int startIndex = token.getStart();          //Index der öffnenden...
+                    int endIndex = closeBracerToken.getStart(); //...und der schließdenden Klammer
+                    int startLine = positionLineMap.floorEntry(startIndex).getValue();  //Zeile der öffnenden...
+                    int endLine = positionLineMap.floorEntry(endIndex).getValue();      //und der schließdenen Klammer
+                    if (startIndex+1 >= endIndex-1) continue;   //Klammern umschließen keinen Block, ignorieren
+                    SortedMap<Integer, Integer> block = positionLineMap.subMap(startIndex+1, endIndex-1); //Umschlossenen Block holen
+                    for (Integer pos : block.keySet()) {
+                        int posLine = positionLineMap.floorEntry(pos).getValue();
+                        //Einrückungslevel zählen
+                        if (posLine > startLine && posLine <= endLine) {
+                            if (tabPositions.containsKey(pos)) {
+                                tabPositions.put(pos, tabPositions.get(pos)+1);
+                            }
+                            else {
+                                tabPositions.put(pos, 1);
+                            }
                         }
                     }
                 }
             }
+            StringBuilder builder = new StringBuilder(text);
+            for (int pos : tabPositions.keySet()) {
+                insertTab(builder, pos, tabPositions.get(pos));
+            }
+            try {
+                document.remove(0, document.getLength());
+                document.insertString(0,builder.toString(),null);
+            } catch (BadLocationException ex) {
+            }            
         }
-        
-        for (int pos : tabPositions.keySet()) {
-            insertTab(pos, tabPositions.get(pos));
-        }        
+    };
+    
+    public void indentCode() {
+        SwingUtilities.invokeLater(runIndentCode);
     }
     
-    private void insertTab(int position, int count) {
-        try {
-            for (int i=0; i<count; i++) {
-                document.insertString(position+insertedCount, "\t", null);
-                insertedCount++;
-            }
-        } catch (BadLocationException ex) {
-            Logger.getLogger(SyntaxManager.class.getName()).log(Level.SEVERE, null, ex);
+    private void insertTab(StringBuilder sb, int position, int count) {
+        for (int i=0; i<count; i++) {
+            sb.insert(position+insertedCount, "\t");
+            insertedCount++;
         }
-        
+    }
+    
+    private String removeLeadingWhitespace() {
+        Pattern linePattern = Pattern.compile(".*(\\n|$)");
+        Pattern whiteSpacePattern = Pattern.compile("^[ \\t]+");
+        Matcher lineMatcher = linePattern.matcher(getDocumentText());
+        StringBuffer sb = new StringBuffer();
+        //Einzelne Zeilen finden
+        while(lineMatcher.find()) {
+            Matcher whiteSpaceMatcher = whiteSpacePattern.matcher(lineMatcher.group());
+            //In jeder Zeile führende Whitespaces entfernen
+            while(whiteSpaceMatcher.find()) {
+                whiteSpaceMatcher.appendReplacement(sb, "");
+            }
+            whiteSpaceMatcher.appendTail(sb);
+        }
+        return sb.toString();
     }
     
     
@@ -177,9 +203,11 @@ public class SyntaxManager {
             try {
                 //DocumentUpdate abschalten
                 DocumentUpdateAction.isEnabled = false;
+                ViewPortChangedListener.isEnabled = false;
                 setSyntaxColors();
             }
             finally {
+                ViewPortChangedListener.isEnabled = true;
                 DocumentUpdateAction.isEnabled = true;
             }
         }
@@ -268,15 +296,15 @@ public class SyntaxManager {
         this.language = language;
         
         //TEST
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT, Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE, Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD, Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL, Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC, Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG, Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER, Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER, Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR, Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.green);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.orange);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.blue);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC.getDisplayName(), Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG.getDisplayName(), Color.blue);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER.getDisplayName(), Color.orange);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER.getDisplayName(), Color.green);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR.getDisplayName(), Color.red);
         //TEST
     }
 }

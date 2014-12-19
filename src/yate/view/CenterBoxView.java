@@ -3,6 +3,7 @@ package yate.view;
 import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -20,7 +21,7 @@ import yate.listener.CenterBox.DocumentUpdateAction;
  * @author Laurin
  */
 public class CenterBoxView extends javax.swing.JPanel {
-
+    
     private static final String COMMIT_ACTION = "commit";
     
     /**
@@ -37,18 +38,18 @@ public class CenterBoxView extends javax.swing.JPanel {
             tabs[i] = new TabStop(30+30*i, TabStop.ALIGN_LEFT, TabStop.LEAD_NONE);
         
         TabSet tabset = new TabSet(tabs);
-
+        
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
-        StyleConstants.TabSet, tabset);
+                StyleConstants.TabSet, tabset);
         jTP_text.setParagraphAttributes(aset, false);
         
     }
-
+    
     public StyledDocument getStyledDocument() {
         return this.jTP_text.getStyledDocument();
     }
-
+    
     public void setFont(String font, int size) {
         jTP_text.setFont(new Font(font, 0, size));
     }
@@ -65,9 +66,9 @@ public class CenterBoxView extends javax.swing.JPanel {
     }
     
     public void addViewPortChangeListener(ChangeListener listener) {
-       jScrollPane1.getViewport().addChangeListener(listener);
+        jScrollPane1.getViewport().addChangeListener(listener);
     }
-            
+    
     /**
      * Fokusiert den Text des Elements
      */
@@ -89,7 +90,13 @@ public class CenterBoxView extends javax.swing.JPanel {
     public JTextPane getTextPane(){
         return jTP_text;
     }
-
+    
+    public void addCaretListener(CaretListener l) {
+        jTP_text.addCaretListener(l);
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -113,5 +120,5 @@ public class CenterBoxView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTP_text;
     // End of variables declaration//GEN-END:variables
-
+    
 }

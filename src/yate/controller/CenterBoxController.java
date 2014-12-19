@@ -1,5 +1,6 @@
 package yate.controller;
 
+import yate.listener.CenterBox.CaretListener;
 import yate.listener.CenterBox.DocumentUpdateAction;
 import yate.listener.CenterBox.ViewPortChangedListener;
 import yate.model.CenterBoxModel;
@@ -32,6 +33,6 @@ public class CenterBoxController {
         view.addDocumentUpdateAction(new DocumentUpdateAction(view, model));
         view.addAutoCompleteListener(model.getAutoCompleteManager());
         view.addViewPortChangeListener(new ViewPortChangedListener(view, model));
-    }
-    
+        view.addCaretListener(new CaretListener(view, model));
+    }    
 }
