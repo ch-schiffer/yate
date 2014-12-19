@@ -9,27 +9,27 @@ package yate.misc;
  *
  * @author Carina
  */
-public class Pair {
-    private int first;
-    private int second;
+public class Pair<T,V> {
+    private T first;
+    private V second;
     
-    public Pair (int begin, int end) {
-        this.first = begin;
-        this.second = end;
+    public Pair (T first, V second) {
+        this.first = first;
+        this.second = second;
     }
-    public int getFirst() {
+    public T getFirst() {
         return first;
     }
 
-    public void setFirst(int first) {
+    public void setFirst(T first) {
         this.first = first;
     }
 
-    public int getSecond() {
+    public V getSecond() {
         return second;
     }
 
-    public void setSecond(int second) {
+    public void setSecond(V second) {
         this.second = second;
     }
    

@@ -296,15 +296,15 @@ public class SyntaxManager {
         this.language = language;
         
         //TEST
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT, Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE, Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD, Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL, Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC, Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG, Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER, Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER, Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR, Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.green);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.orange);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.blue);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC.getDisplayName(), Color.red);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG.getDisplayName(), Color.blue);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER.getDisplayName(), Color.orange);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER.getDisplayName(), Color.green);
+        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR.getDisplayName(), Color.red);
         //TEST
     }
 }

@@ -1,7 +1,9 @@
 package yate.model;
 
 import java.awt.Color;
+import java.util.HashMap;
 import javax.swing.DefaultListModel;
+import yate.managers.ColorManager;
 import yate.view.SimpleIcon;
 
 /**
@@ -13,26 +15,12 @@ public class ChangeColorModel {
     private final DefaultListModel listModel;
 
     private int selectedIndex = 0;
-    //Test
-    private final Object elements[][] = {
-        {Color.RED, new SimpleIcon(Color.RED), "Identifier1"},
-        {Color.BLUE, new SimpleIcon(Color.BLUE), "Identifier2"},
-        {Color.GREEN, new SimpleIcon(Color.GREEN), "Identifier3"},
-        {Color.GRAY, new SimpleIcon(Color.GRAY), "Identifier4"},
-        {Color.PINK, new SimpleIcon(Color.PINK), "Identifier5"},
-        {Color.YELLOW, new SimpleIcon(Color.YELLOW), "Identifier6"},
-        {Color.DARK_GRAY, new SimpleIcon(Color.DARK_GRAY), "Identifier7"}};
-    //Test ende
     
-    
-    public ChangeColorModel() {
-        listModel = new DefaultListModel();
-        //Test
-        for (Object o : elements) {
-            listModel.addElement(o);
+    public ChangeColorModel(HashMap<String,String> colorKeys) {
+        listModel = new DefaultListModel();        
+        for (String key : colorKeys.keySet()) {
+            addElement(ColorManager.getInstance().getColor(key), colorKeys.get(key));
         }
-        //Test ende
-
     }
     
     private void addElement(Color c, String name)

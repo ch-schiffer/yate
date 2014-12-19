@@ -36,7 +36,7 @@ public class SearchReplaceManager {
     private boolean regex;
     private String actualKeyword;
     private int index;
-    private final ArrayList<Pair> positions = new ArrayList();
+    private final ArrayList<Pair<Integer,Integer>> positions = new ArrayList();
     private final JTextPane textPane;
     private final StyledDocument doc;
     

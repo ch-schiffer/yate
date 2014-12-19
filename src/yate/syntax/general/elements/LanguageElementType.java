@@ -25,10 +25,14 @@ public enum LanguageElementType {
     NUMBER("Zahl"),
     PREPROCESSOR("Präprozessor");
     
-    private final String type;
+    private final String displayName;
     
-    private LanguageElementType(final String type) {
-        this.type = type;
+    private LanguageElementType(final String displayName) {
+        this.displayName = displayName;
+    }
+    
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Override

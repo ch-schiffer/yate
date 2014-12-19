@@ -7,6 +7,7 @@ package yate.syntax.general;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.regex.Matcher;
@@ -115,5 +116,16 @@ public abstract class Language implements Iterable<KeyWordCollection> {
     
     public boolean checkSuffix(String suffix) {
         return languageSuffixList.contains(suffix);
+    }
+    
+    private HashMap<String,String> languageKeys = null;
+    
+    public HashMap<String,String> getLanguageKeys() {
+        if (languageKeys != null) return languageKeys;
+        languageKeys = new HashMap<> ();
+        for(KeyWordCollection keyWord : getKeyWords()) {
+            languageKeys.put(getLanguageName()+keyWord.getType().getDisplayName(),keyWord.getType().getDisplayName());
+        }
+        return languageKeys;
     }
 }

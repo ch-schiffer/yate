@@ -2,9 +2,11 @@ package yate.listener.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import yate.controller.ChangeColorController;
 import yate.model.ChangeColorModel;
 import yate.model.MainFrameModel;
+import yate.syntax.general.Language;
 import yate.view.ChangeColorDialog;
 import yate.view.MainFrameView;
 
@@ -20,9 +22,10 @@ public class ColorChangedListener extends MainFrameListener implements ActionLis
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        Language currentLanguage = model.getCurrentCenterBox().getLanguage();
+        HashMap<String,String> colorKeys = currentLanguage.getLanguageKeys();
         ChangeColorDialog ccd = new ChangeColorDialog(view);
-        ChangeColorModel ccm=new ChangeColorModel(); //fehlt noch die übergabe der aktuellen Farben.
+        ChangeColorModel ccm = new ChangeColorModel(colorKeys); //fehlt noch die übergabe der aktuellen Farben.
         ccd.setDefaultListModel(ccm.getListModel());
         
         ChangeColorController ccc = new ChangeColorController(ccd, ccm);
