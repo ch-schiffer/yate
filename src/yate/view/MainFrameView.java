@@ -1,6 +1,10 @@
 package yate.view;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SingleSelectionModel;
@@ -27,7 +31,7 @@ import yate.syntax.general.Language;
  */
 public class MainFrameView extends javax.swing.JFrame {
 
-    private ButtonGroup buttonGroup;
+    private final ButtonGroup buttonGroup;
 
     /**
      * Creates new form MainFrame
@@ -44,6 +48,16 @@ public class MainFrameView extends javax.swing.JFrame {
         jTP_tabed.setTabComponentAt(jTP_tabed.getTabCount() - 1, t);
     }
 
+    public void setSelectedLanguage(String language) {
+        Enumeration<AbstractButton> elements = buttonGroup.getElements();
+
+        for (AbstractButton abs : Collections.list(elements)) {
+            if (abs.getText().equals(language)) {
+                abs.setSelected(true);
+            }
+        }
+    }
+
     public void addProjectMenuView(ProjectMenuView view) {
         jP_Pmv.add(view);
     }
@@ -54,6 +68,15 @@ public class MainFrameView extends javax.swing.JFrame {
 
     public void setCurrentTabTitle(String title) {
         ((CloseTab) jTP_tabed.getTabComponentAt(getSelectedTabIndex())).setTitle(title);
+    }
+
+    public ArrayList<CloseTab> getTabs() {
+        ArrayList<CloseTab> tabs = new ArrayList<>();
+
+        for (int i = 0; i < jTP_tabed.getTabCount(); i++) {
+            tabs.add((CloseTab) jTP_tabed.getTabComponentAt(i));
+        }
+        return tabs;
     }
 
     public int getSelectedTabIndex() {
@@ -78,6 +101,10 @@ public class MainFrameView extends javax.swing.JFrame {
 
         javax.swing.JRadioButtonMenuItem JMI = new javax.swing.JRadioButtonMenuItem(name);
         addLanguageChangedListener(listener, JMI);
+
+        if (buttonGroup.getButtonCount() == 0) {
+            JMI.setSelected(true);
+        }
         buttonGroup.add(JMI);
         jMI_languageSub.add(JMI);
     }
@@ -161,7 +188,7 @@ public class MainFrameView extends javax.swing.JFrame {
     public void addRegexChangedListener(ActionListener l) {
         jbCB_regex.addActionListener(l);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
