@@ -24,7 +24,7 @@ public class TabChangedListener extends MainFrameListener implements ChangeListe
         //Somit wir beim starten das event aufgerufen, 
         //da immer eine leere Datei geöffnet wird.
         
-        FileManager.getInstance().setCurrentFile(model.getCurrentCenterBox().);
+        //FileManager.getInstance().setCurrentFile(model.getCurrentCenterBox().);
     }
     
 }
