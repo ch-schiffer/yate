@@ -17,6 +17,7 @@ import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.cstyle.CStyleOpenIndentionBracer;
+import yate.syntax.cstyle.CStylePreProcessorDirective;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.LanguageElementType;
 
@@ -43,6 +44,7 @@ public class CLanguage extends CStyleLanguage {
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
             new CStyleLiteral(),
             new CStyleComment(),
+            new CStylePreProcessorDirective(),            
             new CStyleOpenIndentionBracer(),
             new CStyleCloseIndentionBracer(),
             new CStyleOpenBracer(),

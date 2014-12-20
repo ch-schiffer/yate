@@ -13,15 +13,22 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet die Register auf, die in der Sprache Assembler verwendet werden
  * @author Christian
  */
 public class ASMRegister extends KeyWordCollection {
 
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
     public ASMRegister() {
         super(LanguageElementType.REGISTER);
     }
 
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;

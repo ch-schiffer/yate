@@ -38,6 +38,7 @@ public class ColorChangedListener extends MainFrameListener implements ActionLis
                 ColorManager.getInstance().setColor(currentLanguage.getLanguageName()+key, map.get(key));
             }
         }
+        model.getCurrentCenterBox().reHighlightSyntax();
     }
     
 }

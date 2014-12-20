@@ -164,5 +164,4 @@ public class MainFrameModel {
 
         view.setProjectName(model.getProjectName());
     }
-
 }

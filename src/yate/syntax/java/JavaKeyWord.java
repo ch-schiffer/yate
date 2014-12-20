@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.java;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ import yate.syntax.general.elements.LanguageElementType;
  * @author Christian
  */
 public class JavaKeyWord extends KeyWordCollection {
-
+    
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
     }
-
+    
     /**
      * Konstruktor
      */
@@ -72,6 +72,7 @@ public class JavaKeyWord extends KeyWordCollection {
             new KeyWordElement("try"),
             new KeyWordElement("volatile"),
             new KeyWordElement("while"),
-            new KeyWordElement("\\@Override")
-        ));
+            new KeyWordElement("\\@Override"),
+            new KeyWordElement("return")            
+    ));
 }

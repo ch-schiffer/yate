@@ -29,7 +29,8 @@ import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
 
 /**
- *
+ * Diese Klasse verwaltet alle Funktionen, die das Syntaxhighlighting und 
+ * die automatische Einrückung von Code betreffen
  * @author Christian
  */
 public class SyntaxManager {
@@ -39,6 +40,9 @@ public class SyntaxManager {
      */
     private final StyledDocument document;
     
+    /**
+     * Eingestellte Sprache
+     */
     private Language language;
     
     /**
@@ -84,6 +88,10 @@ public class SyntaxManager {
         this.autoCompleteManager = autoCompleteManager;
     }
     
+    /**
+     * Ruft den Text des Dokuments ab
+     * @return Text des Dokuments
+     */
     private String getDocumentText() {
         String text;
         try {
@@ -96,17 +104,27 @@ public class SyntaxManager {
         }
     }
     
+    /**
+     * Färbt die Syntax entsprechend der eingestellten Sprache ein
+     */
     public void highlightSyntax() {
         if (language != null)
             SwingUtilities.invokeLater(runHighlightSyntax);
     }
     
+    /**
+     * Färbt Klammern paarweise ein
+     * @param position Position der ausgewählten Klammer im Text
+     */
     public void highlightBracers(int position) {
         currentCaretPosition = position;
         if (language != null)
             SwingUtilities.invokeLater(runHighlightBracers);
     }
     
+    /**
+     * Färbt die Syntax neu ein, ohne den Text erneut zu analysieren
+     */
     public void reHighlightSyntax() {
         SwingUtilities.invokeLater(runReHighlightSyntax);
     }
@@ -196,7 +214,6 @@ public class SyntaxManager {
         return sb.toString();
     }
     
-    
     private final Runnable runHighlightSyntax = new Runnable() {
         @Override
         public void run() {
@@ -282,13 +299,13 @@ public class SyntaxManager {
         setBackgroundColor(color, token.getPair().getStart(), token.getPair().getLength());
     }
     
-    public void setForegroundColor(Color c, int start, int length) {
+    private void setForegroundColor(Color c, int start, int length) {
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
     }
     
-    public void setBackgroundColor(Color c, int start, int length) {
+    private void setBackgroundColor(Color c, int start, int length) {
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setBackground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);

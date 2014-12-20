@@ -28,7 +28,7 @@ import yate.syntax.general.elements.LanguageElementType;
 public class CSharpLanguage extends CStyleLanguage {
     
     public CSharpLanguage() {
-        super("CSharp");
+        super("C#");
         languageSuffixList.add(".cs");
     }
     
@@ -41,9 +41,9 @@ public class CSharpLanguage extends CStyleLanguage {
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
-            new CStylePreProcessorDirective(),            
             new CStyleLiteral(),
             new CStyleComment(),
+            new CStylePreProcessorDirective(),            
             new CStyleOpenIndentionBracer(),
             new CStyleCloseIndentionBracer(),
             new CStyleOpenBracer(),
