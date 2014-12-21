@@ -22,16 +22,25 @@ import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse bietet Funktionen zur Analyse der Sprache C# an
  * @author Christian
  */
 public class CSharpLanguage extends CStyleLanguage {
     
+    private HashMap<String, Color> defaultColors = null;
+    
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
     public CSharpLanguage() {
         super("C#");
         languageSuffixList.add(".cs");
     }
     
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
@@ -43,7 +52,7 @@ public class CSharpLanguage extends CStyleLanguage {
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
             new CStyleLiteral(),
             new CStyleComment(),
-            new CStylePreProcessorDirective(),            
+            new CStylePreProcessorDirective(),
             new CStyleOpenIndentionBracer(),
             new CStyleCloseIndentionBracer(),
             new CStyleOpenBracer(),
@@ -53,8 +62,10 @@ public class CSharpLanguage extends CStyleLanguage {
             new CStyleIdentifier()
     ));
     
-    private HashMap<String, Color> defaultColors = null;
-    
+    /**
+     * Gibt eine Liste von Standardfarben für die Sprache Assembler ab
+     * @return Liste von Standardsprachen
+     */
     @Override
     public HashMap<String, Color> getDefaultColors() {
         if (defaultColors != null) return defaultColors;
@@ -64,5 +75,5 @@ public class CSharpLanguage extends CStyleLanguage {
         defaultColors.put(getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.BLUE);
         defaultColors.put(getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.ORANGE);
         return defaultColors;
-    }    
+    }
 }

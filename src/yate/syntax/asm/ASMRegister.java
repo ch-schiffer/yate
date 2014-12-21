@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.asm;
 
 import java.util.ArrayList;
@@ -17,14 +17,14 @@ import yate.syntax.general.elements.LanguageElementType;
  * @author Christian
  */
 public class ASMRegister extends KeyWordCollection {
-
+    
     /**
      * Konstruktor, erzeugt eine Instanz der Klasse
      */
     public ASMRegister() {
         super(LanguageElementType.REGISTER);
     }
-
+    
     /**
      * Ruft eine Liste der hinterlegten KeyWords ab
      * @return Liste der KeyWords
@@ -34,7 +34,7 @@ public class ASMRegister extends KeyWordCollection {
         return keyWords;
     }
     
-            /**
+    /**
      * Liste der Schlüsselwörter
      */
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
@@ -63,5 +63,5 @@ public class ASMRegister extends KeyWordCollection {
             new CaseInsensitiveKeyWordElement("DS"),
             new CaseInsensitiveKeyWordElement("SS"),
             new CaseInsensitiveKeyWordElement("ES")
-        ));    
+    ));
 }

@@ -5,6 +5,8 @@
  */
 package yate.syntax.general;
 
+import java.util.Objects;
+
 /**
  * Diese Klasse enthält Informationen über ein einzelnes Token einer Sprache
  * @author Christian
@@ -20,8 +22,6 @@ public class SyntaxToken {
     private final int start;
     //Ende des Tokens im Text
     private final int end;
-    //Einrückungsebene des Tokens
-    private int indentionLevel;
 
     /**
      * Konstruktor
@@ -46,14 +46,6 @@ public class SyntaxToken {
         this.pair = pair;
     }
 
-    /**
-     * Setter für indentionLevel 
-     * @param indentionLevel Einrückungsebene
-     */
-    public void setIndentionLevel(int indentionLevel) {
-        this.indentionLevel = indentionLevel;
-    }
-    
     /**
      * Getter für TokenType
      * @return TokenType
@@ -95,14 +87,6 @@ public class SyntaxToken {
     }
 
     /**
-     * Getter für IndentionLevel
-     * @return IndentionLevel
-     */
-    public int getIndentionLevel() {
-        return indentionLevel;
-    }
-    
-    /**
      * Gibt die Länge an
      * @return Länge
      */
@@ -111,16 +95,56 @@ public class SyntaxToken {
         return getEnd()-getStart();
     }
 
+    /**
+     * Gibt eine String-Repräsentation des Syntax-Tokens zurück
+     * @return String-Repräsentation des Syntax-Tokens
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < indentionLevel; i++) {
+        /*for (int i = 0; i < indentionLevel; i++) {
             sb.append("    ");
-        }
+        }*/
         sb.append(String.format("TYPE: %s CONTENT: %s", tokenType.getType(),content));
         return sb.toString();
     }
-    
-    
 
+    /**
+     * Gibt einen Hashcode zurück
+     * @return Hashcode
+     */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + Objects.hashCode(this.content);
+        hash = 41 * hash + this.start;
+        hash = 41 * hash + this.end;
+        return hash;
+    }
+
+    /**
+     * Prüft, ob ein übergebenes Objekt mit dem aktuellen Objekt identisch ist
+     * @param obj Anderes Objekt
+     * @return True: Identisch
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SyntaxToken other = (SyntaxToken) obj;
+        if (!Objects.equals(this.content, other.content)) {
+            return false;
+        }
+        if (this.start != other.start) {
+            return false;
+        }
+        if (this.end != other.end) {
+            return false;
+        }
+        return true;
+    }
 }

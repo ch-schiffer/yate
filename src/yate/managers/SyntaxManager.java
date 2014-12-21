@@ -300,6 +300,7 @@ public class SyntaxManager {
     }
     
     private void setForegroundColor(Color c, int start, int length) {
+        System.out.println(visibleIndexStart + " " + visibleIndexEnd);
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);

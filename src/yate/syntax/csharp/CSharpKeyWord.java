@@ -13,18 +13,25 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet die Schlüsselwörter auf, die von C# unterstützt werden
  * @author Christian
  */
 public class CSharpKeyWord extends KeyWordCollection {
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
+    public CSharpKeyWord() {
+        super(LanguageElementType.KEYWORD);
+    }
+    
+    /**
+     * Gibt eine Liste der Schlüsselwörter zurück
+     * @return Liste der Schlüsselwörter
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
-    }
-    
-    public CSharpKeyWord() {
-        super(LanguageElementType.KEYWORD);
     }
     
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(

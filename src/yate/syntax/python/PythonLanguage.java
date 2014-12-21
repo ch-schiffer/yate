@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.python;
 
 import java.awt.Color;
@@ -18,34 +18,46 @@ import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse bietet Funktionen zur Analyse der Sprache Python an
  * @author Christian
  */
 public class PythonLanguage extends CStyleLanguage{
-
+    
+    private HashMap<String, Color> defaultColors = null;
+    
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
     public PythonLanguage() {
         super("Python");
         languageSuffixList.add(".py");
     }
-        @Override
+    
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
+    @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
     }
-
+    
     /**
      * Geordnete (!!!) Liste der verschiedenen Schlüsselwortarten
      */
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
-       new PythonComment(),
-       new CStyleLiteral(),
-       new CStyleOpenBracer(),
-       new CStyleCloseBracer(),
-       new PythonKeyWord(),
-       new CStyleIdentifier()
+            new PythonComment(),
+            new CStyleLiteral(),
+            new CStyleOpenBracer(),
+            new CStyleCloseBracer(),
+            new PythonKeyWord(),
+            new CStyleIdentifier()
     ));
     
-    private HashMap<String, Color> defaultColors = null;
-    
+    /**
+     * Gibt eine Liste von Standardfarben für die Sprache Assembler ab
+     * @return Liste von Standardsprachen
+     */
     @Override
     public HashMap<String, Color> getDefaultColors() {
         if (defaultColors != null) return defaultColors;

@@ -14,20 +14,27 @@ import yate.syntax.general.elements.LanguageElementType;
 import yate.syntax.general.elements.SingleQuoteElement;
 
 /**
- *
+ * Diese Klasse listet alle Literale für Sprachen im C-Stil auf
  * @author Christian
  */
 public class CStyleLiteral extends KeyWordCollection {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
+    public CStyleLiteral() {
+        super(LanguageElementType.LITERAL);
+    }
+    
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
     }
 
-    public CStyleLiteral() {
-        super(LanguageElementType.LITERAL);
-    }
-    
     private static final ArrayList<? extends LanguageElement> keyWords = new ArrayList<>(Arrays.asList(
             new DoubleQuoteElement(),
             new SingleQuoteElement()

@@ -6,12 +6,16 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für Präprozessordirektiven für Sprachen im C-Stil 
+ * zur Verfügung
  * @author Christian
  */
 public class CStylePreProcessorElement extends LanguageElement {
     private static final String pattern = "#.*";
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public CStylePreProcessorElement() {
         super(pattern);
     }

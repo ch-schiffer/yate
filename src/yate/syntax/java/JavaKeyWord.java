@@ -13,21 +13,25 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- * Diese Klasse enthält Schlüsselwörter für Java
+ * Diese Klasse listet die Schlüsselwörter auf, die von Java unterstützt werden
  * @author Christian
  */
 public class JavaKeyWord extends KeyWordCollection {
     
-    @Override
-    protected ArrayList<? extends LanguageElement> getKeyWords() {
-        return keyWords;
-    }
-    
     /**
-     * Konstruktor
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
      */
     public JavaKeyWord() {
         super(LanguageElementType.KEYWORD);
+    }
+    
+    /**
+     * Gibt eine Liste der Schlüsselwörter zurück
+     * @return Liste der Schlüsselwörter
+     */
+    @Override
+    protected ArrayList<? extends LanguageElement> getKeyWords() {
+        return keyWords;
     }
     
     /**
@@ -72,7 +76,6 @@ public class JavaKeyWord extends KeyWordCollection {
             new KeyWordElement("try"),
             new KeyWordElement("volatile"),
             new KeyWordElement("while"),
-            new KeyWordElement("\\@Override"),
             new KeyWordElement("return")            
     ));
 }

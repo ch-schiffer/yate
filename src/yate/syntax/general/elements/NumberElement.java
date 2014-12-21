@@ -6,12 +6,15 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für Nummern zur Verfügung
  * @author Christian
  */
 public class NumberElement extends LanguageElement {
     private static final String pattern = "\\b[0-9]+\\b";
             
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public NumberElement() {
         super(pattern);
     }

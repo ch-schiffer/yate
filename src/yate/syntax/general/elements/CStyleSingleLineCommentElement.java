@@ -6,12 +6,16 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für einzeilige Kommentare für Sprachen im C-Stil
+ * zur Verfügung
  * @author Christian
  */
 public class CStyleSingleLineCommentElement extends LanguageElement {
     private static final String pattern = "//.*";
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public CStyleSingleLineCommentElement() {
         super(pattern);
     }

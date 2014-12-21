@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package yate.syntax.general;
 
 import yate.syntax.general.elements.LanguageElement;
@@ -10,22 +10,33 @@ import java.util.ArrayList;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
- * @author Christian
- * Abstrakte Basisklasse für eine Sammlung von Muster zur Erkennung einer
+ * Abstrakte Basisklasse für eine Sammlung von Mustern zur Erkennung einer
  * Gruppe von Schlüsselwörtern
+ * @author Christian
  */
 public abstract class KeyWordCollection {
-    public KeyWordCollection(LanguageElementType type) {   
+    
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     * @param type Typ der Collection
+     */
+    public KeyWordCollection(LanguageElementType type) {
         this.type = type;
     }
-
+    
+    /**
+     * Getter für den Typ des Schlüsselwortes
+     * @return Typ des Schlüsselwortes
+     */
     public LanguageElementType getType() {
         return type;
     }
     
+    /**
+     * Typ des Schlüsselwortes
+     */
     protected final LanguageElementType type;
-
+    
     /**
      * Liste der Muster, die zur Erkennung der Schlüsselwörter dienen
      * @return Liste der Muster
@@ -59,8 +70,4 @@ public abstract class KeyWordCollection {
         }
         return patternString;
     }
-    
-    
-    
-    
 }

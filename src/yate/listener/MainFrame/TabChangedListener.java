@@ -28,6 +28,7 @@ public class TabChangedListener extends MainFrameListener implements ChangeListe
         CenterBoxModel currentCenterBoxModel = model.getCurrentCenterBox();
         if (currentCenterBoxModel != null) {
             view.setSelectedLanguage(currentCenterBoxModel.getLanguage().getLanguageName());
+            currentCenterBoxModel.reHighlightSyntax();
         }
     }
     

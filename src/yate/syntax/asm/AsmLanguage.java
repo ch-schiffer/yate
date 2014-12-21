@@ -16,7 +16,7 @@ import yate.syntax.general.SyntaxToken;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- * Dise Klasse bietet Funktionen zur Analyse der Sprache Assembler an
+ * Diese Klasse bietet Funktionen zur Analyse der Sprache Assembler an
  * @author Christian
  */
 public class AsmLanguage extends Language{
@@ -42,7 +42,7 @@ public class AsmLanguage extends Language{
     
     /**
      * Diese Funktion wird aufgerufen, während die Syntaxanalyse läuft
-     * @param token
+     * @param token Aktuell behandeltes Token
      */
     @Override
     protected void analysisHandler(SyntaxToken token) {

@@ -13,15 +13,22 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet Präprozessordirektiven für Sprachen im C-Stil auf
  * @author Christian
  */
 public class CStylePreProcessorDirective extends KeyWordCollection {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public CStylePreProcessorDirective() {
         super(LanguageElementType.PREPROCESSOR);
     }
 
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
