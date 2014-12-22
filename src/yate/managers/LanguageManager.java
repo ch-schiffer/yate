@@ -47,6 +47,7 @@ public class LanguageManager {
      * @return Ermittelte Sprache, null wenn keine Übereinstimmung
      */
     public static Language evaluateLanguage(File file) {
+        if (file == null) return null;
         for (Language language : languageList) {
             if (language.checkSuffix(file.getFileExtension()))
                 return language;
