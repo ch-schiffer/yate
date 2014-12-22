@@ -103,7 +103,7 @@ public class CenterBoxModel {
     public AutoCompleteManager getAutoCompleteManager() {
         return autoCompleteManager;
     }
-    
+
         /**
      * Legt den Anfang des sichtbaren Bereichs fest, der eingefärbt werden soll
      * @param visibleIndexStart Anfang

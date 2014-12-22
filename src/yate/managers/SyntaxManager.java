@@ -6,9 +6,9 @@
 package yate.managers;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +26,9 @@ import yate.syntax.general.ICloseBracer;
 import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
+import yate.syntax.general.SyntaxBlock;
+import yate.syntax.general.SyntaxLine;
+import yate.syntax.general.SyntaxLineList;
 import yate.syntax.general.SyntaxToken;
 
 /**
@@ -54,6 +57,8 @@ public class SyntaxManager {
     private int currentCaretPosition = 0;
     private SyntaxToken currentHighlightedBracer = null;
     private final AutoCompleteManager autoCompleteManager;
+    private final SyntaxLineList lines = new SyntaxLineList();
+    private final ArrayList<SyntaxBlock> blocks = new ArrayList<>();
     
     //Indizes müssen initialisiert werden, da vor der ersten Änderung durch Scrollen
     //bereits Syntax in dem sichtbaren Bereich eingefärbt werden muss
@@ -145,35 +150,18 @@ public class SyntaxManager {
             language.analyzeSyntax(text, syntaxMap, autoCompleteManager);
             insertedCount = 0;
             TreeMap<Integer,Integer> tabPositions = new TreeMap<>();
-            TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
-            Pattern linePattern = Pattern.compile(".*(\\n|$)");
-            Matcher matcher = linePattern.matcher(text);
-            int currentLine = 0;
-            while(matcher.find()) {
-                positionLineMap.put(matcher.start(), currentLine);
-                positionLineMap.put(matcher.end(), currentLine++);
-            }
-            for (SyntaxToken token : syntaxMap.values()) {
-                if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer)
-                {
-                    if (token.getPair() == null) continue;  //Klammer hat keinen Partner -> ignorieren
-                    SyntaxToken closeBracerToken = token.getPair();
-                    int startIndex = token.getStart();          //Index der öffnenden...
-                    int endIndex = closeBracerToken.getStart(); //...und der schließdenden Klammer
-                    int startLine = positionLineMap.floorEntry(startIndex).getValue();  //Zeile der öffnenden...
-                    int endLine = positionLineMap.floorEntry(endIndex).getValue();      //und der schließdenen Klammer
-                    if (startIndex+1 >= endIndex-1) continue;   //Klammern umschließen keinen Block, ignorieren
-                    SortedMap<Integer, Integer> block = positionLineMap.subMap(startIndex+1, endIndex-1); //Umschlossenen Block holen
-                    for (Integer pos : block.keySet()) {
-                        int posLine = positionLineMap.floorEntry(pos).getValue();
-                        //Einrückungslevel zählen
-                        if (posLine > startLine && posLine <= endLine) {
-                            if (tabPositions.containsKey(pos)) {
-                                tabPositions.put(pos, tabPositions.get(pos)+1);
-                            }
-                            else {
-                                tabPositions.put(pos, 1);
-                            }
+            analyzeBlocks(text);
+            for (SyntaxBlock currentBlock : blocks) {
+                SyntaxLineList currentBlockLines = lines.subList(currentBlock.getStartIndex()+1, currentBlock.getEndIndex()-1);
+                for (SyntaxLine blockLine : currentBlockLines) {
+                    SyntaxLine posLine = lines.getLineAtIndex(blockLine.getStartIndex());
+                    //Einrückungslevel zählen und in eine Map speichern, um sie später einzufügen
+                    if (posLine.getStartIndex() > currentBlock.getStartIndex()&& posLine.getEndIndex() <= currentBlock.getEndIndex()) {
+                        if (tabPositions.containsKey(blockLine.getStartIndex())) {
+                            tabPositions.put(blockLine.getStartIndex(), tabPositions.get(blockLine.getStartIndex())+1);
+                        }
+                        else {
+                            tabPositions.put(blockLine.getStartIndex(), 1);
                         }
                     }
                 }
@@ -187,9 +175,42 @@ public class SyntaxManager {
                 document.insertString(0,builder.toString(),null);
             } catch (BadLocationException ex) {
             }
+            //Nach dem Einrücken neu analysieren
+            analyzeBlocks(getDocumentText());
         }
     };
     
+    private void analyzeLines(String text) {
+        lines.clear();
+        Pattern linePattern = Pattern.compile(".*(\\n|$)");
+        Matcher matcher = linePattern.matcher(text);
+        while(matcher.find()) {
+            lines.addLine(matcher.start(), matcher.end(), matcher.group());
+        }
+    }
+    
+    private void analyzeBlocks(String text) {
+        blocks.clear();
+        analyzeLines(text);
+        for (SyntaxToken token : syntaxMap.values()) {
+            if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer) {
+                if (token.getPair() == null) continue;      //Klammer hat keinen Partner -> ignorieren
+                SyntaxToken closeBracerToken = token.getPair();
+                int startIndex = token.getStart();          //Index der öffnenden...
+                int endIndex = closeBracerToken.getStart(); //...und der schließdenden Klammer
+                if (startIndex+1 >= endIndex-1) continue;   //Klammern umschließen keinen Block, ignorieren
+                SyntaxLine line = lines.getLineAtIndex(startIndex);
+                SyntaxBlock newBlock = new SyntaxBlock(startIndex, endIndex, line.getStartIndex(), line.getEndIndex(), text.substring(startIndex,endIndex));
+                SyntaxLine headerLine = lines.getLineAtIndex(startIndex-1);
+                if (headerLine != null) {
+                    newBlock.setBlockHeader(headerLine.getContent());
+                    newBlock.setBlockHeaderLine(headerLine.getLineNumber());
+                }
+                blocks.add(newBlock);
+            }
+        }
+    }
+
     private void insertTab(StringBuilder sb, int position, int count) {
         for (int i=0; i<count; i++) {
             sb.insert(position+insertedCount, "\t");
@@ -312,6 +333,11 @@ public class SyntaxManager {
     }
     
     private void setSyntaxColors() {
+        //Indiezes zurücksetzen, falls sie durch eine große Löschaktion ungültig werden
+        if (visibleIndexStart >= getDocumentText().length()) {
+            visibleIndexStart = 0;
+            visibleIndexEnd = 10000;
+        }
         for (SyntaxToken token : syntaxMap.subMap(visibleIndexStart,true, visibleIndexEnd,true).values()) {
             setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().getDisplayName()), token.getStart(), token.getLength());
         }
