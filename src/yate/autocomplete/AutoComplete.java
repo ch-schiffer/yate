@@ -205,8 +205,8 @@ public class AutoComplete implements DocumentListener {
                 if (currentCompleteLength > 0) {
                     textPane.getDocument().remove(position, currentCompleteLength);
                 }
-                currentCompleteLength = completion.length();
                 textPane.getDocument().insertString(position, completion, null);
+                currentCompleteLength = completion.length();
                 textPane.setCaretPosition(position + currentCompleteLength);
                 textPane.moveCaretPosition(position);
                 mode = Mode.COMPLETION;

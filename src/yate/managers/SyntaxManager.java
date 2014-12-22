@@ -29,7 +29,7 @@ import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
 
 /**
- * Diese Klasse verwaltet alle Funktionen, die das Syntaxhighlighting und 
+ * Diese Klasse verwaltet alle Funktionen, die das Syntaxhighlighting und
  * die automatische Einrückung von Code betreffen
  * @author Christian
  */
@@ -58,7 +58,7 @@ public class SyntaxManager {
     //Indizes müssen initialisiert werden, da vor der ersten Änderung durch Scrollen
     //bereits Syntax in dem sichtbaren Bereich eingefärbt werden muss
     private int visibleIndexStart = 0;
-    private int visibleIndexEnd = 10000;
+    private int visibleIndexEnd = 5000;
     
     /**
      * Legt den Index fest, ab dem der sichtbare Text beginnt
@@ -300,7 +300,6 @@ public class SyntaxManager {
     }
     
     private void setForegroundColor(Color c, int start, int length) {
-        System.out.println(visibleIndexStart + " " + visibleIndexEnd);
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
