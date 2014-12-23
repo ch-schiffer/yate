@@ -113,6 +113,7 @@ public class CenterBoxModel {
      * @param language Sprache
      */
     public void setLanguage(Language language) {
+        file.setLanguage(language);
         syntaxManager.setLanguage(language);
         syntaxManager.highlightSyntax();
     }

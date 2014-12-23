@@ -52,4 +52,8 @@ public class ColorManager {
     public void setColor(String keyword, Color color){
         colors.put(keyword, color);
     }
+    
+     public HashMap<String, Color> getColors() {
+        return colors;
+    }
 }

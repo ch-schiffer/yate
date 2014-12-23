@@ -7,6 +7,7 @@ package yate.project;
 
 import java.io.Serializable;
 import java.util.Objects;
+import yate.syntax.general.Language;
 
 /**
  *
@@ -17,6 +18,7 @@ public class File implements Serializable{
     private String text;
     private boolean validName;
     private java.io.File internalFile;
+    private Language language;
     
     public boolean isValid() {
         return validName;
@@ -76,6 +78,22 @@ public class File implements Serializable{
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Getter für die Sprache
+     * @return Sprache
+     */
+    public Language getLanguage (){
+        return language;
+    }
+    
+    /**
+     * Setter für die Sprache
+     * @param language 
+     */
+    public void setLanguage (Language language){
+        this.language = language;
     }
     
     //3.12.2014 Laurin
