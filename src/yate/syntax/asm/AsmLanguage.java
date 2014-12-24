@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import yate.syntax.cstyle.CStyleIdentifier;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.Language;
@@ -57,7 +58,8 @@ public class AsmLanguage extends Language{
             new ASMRegister(),
             new ASMFlags(),
             new ASMNumber(),
-            new CStyleLiteral()
+            new CStyleLiteral(),
+            new CStyleIdentifier()
     ));
     
     /**
