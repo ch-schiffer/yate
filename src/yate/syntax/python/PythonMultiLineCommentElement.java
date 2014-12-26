@@ -8,12 +8,15 @@ package yate.syntax.python;
 import yate.syntax.general.elements.LanguageElement;
 
 /**
- *
+ * Diese Klasse beschreibt einen Python-Kommentar über mehrere Zeilen
  * @author Christian
  */
 public class PythonMultiLineCommentElement extends LanguageElement {
     private static final String pattern = "(?s)\\\"\\\"\\\".*\\\"\\\"\\\"";
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public PythonMultiLineCommentElement() {
         super(pattern);
     }

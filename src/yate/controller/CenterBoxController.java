@@ -2,6 +2,7 @@ package yate.controller;
 
 import yate.listener.CenterBox.CaretListener;
 import yate.listener.CenterBox.DocumentUpdateAction;
+import yate.listener.CenterBox.IndentAction;
 import yate.listener.CenterBox.ViewPortChangedListener;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
@@ -27,6 +28,7 @@ public class CenterBoxController {
     public CenterBoxController(CenterBoxView view, CenterBoxModel model) {
         this.view = view;
         this.model = model;
+        view.addIndentAction(new IndentAction(model,view), "Indent");
         addListener();
     }
 

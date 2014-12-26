@@ -1,8 +1,11 @@
 package yate.view;
 
 import java.awt.Font;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
@@ -13,9 +16,9 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 import yate.autocomplete.AutoComplete;
-import yate.autocomplete.AutoComplete.CommitAction;
 import yate.autocomplete.AutoCompleteManager;
 import yate.listener.CenterBox.DocumentUpdateAction;
+import yate.listener.CenterBox.IndentAction;
 /**
  *
  * @author Laurin
@@ -23,6 +26,8 @@ import yate.listener.CenterBox.DocumentUpdateAction;
 public class CenterBoxView extends javax.swing.JPanel {
     
     private static final String COMMIT_ACTION = "commit";
+    private static final String SELECT_NEXT_ACTION = "next";
+    private static final String SELECT_PREV_ACTION = "prev";
     
     /**
      * Creates new form CenterBox
@@ -43,7 +48,6 @@ public class CenterBoxView extends javax.swing.JPanel {
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
                 StyleConstants.TabSet, tabset);
         jTP_text.setParagraphAttributes(aset, false);
-        
     }
     
     public StyledDocument getStyledDocument() {
@@ -59,14 +63,28 @@ public class CenterBoxView extends javax.swing.JPanel {
     }
     
     public void addAutoCompleteListener(AutoCompleteManager autoCompleteManager) {
+        //Mappings für die Autovervollständigung festlegen
         AutoComplete autoComplete = new AutoComplete(jTP_text, autoCompleteManager);
         jTP_text.getDocument().addDocumentListener(autoComplete);
-        jTP_text.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB,0), COMMIT_ACTION);
         jTP_text.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,InputEvent.ALT_DOWN_MASK), SELECT_NEXT_ACTION);
+        jTP_text.getActionMap().put(SELECT_NEXT_ACTION, autoComplete.new SelectNextAction());
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP,InputEvent.ALT_DOWN_MASK), SELECT_PREV_ACTION);
+        jTP_text.getActionMap().put(SELECT_PREV_ACTION, autoComplete.new SelectPrevAction());
+    }
+    
+    public void addIndentAction(IndentAction action, String identifier) {
+        jTP_text.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_I,InputEvent.CTRL_DOWN_MASK), identifier);
+        jTP_text.getActionMap().put(identifier, action);
     }
     
     public void addViewPortChangeListener(ChangeListener listener) {
         jScrollPane1.getViewport().addChangeListener(listener);
+    }
+    
+    public void addCaretListener(CaretListener l) {
+        jTP_text.addCaretListener(l);
     }
     
     /**
@@ -91,11 +109,29 @@ public class CenterBoxView extends javax.swing.JPanel {
         return jTP_text;
     }
     
-    public void addCaretListener(CaretListener l) {
-        jTP_text.addCaretListener(l);
+    public void setCaretPosition(int position) {
+        SwingUtilities.invokeLater(new SetCaret(position));
     }
     
+    public int getCurrentCaretPosition() {
+        return jTP_text.getCaretPosition();
+    }
     
+    private class SetCaret implements Runnable {
+        private final int position;
+        
+        public SetCaret(int position) {
+            this.position = position;
+        }
+        
+        @Override
+        public void run() {
+            if (position < jTP_text.getText().length()) {
+                jTP_text.setCaretPosition(position);
+                jTP_text.moveCaretPosition(position);
+            }
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.

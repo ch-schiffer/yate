@@ -6,9 +6,9 @@
 package yate.managers;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,11 +26,14 @@ import yate.syntax.general.ICloseBracer;
 import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
+import yate.syntax.general.SyntaxBlock;
+import yate.syntax.general.SyntaxLine;
+import yate.syntax.general.SyntaxLineList;
 import yate.syntax.general.SyntaxToken;
-import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse verwaltet alle Funktionen, die das Syntaxhighlighting und
+ * die automatische Einrückung von Code betreffen
  * @author Christian
  */
 public class SyntaxManager {
@@ -40,6 +43,9 @@ public class SyntaxManager {
      */
     private final StyledDocument document;
     
+    /**
+     * Eingestellte Sprache
+     */
     private Language language;
     
     /**
@@ -51,24 +57,46 @@ public class SyntaxManager {
     private int currentCaretPosition = 0;
     private SyntaxToken currentHighlightedBracer = null;
     private final AutoCompleteManager autoCompleteManager;
+    private final SyntaxLineList lines = new SyntaxLineList();
+    private final ArrayList<SyntaxBlock> blocks = new ArrayList<>();
     
+    //Indizes müssen initialisiert werden, da vor der ersten Änderung durch Scrollen
+    //bereits Syntax in dem sichtbaren Bereich eingefärbt werden muss
     private int visibleIndexStart = 0;
-    private int visibleIndexEnd = 10000;
+    private int visibleIndexEnd = 5000;
     
+    /**
+     * Legt den Index fest, ab dem der sichtbare Text beginnt
+     * @param visibleIndexStart  Anfang des sichtbaren Bereichs
+     */
     public void setVisibleIndexStart(int visibleIndexStart) {
         this.visibleIndexStart = visibleIndexStart;
     }
     
+    /**
+     * Legt den Index fest, an dem der sichtbare Text endet
+     * @param visibleIndexEnd  Ende des sichtbaren Bereichs
+     */
     public void setVisibleIndexEnd(int visibleIndexEnd) {
         this.visibleIndexEnd = visibleIndexEnd;
     }
     
+    /**
+     * Legt ein neues Objekt vom Typ SyntaxManager an
+     * @param document Dokument, das abgebildet wird
+     * @param file Datei, die gebunden ist
+     * @param autoCompleteManager AutoCompleteManager, der die CheckBox verwaltet
+     */
     public SyntaxManager(StyledDocument document, File file, AutoCompleteManager autoCompleteManager) {
         this.document = document;
-        setLanguage(LanguageManager.evaluateLanguage(file));
+        language = LanguageManager.evaluateLanguage(file);
         this.autoCompleteManager = autoCompleteManager;
     }
     
+    /**
+     * Ruft den Text des Dokuments ab
+     * @return Text des Dokuments
+     */
     private String getDocumentText() {
         String text;
         try {
@@ -81,22 +109,39 @@ public class SyntaxManager {
         }
     }
     
+    /**
+     * Färbt die Syntax entsprechend der eingestellten Sprache ein
+     */
     public void highlightSyntax() {
         if (language != null)
             SwingUtilities.invokeLater(runHighlightSyntax);
     }
     
+    /**
+     * Färbt Klammern paarweise ein
+     * @param position Position der ausgewählten Klammer im Text
+     */
     public void highlightBracers(int position) {
         currentCaretPosition = position;
         if (language != null)
             SwingUtilities.invokeLater(runHighlightBracers);
     }
     
+    /**
+     * Färbt die Syntax neu ein, ohne den Text erneut zu analysieren
+     */
     public void reHighlightSyntax() {
         SwingUtilities.invokeLater(runReHighlightSyntax);
     }
     
-    int insertedCount = 0;
+    private int insertedCount = 0;
+    
+    /**
+     * Rückt den Code ein
+     */
+    public void indentCode() {
+        SwingUtilities.invokeLater(runIndentCode);
+    }
     
     private final Runnable runIndentCode = new Runnable() {
         @Override
@@ -105,35 +150,18 @@ public class SyntaxManager {
             language.analyzeSyntax(text, syntaxMap, autoCompleteManager);
             insertedCount = 0;
             TreeMap<Integer,Integer> tabPositions = new TreeMap<>();
-            TreeMap<Integer,Integer> positionLineMap = new TreeMap<>();
-            Pattern linePattern = Pattern.compile(".*(\\n|$)");
-            Matcher matcher = linePattern.matcher(text);
-            int currentLine = 0;
-            while(matcher.find()) {
-                positionLineMap.put(matcher.start(), currentLine);
-                positionLineMap.put(matcher.end(), currentLine++);
-            }
-            for (SyntaxToken token : syntaxMap.values()) {
-                if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer)
-                {
-                    if (token.getPair() == null) continue;  //Klammer hat keinen Partner -> ignorieren
-                    SyntaxToken closeBracerToken = token.getPair();
-                    int startIndex = token.getStart();          //Index der öffnenden...
-                    int endIndex = closeBracerToken.getStart(); //...und der schließdenden Klammer
-                    int startLine = positionLineMap.floorEntry(startIndex).getValue();  //Zeile der öffnenden...
-                    int endLine = positionLineMap.floorEntry(endIndex).getValue();      //und der schließdenen Klammer
-                    if (startIndex+1 >= endIndex-1) continue;   //Klammern umschließen keinen Block, ignorieren
-                    SortedMap<Integer, Integer> block = positionLineMap.subMap(startIndex+1, endIndex-1); //Umschlossenen Block holen
-                    for (Integer pos : block.keySet()) {
-                        int posLine = positionLineMap.floorEntry(pos).getValue();
-                        //Einrückungslevel zählen
-                        if (posLine > startLine && posLine <= endLine) {
-                            if (tabPositions.containsKey(pos)) {
-                                tabPositions.put(pos, tabPositions.get(pos)+1);
-                            }
-                            else {
-                                tabPositions.put(pos, 1);
-                            }
+            analyzeBlocks(text);
+            for (SyntaxBlock currentBlock : blocks) {
+                SyntaxLineList currentBlockLines = lines.subList(currentBlock.getStartIndex()+1, currentBlock.getEndIndex()-1);
+                for (SyntaxLine blockLine : currentBlockLines) {
+                    SyntaxLine posLine = lines.getLineAtIndex(blockLine.getStartIndex());
+                    //Einrückungslevel zählen und in eine Map speichern, um sie später einzufügen
+                    if (posLine.getStartIndex() > currentBlock.getStartIndex()&& posLine.getEndIndex() <= currentBlock.getEndIndex()) {
+                        if (tabPositions.containsKey(blockLine.getStartIndex())) {
+                            tabPositions.put(blockLine.getStartIndex(), tabPositions.get(blockLine.getStartIndex())+1);
+                        }
+                        else {
+                            tabPositions.put(blockLine.getStartIndex(), 1);
                         }
                     }
                 }
@@ -146,14 +174,43 @@ public class SyntaxManager {
                 document.remove(0, document.getLength());
                 document.insertString(0,builder.toString(),null);
             } catch (BadLocationException ex) {
-            }            
+            }
+            //Nach dem Einrücken neu analysieren
+            analyzeBlocks(getDocumentText());
         }
     };
     
-    public void indentCode() {
-        SwingUtilities.invokeLater(runIndentCode);
+    private void analyzeLines(String text) {
+        lines.clear();
+        Pattern linePattern = Pattern.compile(".*(\\n|$)");
+        Matcher matcher = linePattern.matcher(text);
+        while(matcher.find()) {
+            lines.addLine(matcher.start(), matcher.end(), matcher.group());
+        }
     }
     
+    private void analyzeBlocks(String text) {
+        blocks.clear();
+        analyzeLines(text);
+        for (SyntaxToken token : syntaxMap.values()) {
+            if (token.getTokenType() instanceof IOpenBracer && token.getTokenType() instanceof IIndentionBracer) {
+                if (token.getPair() == null) continue;      //Klammer hat keinen Partner -> ignorieren
+                SyntaxToken closeBracerToken = token.getPair();
+                int startIndex = token.getStart();          //Index der öffnenden...
+                int endIndex = closeBracerToken.getStart(); //...und der schließdenden Klammer
+                if (startIndex+1 >= endIndex-1) continue;   //Klammern umschließen keinen Block, ignorieren
+                SyntaxLine line = lines.getLineAtIndex(startIndex);
+                SyntaxBlock newBlock = new SyntaxBlock(startIndex, endIndex, line.getStartIndex(), line.getEndIndex(), text.substring(startIndex,endIndex));
+                SyntaxLine headerLine = lines.getLineAtIndex(startIndex-1);
+                if (headerLine != null) {
+                    newBlock.setBlockHeader(headerLine.getContent());
+                    newBlock.setBlockHeaderLine(headerLine.getLineNumber());
+                }
+                blocks.add(newBlock);
+            }
+        }
+    }
+
     private void insertTab(StringBuilder sb, int position, int count) {
         for (int i=0; i<count; i++) {
             sb.insert(position+insertedCount, "\t");
@@ -177,7 +234,6 @@ public class SyntaxManager {
         }
         return sb.toString();
     }
-    
     
     private final Runnable runHighlightSyntax = new Runnable() {
         @Override
@@ -264,19 +320,24 @@ public class SyntaxManager {
         setBackgroundColor(color, token.getPair().getStart(), token.getPair().getLength());
     }
     
-    public void setForegroundColor(Color c, int start, int length) {
+    private void setForegroundColor(Color c, int start, int length) {
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setForeground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
     }
     
-    public void setBackgroundColor(Color c, int start, int length) {
+    private void setBackgroundColor(Color c, int start, int length) {
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setBackground(sas, c);
         document.setCharacterAttributes(start, length, sas, false);
     }
     
     private void setSyntaxColors() {
+        //Indiezes zurücksetzen, falls sie durch eine große Löschaktion ungültig werden
+        if (visibleIndexStart >= getDocumentText().length()) {
+            visibleIndexStart = 0;
+            visibleIndexEnd = 10000;
+        }
         for (SyntaxToken token : syntaxMap.subMap(visibleIndexStart,true, visibleIndexEnd,true).values()) {
             setForegroundColor(ColorManager.getInstance().getColor(language.getLanguageName()+token.getTokenType().getType().getDisplayName()), token.getStart(), token.getLength());
         }
@@ -288,24 +349,20 @@ public class SyntaxManager {
         }
     }
     
+    /**
+     * Ruft die aktuell ausgewählte Sprache ab
+     * @return Ausgewählte Sprache
+     */
     public Language getLanguage() {
         return language;
     }
     
+    /**
+     * Legt die Sprache fest
+     * @param language Festzulegende Sprache
+     */
     public void setLanguage(Language language) {
         this.language = language;
-        
-        //TEST
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.COMMENT.getDisplayName(), Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.DATATYPE.getDisplayName(), Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.KEYWORD.getDisplayName(), Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.LITERAL.getDisplayName(), Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.MNEMONIC.getDisplayName(), Color.red);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.FLAG.getDisplayName(), Color.blue);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.REGISTER.getDisplayName(), Color.orange);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.NUMBER.getDisplayName(), Color.green);
-        ColorManager.getInstance().setColor(language.getLanguageName()+LanguageElementType.PREPROCESSOR.getDisplayName(), Color.red);
-        //TEST
     }
 }
 

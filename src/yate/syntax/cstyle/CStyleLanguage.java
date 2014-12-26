@@ -7,13 +7,13 @@ package yate.syntax.cstyle;
 
 import java.util.Stack;
 import yate.syntax.general.ICloseBracer;
-import yate.syntax.general.IIndentionBracer;
 import yate.syntax.general.IOpenBracer;
 import yate.syntax.general.Language;
 import yate.syntax.general.SyntaxToken;
 
 /**
- *
+ * Diese Klasse bietet Funktionen zur Analyse von Sprachen, die in ihrem Stil
+ * der Sprache C ähneln (z.B. C++, C# etc.)
  * @author Christian
  */
 public abstract class CStyleLanguage extends Language {
@@ -23,13 +23,21 @@ public abstract class CStyleLanguage extends Language {
      */
     private final Stack<SyntaxToken> bracesStack;
     
-    private int indentionCounter = 0;
-    
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     * @param languageName Name der Sprache
+     */
     public CStyleLanguage(String languageName) {
         super(languageName);
         bracesStack = new Stack<>();
     }
     
+    
+    /**
+     * Diese Funktion wird aufgerufen, während die Syntaxanalyse läuft und verwaltet
+     * den Stack, mit dem die Klammersetzung gesteuert wird
+     * @param token Aktuell behandeltes Token
+     */
     @Override
     protected void analysisHandler(SyntaxToken token) {
         if (token == null) throw new IllegalArgumentException("token is null");
@@ -38,9 +46,6 @@ public abstract class CStyleLanguage extends Language {
         if (token.getTokenType() instanceof IOpenBracer)
         {
             bracesStack.push(token);
-            if (token.getTokenType() instanceof IIndentionBracer) {
-                token.setIndentionLevel(++indentionCounter);
-            }
         }
         //Schließende Klammer
         else if (token.getTokenType() instanceof ICloseBracer)
@@ -57,20 +62,17 @@ public abstract class CStyleLanguage extends Language {
                 //Paarweise eintragen
                 open.setPair(token);
                 token.setPair(open);
-                if (token.getTokenType() instanceof IIndentionBracer) {
-                    //Einrückungslevel setzen
-                    token.setIndentionLevel(open.getIndentionLevel()*(-1));
-                    indentionCounter--;
-                }
             }
         }
     }
     
+    /**
+     * Setzt den Klammernstapel zurück
+     */
     @Override
     protected void resetLanguage() {
         //Klammernstack leeren
         bracesStack.clear();
-        indentionCounter=0;
     }
     
 }

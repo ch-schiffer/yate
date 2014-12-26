@@ -23,30 +23,11 @@ public class CenterBoxModel {
     private final StyledDocument document;
     private final File file;
     
-    public void setVisibleIndexStart(int visibleIndexStart) {
-        syntaxManager.setVisibleIndexStart(visibleIndexStart);
-    }
-    
-    public void setVisibleIndexEnd(int visibleIndexEnd) {
-        syntaxManager.setVisibleIndexEnd(visibleIndexEnd);
-    }
-    
-    public SearchReplaceManager getSearchReplaceManager() {
-        return searchReplaceManager;
-    }
-    
-    public String getText(){
-        try {
-            return document.getText(0, document.getLength());
-        } catch (BadLocationException ex) {
-            return null;
-        }
-    }
-    
     /**
      * Konstruktor
      * @param document Dokument des Text-Elements
      * @param file Datei, die dargestellt wird
+     * @param textPane Gibt das verknüpfte TextPane an, um auf Caret-Infos zuzugreifen
      */
     public CenterBoxModel(StyledDocument document, File file, JTextPane textPane) {
         autoCompleteManager = new AutoCompleteManager();
@@ -60,8 +41,7 @@ public class CenterBoxModel {
      * Analysiert die Syntax und hebt sie entsprechend den Einstellungen farbig
      * hervor
      */
-    public void analyseSyntax()
-    {
+    public void analyseSyntax() {
         autoCompleteManager.clearSuggestions();
         syntaxManager.highlightSyntax();
     }
@@ -107,7 +87,6 @@ public class CenterBoxModel {
         return file;
     }    
     
-    
     /**
      * Setter für die Sprache
      * @param language Sprache
@@ -124,5 +103,40 @@ public class CenterBoxModel {
     public AutoCompleteManager getAutoCompleteManager() {
         return autoCompleteManager;
     }
+
+        /**
+     * Legt den Anfang des sichtbaren Bereichs fest, der eingefärbt werden soll
+     * @param visibleIndexStart Anfang
+     */
+    public void setVisibleIndexStart(int visibleIndexStart) {
+        syntaxManager.setVisibleIndexStart(visibleIndexStart);
+    }
     
+    /**
+     * Legt das Ende des sichtbaren Bereichs fest, der eingefärbt werden soll
+     * @param visibleIndexEnd Ende
+     */
+    public void setVisibleIndexEnd(int visibleIndexEnd) {
+        syntaxManager.setVisibleIndexEnd(visibleIndexEnd);
+    }
+    
+    /**
+     * Ruft den zugehörigen SearchReplaceManager ab
+     * @return SearchReplaceManager
+     */
+    public SearchReplaceManager getSearchReplaceManager() {
+        return searchReplaceManager;
+    }
+    
+    /**
+     * Ruft den Text des Dokuments ab
+     * @return Text des angehängten Dokuments
+     */
+    public String getText(){
+        try {
+            return document.getText(0, document.getLength());
+        } catch (BadLocationException ex) {
+            return null;
+        }
+    }
 }

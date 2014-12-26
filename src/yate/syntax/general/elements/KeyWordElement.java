@@ -6,11 +6,15 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für Schlüsselwörter zur Verfügung
  * @author Christian
  */
 public class KeyWordElement extends LanguageElement {
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     * @param pattern Muster des Schlüsselworts
+     */
     public KeyWordElement(String pattern) {
         super("\\b"+pattern+"\\b");
     }    

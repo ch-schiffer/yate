@@ -6,7 +6,8 @@
 package yate.syntax.general;
 
 /**
- *
+ * Dieses Interface wird von Schlüsselwörtern implementiert, die eine schließende
+ * Klammer repräsentieren
  * @author Christian
  */
 public interface ICloseBracer {

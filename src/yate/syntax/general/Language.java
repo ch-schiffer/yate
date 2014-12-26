@@ -22,6 +22,10 @@ import yate.managers.ColorManager;
  */
 public abstract class Language implements Iterable<KeyWordCollection> {
     
+    private String patternString = null;
+    private final String languageName;
+    private HashMap<String,String> languageKeys = null;
+    
     /**
      * Konstruktor
      * @param languageName Name der Sprache
@@ -34,12 +38,21 @@ public abstract class Language implements Iterable<KeyWordCollection> {
         for (KeyWordCollection keyword : this) {
             ColorManager.getInstance().setColor(languageName+keyword.getType().toString(), Color.black);
         }
+        for (String key : getDefaultColors().keySet()) {
+            ColorManager.getInstance().setColor(key, getDefaultColors().get(key));
+        }
     }
     
-    private final String languageName;
     
-    protected final ArrayList<String> languageSuffixList;   
+    /**
+     * Liste der Suffixe, die für die Erkennung der Sprache benötigt werden
+     */
+    protected final ArrayList<String> languageSuffixList;
     
+    /**
+     * Getter für den Namen der Sprache
+     * @return Name der Sprache
+     */
     public String getLanguageName() {
         return languageName;
     }
@@ -50,13 +63,19 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      */
     protected abstract ArrayList<KeyWordCollection> getKeyWords();
     
+    /**
+     * Iterator zum iterieren über die gespeicherten Schlüsselwörter
+     * @return Iterator
+     */
     @Override
     public Iterator<KeyWordCollection> iterator() {
         return getKeyWords().iterator();
     }
     
-    private String patternString = null;
-    
+    /**
+     * Gibt die String-Repräsentation der Sprache zurück
+     * @return String-Repräsentation
+     */
     @Override
     public String toString() {
         if (patternString == null) {
@@ -77,11 +96,11 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      * zurück
      * @param input Eingabetext
      * @param syntaxMap Map, in die Tokens gespeichert werden
-     * @param autoCompleteManager
+     * @param autoCompleteManager AutoCompleteManager, in den die Vorschläge eingefügt werden sollen
      *
      */
     public final void analyzeSyntax(String input, NavigableMap<Integer, SyntaxToken> syntaxMap, AutoCompleteManager autoCompleteManager) {
-        autoCompleteManager.clearSuggestions();
+        if (autoCompleteManager != null) autoCompleteManager.clearSuggestions();
         syntaxMap.clear();  //Map leeren
         resetLanguage();    //Sprachspezifisch aufräumen
         String pattern = this.toString();
@@ -94,7 +113,7 @@ public abstract class Language implements Iterable<KeyWordCollection> {
                     SyntaxToken newToken = new SyntaxToken(token, matcher.group(token.getType().toString()), matcher.start(), matcher.end());
                     syntaxMap.put(newToken.getStart(), newToken);   //In Syntaxmap eintragen
                     analysisHandler(newToken);  //Sprachspezifische Abhandlungen
-                    autoCompleteManager.insertSuggestion(newToken.getContent()); //Vorschlag zum AutoCompletManager hinzufügen
+                    if (autoCompleteManager != null) autoCompleteManager.insertSuggestion(newToken.getContent()); //Vorschlag zum AutoCompletManager hinzufügen
                     break;
                 }
             }
@@ -114,12 +133,20 @@ public abstract class Language implements Iterable<KeyWordCollection> {
      */
     protected void resetLanguage() { }
     
+    /**
+     * Prüft, ob ein übergebenes Suffix der Sprache entspricht
+     * @param suffix Zu prüfendes Suffix
+     * @return True: Suffix entspricht der Sprache
+     */
     public boolean checkSuffix(String suffix) {
         return languageSuffixList.contains(suffix);
     }
     
-    private HashMap<String,String> languageKeys = null;
-    
+    /**
+     * Gibt eine Liste der Keys zurück, über die die Schlüsselwörter der Sprache
+     * im ColorManager abgerufen werden können
+     * @return Liste der Keys
+     */
     public HashMap<String,String> getLanguageKeys() {
         if (languageKeys != null) return languageKeys;
         languageKeys = new HashMap<> ();
@@ -128,4 +155,10 @@ public abstract class Language implements Iterable<KeyWordCollection> {
         }
         return languageKeys;
     }
+    
+    /**
+     * Gibt eine Liste der Standard-Farben für die Sprache zurück
+     * @return Liste der Standard-Sprachen
+     */
+    public abstract HashMap<String, Color> getDefaultColors();
 }

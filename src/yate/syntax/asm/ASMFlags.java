@@ -13,15 +13,22 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet die Flags auf, die in der Sprache Assembler verwendet werden
  * @author Christian
  */
 public class ASMFlags extends KeyWordCollection{
     
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
     public ASMFlags() {
         super(LanguageElementType.FLAG);
     }
     
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
