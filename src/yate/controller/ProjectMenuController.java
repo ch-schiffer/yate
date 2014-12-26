@@ -7,7 +7,6 @@ import yate.listener.ProjectMenu.OpenProjectListener;
 import yate.listener.ProjectMenu.RemoveFromProjectListener;
 import yate.listener.ProjectMenu.SaveProjectListener;
 import yate.model.ProjectMenuModel;
-import yate.project.File;
 import yate.view.ProjectMenuView;
 
 /**
@@ -16,31 +15,50 @@ import yate.view.ProjectMenuView;
  */
 public class ProjectMenuController {
 
+    //Die View des Contollers.
     private final ProjectMenuView view;
+    //Das Model des Contollers.
     private final ProjectMenuModel model;
 
+    /**
+     * Der Konstuktor bekommt seine View und sein Model übergeben. Dann hängt
+     * dieser die Listener an die View an. Zudem wird in die View die
+     * Projektliste geladen.
+     *
+     * @param view Die View des Contollers.
+     * @param model Das Model des Contollers.
+     */
     public ProjectMenuController(ProjectMenuView view, ProjectMenuModel model) {
         this.model = model;
         this.view = view;
-        
+
         view.setListModel(model.getDlm());
-        
-        //Test
-        model.addFile(new File("C:/testdi/test.pdf"));
-        model.addFile(new File("C:/testdi/test.html"));
-        model.addFile(new File("C:/testdi/test.txt"));
-        //Test Ende
+
         addListener();
     }
 
+    /**
+     * Getter für die View.
+     *
+     * @return Das Model des Contollers.
+     */
     public ProjectMenuView getView() {
         return view;
     }
 
+    /**
+     * Getter für das Model.
+     *
+     * @return Das Model des Contollers.
+     */
     public ProjectMenuModel getModel() {
         return model;
     }
 
+    /**
+     * Erstellt die Listener und hängt diese an die View an. Wird im Konstuktor
+     * aufgerufen.
+     */
     private void addListener() {
         view.addAddToProjectListener(new AddToProjectListener(view, model));
         view.addEditProjectFileListener(new EditProjectFileListener(view, model));

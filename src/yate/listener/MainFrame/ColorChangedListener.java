@@ -32,7 +32,7 @@ public class ColorChangedListener extends MainFrameListener implements ActionLis
         //Hier die neue HashMap
         HashMap<String, java.awt.Color> map;
         if (ccc.getModel().isConfirmed()) {
-            map = ccc.getModel().getModifyedElements();
+            map = ccc.getModel().getModifiedElements();
         }
     }
 
