@@ -3,13 +3,16 @@ package yate.view;
 import yate.listener.MainFrame.TabCloseListener;
 
 /**
+ * Simples Panel, dass den Tab im TabPane überschreibt und einen Button zum
+ * schliessen hinzufügt.
  *
  * @author Laurin
  */
 public class CloseTab extends javax.swing.JPanel {
 
     /**
-     * Creates new form CloseTab
+     * Erstellt die javax.Swing Komponenten und setzt Titel und den
+     * ActionListener.
      *
      * @param titel
      * @param l
@@ -20,10 +23,20 @@ public class CloseTab extends javax.swing.JPanel {
         jB_close.addActionListener(l);
     }
 
+    /**
+     * Den Titel des Tabs setzen.
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         jL_titel.setText(title);
     }
 
+    /**
+     * Titel des Tabs abfragen.
+     *
+     * @return
+     */
     public String getTitle() {
         return jL_titel.getText();
     }

@@ -1,6 +1,5 @@
 package yate.view;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -21,36 +20,58 @@ import yate.listener.MainFrame.TabCloseListener;
 import yate.listener.MainFrame.TestButtonListener;
 import yate.listener.MainFrame.regex.FindNextListener;
 import yate.listener.MainFrame.regex.FindPreviousListener;
+import yate.listener.MainFrame.regex.RegexChangedListener;
 import yate.listener.MainFrame.regex.ReplaceAllListener;
 import yate.listener.MainFrame.regex.ReplaceListener;
 import yate.syntax.general.Language;
 
 /**
+ * Dies ist das zentrale JFrame in das sämtliche andere Komponenten geladen
+ * werden. Die beinhält Die ProjectView und die CenterBoxes.
  *
  * @author Laurin
  */
 public class MainFrameView extends javax.swing.JFrame {
 
-    private final ButtonGroup buttonGroup;
+    //ButtonGroup für die Sprachen im JMenu.
+    private final ButtonGroup languageButtonGroup;
 
     /**
-     * Creates new form MainFrame
+     * Erstellt die javax.Swing Komponenten und die ButtonGroup.
      */
     public MainFrameView() {
-        buttonGroup = new ButtonGroup();
+        languageButtonGroup = new ButtonGroup();
         initComponents();
     }
 
+    /**
+     * Fügt eine CenterBoxView zum TabedPane hinzu und setzt automatisch den
+     * Fokus auf den neuen Tab.
+     *
+     * @param view Die CenterBoxView
+     * @param name Der Titel für den Tab.
+     * @param l Der TabCloseListener füt den CloseTab
+     */
     public void addCenterBoxViewToTab(CenterBoxView view, String name, TabCloseListener l) {
+        //Die View adden.
         jTP_tabed.add(view, name);
-        jTP_tabed.setSelectedComponent(view); //17.11.14 Neuen Tab fokussieren CHS
+        //Den Fokus auf den neuen Tab setzen.
+        jTP_tabed.setSelectedComponent(view);
+        //CloseTab für den TabHeader erstellen
         CloseTab t = new CloseTab(name, l);
+        //und die aktuelle TabComponent mit dem CloseTab überschreiben.
         jTP_tabed.setTabComponentAt(jTP_tabed.getTabCount() - 1, t);
     }
 
+    /**
+     * Setzt die ausgewählte Sprache in der ButtonGroup. Ist die Sprache nicht
+     * teil der ButtonnGroup wird nichts verändert.
+     *
+     * @param language Die auszuwählende Sprache.
+     */
     public void setSelectedLanguage(String language) {
-        Enumeration<AbstractButton> elements = buttonGroup.getElements();
-
+        Enumeration<AbstractButton> elements = languageButtonGroup.getElements();
+        //Durchsuchen der ButtonGroup.
         for (AbstractButton abs : Collections.list(elements)) {
             if (abs.getText().equals(language)) {
                 abs.setSelected(true);
@@ -58,18 +79,38 @@ public class MainFrameView extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Die ProjectMenuView hinzufügen.
+     *
+     * @param view ProjectMenuView
+     */
     public void addProjectMenuView(ProjectMenuView view) {
         jP_Pmv.add(view);
     }
 
+    /**
+     * Einen Tab entfernen.
+     *
+     * @param c Die zu entfernende Komponente.
+     */
     public void removeTab(java.awt.Component c) {
         jTP_tabed.remove(c);
     }
 
+    /**
+     * Den Titel des momentan ausgewählten Tabs ändern.
+     *
+     * @param title
+     */
     public void setCurrentTabTitle(String title) {
         ((CloseTab) jTP_tabed.getTabComponentAt(getSelectedTabIndex())).setTitle(title);
     }
 
+    /**
+     * Alle CloseTabs als ArrayList erhalten.
+     *
+     * @return ArrayList<CloseTab>
+     */
     public ArrayList<CloseTab> getTabs() {
         ArrayList<CloseTab> tabs = new ArrayList<>();
 
@@ -79,121 +120,233 @@ public class MainFrameView extends javax.swing.JFrame {
         return tabs;
     }
 
+    /**
+     * Den Index des momentan ausgewählten Tabs erhalten.
+     *
+     * @return Der Index des ausgewählten Tabs.
+     */
     public int getSelectedTabIndex() {
         return jTP_tabed.getSelectedIndex();
     }
 
-    // Schnittstelle CAR 7.12.14
+    /**
+     * Den Text aus dem Text Feld für die Suche erhalten.
+     *
+     * @return Der Text der im Suchfeld steht.
+     */
     public String getSearchText() {
         return jTF_search.getText();
     }
 
+    /**
+     * Den Text aus dem Text Feld für das ersetzen erhalten.
+     *
+     * @return Der Text der im Ersetzenfeld steht.
+     */
     public String getReplaceText() {
         return jTF_replace.getText();
     }
 
+    /**
+     * Abfrage ob Regex in der CheckBox aktiviert ist.
+     *
+     * @return Status des Regex.
+     */
     public boolean isRegex() {
         return jbCB_regex.isEnabled();
     }
 
+    /**
+     * Eine Sprache zur ButtonGroup hinzufügen.
+     *
+     * @param lang Die hinzuzufügende Sprache.
+     * @param listener Der LanguageChangedListener für den Button.
+     */
     public void addLanguage(Language lang, LanguageChangedListener listener) {
+        //Name der Sprache als Titel für den Button.
         String name = lang.getLanguageName();
 
         javax.swing.JRadioButtonMenuItem JMI = new javax.swing.JRadioButtonMenuItem(name);
         addLanguageChangedListener(listener, JMI);
 
-        if (buttonGroup.getButtonCount() == 0) {
+        //Die als erstes hinugefügte Sprache ist die als erstes ausgewählte.
+        if (languageButtonGroup.getButtonCount() == 0) {
             JMI.setSelected(true);
         }
-        buttonGroup.add(JMI);
+        languageButtonGroup.add(JMI);
         jMI_languageSub.add(JMI);
     }
 
+    /**
+     * Das Model vom JTabedPane erhalte.
+     *
+     * @return SingleSelectionModel des JTabedPanes.
+     */
     public SingleSelectionModel getJTabedPaneModel() {
         return jTP_tabed.getModel();
     }
 
+    /**
+     * Das Model der ComboBox für die Fonts.
+     *
+     * @return DefaultComboBoxModel<String>
+     */
     public DefaultComboBoxModel<String> getFontModel() {
         return (DefaultComboBoxModel<String>) jCB_font.getModel();
     }
 
+    /**
+     * Das Model der ComboBox für die FontSizes.
+     *
+     * @return DefaultComboBoxModel<String>
+     */
     public DefaultComboBoxModel<String> getFontSizeModel() {
         return (DefaultComboBoxModel<String>) jCB_fontSize.getModel();
     }
 
     //Listener
+    /**
+     * Fügt den Listener für die Schriftarten hinzu.
+     *
+     * @param l FontChangedListener
+     */
     public void addFontChangedListener(FontChangedListener l) {
         jCB_font.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für die Schriftgrößen hinzu
+     *
+     * @param l FontSizeChangedListener
+     */
     public void addFontSizeChangedListener(FontSizeChangedListener l) {
         jCB_fontSize.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Neue Datei" Button hinzu.
+     *
+     * @param l NewFileListener
+     */
     public void addNewFileListener(NewFileListener l) {
         jB_newFile.addActionListener(l);
         jMI_new.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Öffne Datei" Button hinzu.
+     *
+     * @param l OpenFileListener
+     */
     public void addOpenFileListener(OpenFileListener l) {
         jB_open.addActionListener(l);
         jMI_open.addActionListener(l);
 
     }
 
+    /**
+     * Fügt den Listener für den "Speicher Alle Dateien" Button hinzu.
+     *
+     * @param l SaveAllFilesListener
+     */
     public void addSaveAllFileListener(SaveAllFilesListener l) {
         jB_saveAll.addActionListener(l);
         jMI_saveAll.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Speicher Datei" Button hinzu.
+     *
+     * @param l SaveFileListener
+     */
     public void addSaveFileListener(SaveFileListener l) {
         jB_save.addActionListener(l);
         jMI_save.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Test" Button hinzu.
+     *
+     * @param l TestButtonListener
+     */
     public void addTestButtonListener(TestButtonListener l) {
         jB_testButton.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den Sprachwechsel an.
+     *
+     * @param l LanguageChangedListener
+     * @param item JMenuItem aus der ButtonGroup.
+     */
     private void addLanguageChangedListener(LanguageChangedListener l, javax.swing.JMenuItem item) {
         item.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den Tabwechsel an.
+     *
+     * @param l TabChangedListener
+     */
     public void addTabChangedListener(TabChangedListener l) {
         jTP_tabed.addChangeListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Farbe bearbeiten" Button hinzu.
+     *
+     * @param l ColorChangedListener
+     */
     public void addColorChangedListener(ColorChangedListener l) {
         jMI_editColors.addActionListener(l);
     }
 
     //RegexListener
+    /**
+     * Fügt den Listener für den "Nächstes" Button hinzu.
+     *
+     * @param l FindNextListener
+     */
     public void addFindNextListener(FindNextListener l) {
         jB_next.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Vorheriges" Button hinzu.
+     *
+     * @param l FindPreviousListener
+     */
     public void addFindPreviousListener(FindPreviousListener l) {
         jB_previous.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Alle ersetzen" Button hinzu.
+     *
+     * @param l ReplaceAllListener
+     */
     public void addReplaceAllListener(ReplaceAllListener l) {
         jB_replaceAll.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Ersetzen" Button hinzu.
+     *
+     * @param l ReplaceListener
+     */
     public void addReplaceListener(ReplaceListener l) {
         jB_replace.addActionListener(l);
     }
 
-    //13.12.14 CAR
-    public void addRegexChangedListener(ActionListener l) {
+    /**
+     * Fügt den Listener für die "REGEX" ComboBox hinzu.
+     *
+     * @param l RegexChangedListener
+     */
+    public void addRegexChangedListener(RegexChangedListener l) {
         jbCB_regex.addActionListener(l);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

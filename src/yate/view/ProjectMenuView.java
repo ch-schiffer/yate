@@ -11,61 +11,112 @@ import yate.listener.ProjectMenu.SaveProjectListener;
 import yate.project.File;
 
 /**
+ * Die View zum verwalten des aktuell verwendeten Projekts. Diese wird Später
+ * dem MainFrame hinzugefügt.
  *
  * @author Laurin
  */
 public class ProjectMenuView extends javax.swing.JPanel {
 
     /**
-     * Creates new form SideMenu
+     * Neue Instanz des ProjectMenuView. Initialisierung der Javax.Swing
+     * Komponenten.
      */
     public ProjectMenuView() {
         initComponents();
     }
-    
-    public void  setListModel(DefaultListModel<File> model)
-    {
+
+    /**
+     * Das ListModel für die Liste.
+     *
+     * @param model DefaultListModel<File>
+     */
+    public void setListModel(DefaultListModel<File> model) {
         jL_files.setModel(model);
     }
-    
-    public File getSelectedItem()
-    {
+
+    /**
+     * Gibt die momentan ausgewählte Datei zurück.
+     *
+     * @return File
+     */
+    public File getSelectedItem() {
         return (File) jL_files.getSelectedValue();
     }
 
+    /**
+     * Den Name des Projects ändern.
+     *
+     * @param text String, der neue Titel.
+     */
     public void setProjectName(String text) {
         jL_projectName.setText(text);
     }
 
+    /**
+     * Gibt das ListModel der Liste zurück.
+     *
+     * @return ListModel
+     */
     public ListModel getFileModel() {
         return jL_files.getModel();
     }
 
     //Listener
+    /**
+     * Fügt den Listener für den "Hinzufügen" Button hinzu.
+     *
+     * @param l AddToProjectListener
+     */
     public void addAddToProjectListener(AddToProjectListener l) {
         jB_addFile.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Bearbeiten" Button hinzu.
+     *
+     * @param l EditProjectFileListener
+     */
     public void addEditProjectFileListener(EditProjectFileListener l) {
         jB_editProject.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Neu" Button hinzu.
+     *
+     * @param l NewProjectListener
+     */
     public void addNewProjectListener(NewProjectListener l) {
         jB_newProject.addActionListener(l);
     }
 
+    /**
+     * Fügt den Listener für den "Entfernen" Button hinzu.
+     *
+     * @param l RemoveFromProjectListener
+     */
     public void addRemoveFromProjectListener(RemoveFromProjectListener l) {
         jB_removeFile.addActionListener(l);
     }
-    
-   public void addOpenProjectListener(OpenProjectListener l) {
+
+    /**
+     * Fügt den Listener für den "Öffnen" Button hinzu.
+     *
+     * @param l OpenProjectListener
+     */
+    public void addOpenProjectListener(OpenProjectListener l) {
         jB_openProject.addActionListener(l);
     }
-   
-   public void addSaveProjectListener(SaveProjectListener l) {
+
+    /**
+     * Fügt den Listener für den "Speichern" Button hinzu.
+     *
+     * @param l SaveProjectListener
+     */
+    public void addSaveProjectListener(SaveProjectListener l) {
         jB_saveProject.addActionListener(l);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
