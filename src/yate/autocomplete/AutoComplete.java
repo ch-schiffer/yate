@@ -16,7 +16,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 /**
- *
+ * Diese Klasse steuert die automatische Vervollständigung von bereits im Text
+ * verwendeten Wörtern. Vorschläge werden vorgeblendet und können vervollständigt
+ * werden. Außerdem können mehrere Treffer durchnavigiert werden, falls vorhanden.
  * @author Christian
  */
 public class AutoComplete implements DocumentListener {
@@ -31,77 +33,98 @@ public class AutoComplete implements DocumentListener {
     private Mode mode = Mode.INSERT;
     private final AutoCompleteManager autoCompleteManager;
     private final ArrayList<String> currentResults = new ArrayList<>();
-    private boolean inCompleteMode = false;
     private int currentIndex = 0;
+    private int position = 0;
+    private int wordBegin = 0;
+    private int currentCompleteLength = 0;
     
-    public AutoComplete(JTextPane textField, AutoCompleteManager autoCompleteManager) {
-        this.textPane = textField;
+    /**
+     * Erstellt eine neue Instanz der Klasse
+     * @param textPane TextPane, dessen Text verwaltet werden soll
+     * @param autoCompleteManager AutoCompleteManager, der die Vorschläge sammelt
+     */
+    public AutoComplete(JTextPane textPane, AutoCompleteManager autoCompleteManager) {
+        this.textPane = textPane;
         this.autoCompleteManager = autoCompleteManager;
     }
     
+    /**
+     * Nicht genutzt
+     * @param ev Nicht genutzt
+     */
     @Override
     public void changedUpdate(DocumentEvent ev) { }
     
+    /**
+     * Nicht genutzt
+     * @param ev Nicht genutzt
+     */
     @Override
     public void removeUpdate(DocumentEvent ev) { }
     
-    private int position = 0;
-    private int wordBegin = 0;
-    
+    /**
+     * Diese Funktion wird ausgeführt, wenn der Text geändert wird
+     * @param ev Informationen über das Event
+     */
     @Override
     public void insertUpdate(DocumentEvent ev) {
-        keywords = new ArrayList<>(autoCompleteManager.getSuggestions());
-        String prefix = getCurrentWord(ev);
-        currentResults.clear();
-        //Nach einem neuen Suchlauf auf den ersten Vorschlag positionieren
-        currentIndex = 0;
-        for (String word : keywords) {
-            if (word.startsWith(prefix)) {
-                currentResults.add(word);
-            }
-        }
-        if (currentResults.size() > 0) {
-            inCompleteMode = true;
-            String match = currentResults.get(currentIndex);
-            // Treffer gefunden
-            String completion = match.substring(position - wordBegin);
-            SwingUtilities.invokeLater(new CompletionTask(completion, position+1));
-        }
-        else {
-            mode = Mode.INSERT;
-        }
-    }
-    
-    private String getCurrentWord(DocumentEvent ev) {
-        if (ev.getLength() != 1)
-            return "";
-        
+        if (ev.getLength() != 1) return;    //Dokument leer
+
+        //Position im Text feststellen
         position = ev.getOffset();
+
+        //Text ermitteln
         String content;
         try {
             content = textPane.getText(0, position + 1);
         } catch (BadLocationException e) {
-            return "";
+            return;
         }
         
-        // Wortanfang suchen        
-        for (wordBegin = position; wordBegin >= 0; wordBegin--) {
+        // Wortanfang suchen
+        wordBegin = 0;
+        for (wordBegin = position; wordBegin > 0; wordBegin--) {
             if (!Character.isLetter(content.charAt(wordBegin))) {
                 break;
             }
         }
         
         //Nur Wörter mit min 2 Zeichen betrachten
-        if (wordBegin >= 0 && position - wordBegin < 2)
-            return content.substring(wordBegin + 1);
-        return "";
+        if (position - wordBegin < 2) return;
+        
+        currentIndex = 0;
+        currentCompleteLength = 0;
+        
+        //Vorschläge aus dem AutoCompleteManager abholen
+        keywords = new ArrayList<>(autoCompleteManager.getSuggestions());
+        
+        String prefix = content.substring(wordBegin + 1);
+        currentResults.clear();
+        
+        //Wörter finden, die dem eingegebenen Wortanfang entsprechen
+        for (String word : keywords) {
+            if (word.startsWith(prefix)) {
+                currentResults.add(word);
+            }
+        }
+        
+        if (currentIndex < currentResults.size()) {
+            String match = currentResults.get(currentIndex);
+            String completion = match.substring(position - wordBegin);
+            SwingUtilities.invokeLater(new CompletionTask(completion, position+1));
+        } else {
+            mode = Mode.INSERT;
+        }
     }
     
+    /**
+     * Diese Aktion vervollständgt entweder die Eingabe, oder verwirft diese,
+     * wenn nichts vorgeblendet wurde
+     */
     public class CommitAction extends AbstractAction {
         
         @Override
         public void actionPerformed(ActionEvent ev) {
-            inCompleteMode = false;
             if (mode == Mode.COMPLETION) {
                 int pos = textPane.getSelectionEnd();
                 String sb = textPane.getText();
@@ -114,25 +137,44 @@ public class AutoComplete implements DocumentListener {
         }
     }
     
-    public class SelectNextAction extends AbstractAction {
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (inCompleteMode && currentResults.size() > 0) {
-                currentIndex = (currentIndex+1) % currentResults.size();
-                String match = currentResults.get(currentIndex);
-                // Treffer gefunden
-                String completion = match.substring(position - wordBegin);
-                SwingUtilities.invokeLater(new CompletionTask(completion, position+1));
-            }
-        }
-    }
-    
+    /**
+     * Diese Aktion blendet den vorherigen Vorschlag in der Liste vor. Ist der 
+     * Anfang der Vorschlagsliste erreicht, wird mit dem letzten Element 
+     * fortgefahren
+     */
     public class SelectPrevAction extends AbstractAction {
         
+        /**
+         * Führt die Aktion aus
+         * @param e Nicht genutzt
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (inCompleteMode && currentResults.size() > 0) {
+            if (currentResults.size() > 0) {
+                if (currentIndex == 0) currentIndex = currentResults.size()-1;
+                else currentIndex = (currentIndex-1) % currentResults.size();
+                String match = currentResults.get(currentIndex);
+                // Treffer gefunden
+                String completion = match.substring(position - wordBegin);
+                SwingUtilities.invokeLater(new CompletionTask(completion, position+1));
+            }
+        }
+    }
+    
+    /**
+     * Diese Aktion blendet den nächsten Vorschlag in der Liste vor. Ist das 
+     * Ende der Vorschlagsliste erreicht, wird mit dem ersten Element 
+     * fortgefahren
+     */
+    public class SelectNextAction extends AbstractAction {
+        
+        /**
+         * Führt die Aktion aus
+         * @param e Nicht genutzt
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (currentResults.size() > 0) {
                 currentIndex = (currentIndex+1) % currentResults.size();
                 String match = currentResults.get(currentIndex);
                 // Treffer gefunden
@@ -142,6 +184,9 @@ public class AutoComplete implements DocumentListener {
         }
     }
     
+    /**
+     * Dient zum Vorblenden des aktuellen Vorschlags in dem angebundenen JTextPane
+     */
     private class CompletionTask implements Runnable {
         private final String completion;
         private final int position;
@@ -151,11 +196,18 @@ public class AutoComplete implements DocumentListener {
             this.position = position;
         }
         
+        /**
+         * Führt die Aktion aus
+         */
         @Override
         public void run() {
             try {
+                if (currentCompleteLength > 0) {
+                    textPane.getDocument().remove(position, currentCompleteLength);
+                }
                 textPane.getDocument().insertString(position, completion, null);
-                textPane.setCaretPosition(position + completion.length());
+                currentCompleteLength = completion.length();
+                textPane.setCaretPosition(position + currentCompleteLength);
                 textPane.moveCaretPosition(position);
                 mode = Mode.COMPLETION;
                 
@@ -163,5 +215,4 @@ public class AutoComplete implements DocumentListener {
             }
         }
     }
-    
 }

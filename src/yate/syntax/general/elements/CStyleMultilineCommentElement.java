@@ -6,12 +6,16 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für mehrzeilige Kommentare für Sprachen im C-Stil
+ * zur Verfügung
  * @author Christian
  */
 public class CStyleMultilineCommentElement extends LanguageElement {
     private static final String pattern = "(?s)\\/\\*((?!(\\/\\*\\*)|(\\*\\/)).)*\\*\\/";
     
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public CStyleMultilineCommentElement() {
         super(pattern);
     }

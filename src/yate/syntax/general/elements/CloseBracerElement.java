@@ -6,11 +6,15 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für schließende Klammern zur Verfügung
  * @author Christian
  */
 public class CloseBracerElement extends LanguageElement {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     * @param pattern Muster des Schlüsselworts
+     */
     public CloseBracerElement(String pattern) {
         super("\\"+pattern);
     }

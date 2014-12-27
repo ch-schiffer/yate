@@ -15,15 +15,23 @@ import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet alle schließenden Klammern für Sprachen im C-Stil auf, die
+ * für die Einrückung relevant sind
  * @author Christian
  */
 public class CStyleCloseIndentionBracer extends KeyWordCollection implements ICloseBracer, IIndentionBracer {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     */
     public CStyleCloseIndentionBracer() {
         super(LanguageElementType.CLOSEINDBRACER);
     }
 
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;

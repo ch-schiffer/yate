@@ -6,11 +6,15 @@
 package yate.syntax.general.elements;
 
 /**
- *
+ * Diese Klasse stellt Muster für nicht case-sensitive Schlüsselwörter zur Verfügung
  * @author Christian
  */
 public class CaseInsensitiveKeyWordElement extends KeyWordElement {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     * @param pattern Muster des Schlüsselworts
+     */
     public CaseInsensitiveKeyWordElement(String pattern) {
         super("(?i)"+pattern);
     }

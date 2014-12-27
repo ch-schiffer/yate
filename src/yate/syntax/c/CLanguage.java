@@ -17,21 +17,31 @@ import yate.syntax.cstyle.CStyleLanguage;
 import yate.syntax.cstyle.CStyleLiteral;
 import yate.syntax.cstyle.CStyleOpenBracer;
 import yate.syntax.cstyle.CStyleOpenIndentionBracer;
+import yate.syntax.cstyle.CStylePreProcessorDirective;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse bietet Funktionen zur Analyse der Sprache C an
  * @author Christian
  */
 public class CLanguage extends CStyleLanguage {
     
+    private HashMap<String, Color> defaultColors = null;
+    
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
     public CLanguage() {
         super("C");
         languageSuffixList.add(".c");
         
     }
     
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<KeyWordCollection> getKeyWords() {
         return keyWords;
@@ -43,6 +53,7 @@ public class CLanguage extends CStyleLanguage {
     private static final ArrayList<KeyWordCollection> keyWords = new ArrayList<>(Arrays.asList(
             new CStyleLiteral(),
             new CStyleComment(),
+            new CStylePreProcessorDirective(),
             new CStyleOpenIndentionBracer(),
             new CStyleCloseIndentionBracer(),
             new CStyleOpenBracer(),
@@ -52,8 +63,10 @@ public class CLanguage extends CStyleLanguage {
             new CStyleIdentifier()
     ));
     
-    private HashMap<String, Color> defaultColors = null;
-    
+    /**
+     * Gibt eine Liste von Standardfarben für die Sprache Assembler ab
+     * @return Liste von Standardsprachen
+     */
     @Override
     public HashMap<String, Color> getDefaultColors() {
         if (defaultColors != null) return defaultColors;

@@ -8,23 +8,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import yate.syntax.general.KeyWordCollection;
 import yate.syntax.general.elements.CaseInsensitiveKeyWordElement;
-import yate.syntax.general.elements.KeyWordElement;
 import yate.syntax.general.elements.LanguageElement;
 import yate.syntax.general.elements.LanguageElementType;
 
 /**
- *
+ * Diese Klasse listet die Mnemonics auf, die in der Sprache Assembler verwendet werden
  * @author Christian
  */
 public class ASMMnemonic extends KeyWordCollection {
     
+    /**
+     * Konstruktor, erzeugt eine Instanz der Klasse
+     */
+    public ASMMnemonic() {
+        super(LanguageElementType.MNEMONIC);
+    }
+    
+    /**
+     * Ruft eine Liste der hinterlegten KeyWords ab
+     * @return Liste der KeyWords
+     */
     @Override
     protected ArrayList<? extends LanguageElement> getKeyWords() {
         return keyWords;
-    }
-    
-    public ASMMnemonic() {
-        super(LanguageElementType.MNEMONIC);
     }
     
     /**

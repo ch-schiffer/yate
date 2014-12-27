@@ -6,11 +6,16 @@
 package yate.syntax.general.elements;
 
 /**
- *
- * @author Christian
+* Diese Klasse stellt Muster für öffnende Klammern für Sprachen im C-Stil
+ * zur Verfügung
+  * @author Christian
  */
 public class OpenBracerElement extends LanguageElement {
 
+    /**
+     * Konstruktor, erzeugt eine neue Instanz der Klasse
+     * @param pattern Muster des Schlüsselworts
+     */
     public OpenBracerElement(String pattern) {
         super("\\"+pattern);
     }

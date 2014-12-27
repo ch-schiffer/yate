@@ -16,7 +16,7 @@ import yate.syntax.java.JavaLanguage;
 import yate.syntax.python.PythonLanguage;
 
 /**
- *
+ * Manager, der eine Liste aller Sprachen zur Verfügung stellt 
  * @author Christian
  */
 public class LanguageManager {
@@ -33,11 +33,21 @@ public class LanguageManager {
     
     private LanguageManager() { }
     
+    /**
+     * Gibt eine Liste aller verfügbaren Sprachen zurück
+     * @return Liste aller verfügbaren Sprachen
+     */
     public static ArrayList<Language> getLanguageList() {
         return languageList;
     }
     
+    /**
+     * Ermittelt aus einer übergebenen Datei, welche Sprache eingestellt wird
+     * @param file Datei
+     * @return Ermittelte Sprache, null wenn keine Übereinstimmung
+     */
     public static Language evaluateLanguage(File file) {
+        if (file == null) return null;
         for (Language language : languageList) {
             if (language.checkSuffix(file.getFileExtension()))
                 return language;
