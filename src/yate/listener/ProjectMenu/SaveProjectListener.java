@@ -3,7 +3,6 @@ package yate.listener.ProjectMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
-import yate.managers.FileManager;
 import yate.managers.ProjectManager;
 import yate.model.ProjectMenuModel;
 import yate.view.ProjectMenuView;

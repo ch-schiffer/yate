@@ -11,6 +11,7 @@ import yate.view.MainFrameView;
 /**
  *
  * @author Carina
+ * Listener, der auf Klicken des Buttons "Vorheriges" wartet beim Suchen
  */
 public class FindPreviousListener extends MainFrameListener implements ActionListener {
     
@@ -25,9 +26,13 @@ public class FindPreviousListener extends MainFrameListener implements ActionLis
             //Prüfen on der Index gültig ist.
             if(selectedIndex >=0 && selectedIndex<model.getCenterBoxes().size()) {
                CenterBoxController cbc = model.getCenterBoxes().get(selectedIndex);
+                // Dokument, in dem gesucht werden soll
                 StyledDocument doc = cbc.getView().getStyledDocument();
+                // das zu suchende Schlüsslewort
                 String keyword = view.getSearchText();
+                // Angabe, ob reguläre berücksichtigt werden sollen oder nicht
                 cbc.getModel().getSearchReplaceManager().setRegex(model.isRegex());
+                // Aufruf der Suche-Methode (Suche von hinten nach vorne)
                 cbc.getModel().getSearchReplaceManager().search(keyword, false);
             }
     }

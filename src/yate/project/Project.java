@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package yate.project;
 
 import java.awt.Color;
@@ -10,18 +5,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import yate.managers.ColorManager;
-import yate.syntax.general.Language;
 
 /**
  *
  * @author Carina
+ * Klasse Project enthält das serialisierbare Projekt
  */
 public class Project implements Serializable{
     
+    // Pfad zum Projekt
     private String projectPath;
+    // Name des Projekts
     private String name;
+    // Liste der im Projekt enthaltenen Dateien
     private ArrayList<File> files;
+    // Angabe ob das Projekt einen gültigen Namen und damit Pfad hat
     private boolean validName;
+    // HashMap der zum Projekt gehörigen Farben
     private HashMap<String, Color> colors;
     
     
@@ -32,7 +32,10 @@ public class Project implements Serializable{
         this.files = new ArrayList <>();
     }
     
-    
+    /**
+     * fügt dem Projekt eine Datei hinzu
+     * @param file hinzuzufügende Datei
+     */
     public void addFile (File file){
         files.add(file);
     }
@@ -47,6 +50,10 @@ public class Project implements Serializable{
         }
     }
     
+    /**
+     * Getter für die gesetzten Farben
+     * @return HashMap mit den gesetzten Farben
+     */
     public HashMap<String, Color> getColors() {
         return ColorManager.getInstance().getColors();
     }
@@ -62,7 +69,7 @@ public class Project implements Serializable{
     
     /**
      * Setter für Pfad
-     * @param path
+     * @param path zu setzender Pfad
      */
     public void setPath (String path){
         this.projectPath = path;
@@ -80,7 +87,7 @@ public class Project implements Serializable{
     
     /**
      * Setter für den Namen
-     * @param name
+     * @param name zu setzender Projektname
      */
     public void setName (String name){
         this.name = name;
@@ -102,14 +109,25 @@ public class Project implements Serializable{
         this.files = files;
     }
     
+    /**
+     * Getter für die Angabe, ob Pfad und Name aktuell gesetzt sind oder nicht
+     * @return 
+     */
     public boolean isValid() {
         return validName;
     }
     
+    /**
+     * setzt das Attribut validname auf true
+     */
     public void setValid() {
         this.validName = true;
     }
     
+    /**
+     * Setter für die Farben
+     * @param colors HashMap mit den zu setzenden Farben
+     */
     public void setColors(HashMap<String, Color> colors) {
         for (String s: colors.keySet()) {
             ColorManager.getInstance().setColor(s, colors.get(s));

@@ -1,13 +1,7 @@
-/*
-* Pour changer cet en-tête de licence, choisissez "en-tête de licence" dans les calibrages du projet
-* Pour changer ce fichier de modèle, choisissez "outillages | en-têtes"
-* et ouvriez l'en-tête dans l'éditeur
-*/
 package yate.managers;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -21,30 +15,38 @@ import yate.misc.Pair;
 
 /**
  *
- * @auctor Carina
- *
- * Locus communis Gryffindorensis illo vespere
- * strepitu resonabat. Harrius et Ronaldus et Hermione
- * iuxta fenestram coniuncti sedebant. Hermione opem ferens
- * Harrio et Ronaldo scrutabatur pensa eorum de Incantationibus
- * scripta. Nunquam eis permisit se imitari ("quomodo enim discetis?"),
- * sed illa roganda ut  pensa sua pelegeret, responsa recta nihilominus
- * adepti sund.
+ * @author Carina
+ * Klasse SearchReplaceManager ist für das Suchen und Ersetzen im Dokument zuständig
  *
  */
 public class SearchReplaceManager {
+    // Angabe, ob reguläre Ausdrücke berücksichtigt werden oder nicht
     private boolean regex;
+    // aktuelles Schlüsselwort
     private String actualKeyword;
+    // Index des aktuell gehighlighteten Schlüsselworts
     private int index;
+    // Liste der Positionen des Schlüsselworts im Text
     private final ArrayList<Pair<Integer,Integer>> positions = new ArrayList();
+    //
     private final JTextPane textPane;
+    // Dokument, in dem gesucht und ersetzt werden soll
     private final StyledDocument doc;
     
+    /**
+     * Konstruktor für einen SearchReüplaceManager
+     * @param textPane das aktuelle TextPane
+     * @param doc das Dokument, in dem gesucht und ersetzt werden soll
+     */
     public SearchReplaceManager(JTextPane textPane, StyledDocument doc){
         this.textPane = textPane;
         this.doc = doc;
     }
     
+    /**
+     * Setter für die Angabe, ob nach regulären Ausdrücken gesucht werden soll
+     * @param regex true oder false
+     */
     public void setRegex(boolean regex) {
         if (regex != this.regex) {
             this.regex = regex;
@@ -52,10 +54,15 @@ public class SearchReplaceManager {
         }
     }
  
+    /**
+     * sucht im Text nach dem übergebenen Schlüsselwort
+     * @param keyword Schlüsselwort, nach dem gesucht werden soll
+     * @param findNext wenn findNext true ist, wird vorwärtsgesucht, ansonsten rückwärts
+     */
     public void search(String keyword, boolean findNext) {
         try {
-            // übergebenes Keyword ist immer noch das gleiche nachdem vorher auch schon gesucht wurde
-            // dann ist der Text schon markiert, der Cursor muss einfach aanders gesetzt werden
+            // übergebenes Keyword ist immer noch das gleiche nach dem vorher auch schon gesucht wurde
+            // dann ist der Text schon markiert, der Cursor muss einfach anders gesetzt werden
             if (keyword.equals(actualKeyword)){
                 // Vorwärtssuche
                 if (positions.size() > 0){
@@ -64,8 +71,7 @@ public class SearchReplaceManager {
                 if (findNext){
                     index = (index + 1 < positions.size() ? index + 1 : 0);
                 } else {
-                    // Rückwärtssuche
-                    
+                    // Rückwärtssuche  
                     index = (index - 1 >= 0 ? index - 1 : positions.size()-1);
                 }
                 if (positions.size() > 0){
@@ -85,12 +91,16 @@ public class SearchReplaceManager {
                 //Matcher matcher = Pattern.compile(keyword).matcher(toSearch);
                 Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toSearch);
                 
+                // zunächst werden alle Vorkommen des Schlüsselworts gelb markiert und die Positionen in
+                // der Liste mit den Positionen gespeichert
                 while (matcher.find()) {
                     setBackgroundColor(Color.yellow, matcher.start(), matcher.end());
                     positions.add(new Pair(matcher.start(), matcher.end()));
                 }
                 if (positions.size() > 0){
+                    // Farbe des aktuellen Schlüssleworts wird auf grün gesetzt
                     setBackgroundColor(Color.green, positions.get(index).getFirst(), positions.get(index).getSecond());
+                    // Cursor wird an die Stelle ds grün markierten Schlüsselworts gesetzt
                     textPane.setCaretPosition(positions.get(index).getFirst());
                     textPane.moveCaretPosition(positions.get(index).getSecond());
                 }
@@ -100,12 +110,23 @@ public class SearchReplaceManager {
         }
     }
     
+    /**
+     * Setter für die Hintergrundfarbe
+     * @param c Farbe
+     * @param start Startindex
+     * @param end Endindex
+     */
     private void setBackgroundColor(Color c, int start, int end){
         SimpleAttributeSet sas = new SimpleAttributeSet();
         StyleConstants.setBackground(sas, c);
         doc.setCharacterAttributes(start, end-start, sas, false);
     }
     
+    /**
+     * ersetzt das zu suchende Wort mit dem zu ersetzenden Wort (einmalig)
+     * @param keyword Schlüsselwort
+     * @param replaceWith Ersetzung des Schlüsselworts
+     */
     public void replace(String keyword, String replaceWith){
         try {
             if (actualKeyword == null) {
@@ -114,17 +135,26 @@ public class SearchReplaceManager {
             String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
+            // sucht einmalig
             if (matcher.find()){
-                matcher.appendReplacement(sb, replaceWith);
+                matcher.appendReplacement(sb, replaceWith);  
+                positions.add(new Pair(matcher.start(), matcher.end()));
             }
             matcher.appendTail(sb);
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
             
+            setBackgroundColor(Color.green, positions.get(0).getFirst(), positions.get(0).getSecond());
         } catch (BadLocationException ex) {
         }
     }
     
+    /**
+     * verhindert das Finden regulärer Ausdrücke
+     * @param toReplace
+     * @param keyword
+     * @return 
+     */
     private String escapeRegex(String toReplace, String keyword){
         
         Matcher matcher = Pattern.compile(keyword).matcher(toReplace);
@@ -136,26 +166,36 @@ public class SearchReplaceManager {
         return sb.toString();
     }
     
-    public void replaceAll(String keyword, String replaceWith){
-        
+    /**
+     * ersetzt alle Vorkommen eines Schlüsselworts mit der übergebenen Zeichenkette im Text
+     * @param keyword Schlüsselwort
+     * @param replaceWith Ersetzung
+     */
+    public void replaceAll(String keyword, String replaceWith){    
         try {
             String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
+            // sucht weiter, solange noch was gefunden wird
             while (matcher.find()){
                 matcher.appendReplacement(sb, replaceWith);
             }
             matcher.appendTail(sb);   
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
+            // zum Markieren der Änderungen
+            search(replaceWith, false);
         } catch (BadLocationException ex) {
         }
     }
     
+    /**
+     * setzt die Hintergrundfarben der bisher markierten Vorkommen des alten Schlüsselworts
+     * auf weiß, das Schlüsselwort auf null und leert die Liste mit den Positionen,
+     * sodass der Text wieeder ganz weiß ist un d neu bearbeitet werden kann
+     */
     public void reset() {
-        for (Pair position : positions) {
-            setBackgroundColor(Color.white, 0, doc.getLength());
-        }
+        setBackgroundColor(Color.white, 0, doc.getLength());
         actualKeyword=null;
         positions.clear();
     }

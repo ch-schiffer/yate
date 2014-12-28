@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yate.listener.ProjectMenu;
 
 import java.awt.event.ActionEvent;
@@ -28,6 +23,7 @@ public class EditProjectFileListener extends ProjectMenuListener implements Acti
                 "Projekt bearbeiten",
                 JOptionPane.PLAIN_MESSAGE);
 
+        // wurde eine Eingabe gemacht, kann der Projektname gesetzt werden
          if (eingabe != null && !eingabe.equals("")) {
             ProjectManager.getInstance().getCurrentProject().setName(eingabe);
             model.setProject(ProjectManager.getInstance().getCurrentProject());

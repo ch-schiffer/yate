@@ -9,7 +9,9 @@ import yate.view.MainFrameView;
 
 /**
  *
- * @author Laurin
+ * @author Carina
+ * Listener, der auf Drücken des Buttons "Ersetzen" reagiert
+ * und dann die replace-Methode aufruft und das angegebene Schlüsselwort einmalig ersetzt
  */
 public class ReplaceListener extends MainFrameListener implements ActionListener {
     
@@ -17,13 +19,15 @@ public class ReplaceListener extends MainFrameListener implements ActionListener
         super(view, model);
     }
     
-    @Override
     public void actionPerformed(ActionEvent e) {
         CenterBoxModel cbc = model.getCurrentCenterBox();
         if (cbc != null) {
+            // Schlüsselwort, das ersetzt werden soll
             String keyword = view.getSearchText();
+            // Schlüssel, mit dem ersetzt werden soll
             String replaceWith = view.getReplaceText();
-            cbc.getSearchReplaceManager().replaceAll(keyword, replaceWith);
+            // einmalige Ersetzung des Schlüsselworts durch Aufruf der replace-Methode
+            cbc.getSearchReplaceManager().replace(keyword, replaceWith);
         }
         
     }

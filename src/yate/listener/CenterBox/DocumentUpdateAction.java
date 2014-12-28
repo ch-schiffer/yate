@@ -5,6 +5,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import yate.managers.FileManager;
 import yate.model.CenterBoxModel;
 import yate.view.CenterBoxView;
 
@@ -28,6 +29,12 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     private void action() {
         if (isEnabled) {
             model.analyseSyntax();
+            FileManager.getInstance().incrementCountChanges();
+            
+            if (FileManager.getInstance().getCountChanges() > 1000 ) {
+                // Zwischenspeichern
+                FileManager.getInstance().saveAllFiles();
+            }
         }
     }
     

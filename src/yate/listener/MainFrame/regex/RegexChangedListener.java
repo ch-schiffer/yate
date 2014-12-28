@@ -14,6 +14,8 @@ import yate.view.MainFrameView;
 /**
  *
  * @author Carina
+ * Listener, der auf Änderungen in der regex-Checkbox reagiert und 
+ * die Suche nach regulären Ausdrücken an- bzw. ausschaltet
  */
 public class RegexChangedListener extends MainFrameListener implements ActionListener{
 
@@ -21,7 +23,6 @@ public class RegexChangedListener extends MainFrameListener implements ActionLis
         super(view, model);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
        model.setRegex(view.isRegex());
     }
