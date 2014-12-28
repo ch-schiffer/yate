@@ -143,8 +143,9 @@ public class File implements Serializable{
     
     
     @Override
-    public String toString(){
-        return getPath();
+    public String toString()
+    {
+        return getName();
     }
     
     

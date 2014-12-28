@@ -13,9 +13,18 @@ import yate.view.ChangeColorDialog;
  */
 public class ChangeColorController {
 
+    //Die View des Contollers.
     private final ChangeColorDialog view;
+    //Das Model des Contollers.
     private final ChangeColorModel model;
 
+    /**
+     * Der Konstuktor bekommt seine View und sein Model übergeben. Dann hängt
+     * dieser die Listener an die View an.
+     *
+     * @param view Die View des Contollers.
+     * @param model Das Model des Contollers.
+     */
     public ChangeColorController(ChangeColorDialog view, ChangeColorModel model) {
         this.view = view;
         this.model = model;
@@ -29,6 +38,10 @@ public class ChangeColorController {
 
     }
 
+    /**
+     * Erstellt die Listener und hängt diese an die View an. Wird im Konstuktor
+     * aufgerufen.
+     */
     private void addListener() {
         view.addCancelButtonListener(new CancelButtonListener(view, model));
         view.addConfirmButtonListener(new ConfirmButtonListener(view, model));
@@ -36,10 +49,20 @@ public class ChangeColorController {
         view.addColorChangedListener(new ColorChangedListener(view, model));
     }
 
+    /**
+     * Getter für die View.
+     *
+     * @return Das Model des Contollers.
+     */
     public ChangeColorDialog getView() {
         return view;
     }
 
+    /**
+     * Getter für das Model.
+     *
+     * @return Das Model des Contollers.
+     */
     public ChangeColorModel getModel() {
         return model;
     }

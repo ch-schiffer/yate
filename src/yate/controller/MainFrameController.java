@@ -30,9 +30,20 @@ import yate.view.MainFrameView;
  */
 public class MainFrameController {
 
+    //Die View des Contollers.
     private final MainFrameView view;
+    //Das Model des Contollers.
     private final MainFrameModel model;
 
+    /**
+     * Der Konstuktor bekommt seine View und sein Model übergeben. Dann hängt
+     * dieser die Listener an die View an. Zudem werden die Komponenten für das
+     * Projekt Menu erstellt und geladen. Dann werden die Sprachen geladen und
+     * eine neue Leere Datei geöffnet.
+     *
+     * @param view Die View des Contollers.
+     * @param model Das Model des Contollers.
+     */
     public MainFrameController(MainFrameView view, MainFrameModel model) {
         this.view = view;
         this.model = model;
@@ -61,14 +72,28 @@ public class MainFrameController {
         view.pack();
     }
 
+    /**
+     * Getter für die View.
+     *
+     * @return Das Model des Contollers.
+     */
     public MainFrameView getView() {
         return this.view;
     }
 
+    /**
+     * Getter für das Model.
+     *
+     * @return Das Model des Contollers.
+     */
     public MainFrameModel getModel() {
         return this.model;
     }
 
+    /**
+     * Erstellt die Listener und hängt diese an die View an. Wird im Konstuktor
+     * aufgerufen.
+     */
     private void addListener() {
         view.addFontChangedListener(new FontChangedListener(view, model));
         view.addFontSizeChangedListener(new FontSizeChangedListener(view, model));
