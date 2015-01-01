@@ -53,7 +53,7 @@ public class SearchReplaceManager {
             reset();
         }
     }
- 
+    
     /**
      * sucht im Text nach dem übergebenen Schlüsselwort
      * @param keyword Schlüsselwort, nach dem gesucht werden soll
@@ -71,7 +71,7 @@ public class SearchReplaceManager {
                 if (findNext){
                     index = (index + 1 < positions.size() ? index + 1 : 0);
                 } else {
-                    // Rückwärtssuche  
+                    // Rückwärtssuche
                     index = (index - 1 >= 0 ? index - 1 : positions.size()-1);
                 }
                 if (positions.size() > 0){
@@ -129,22 +129,25 @@ public class SearchReplaceManager {
      */
     public void replace(String keyword, String replaceWith){
         try {
-            if (actualKeyword == null) {
-                //   search(keyword, text,)
-            }
             String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
             StringBuffer sb = new StringBuffer();
             // sucht einmalig
             if (matcher.find()){
-                matcher.appendReplacement(sb, replaceWith);  
+                matcher.appendReplacement(sb, replaceWith);
                 positions.add(new Pair(matcher.start(), matcher.end()));
             }
             matcher.appendTail(sb);
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
             
-            setBackgroundColor(Color.green, positions.get(0).getFirst(), positions.get(0).getSecond());
+            // Markieren der ersetzten Zeichenkette
+            if (positions.size() > 0) {
+                setBackgroundColor(Color.green, positions.get(0).getFirst(), positions.get(0).getSecond());
+                // Cursor wird an die Stelle ds grün markierten Schlüsselworts gesetzt
+                textPane.setCaretPosition(positions.get(index).getFirst());
+                textPane.moveCaretPosition(positions.get(index).getSecond());
+            }
         } catch (BadLocationException ex) {
         }
     }
@@ -153,7 +156,7 @@ public class SearchReplaceManager {
      * verhindert das Finden regulärer Ausdrücke
      * @param toReplace
      * @param keyword
-     * @return 
+     * @return
      */
     private String escapeRegex(String toReplace, String keyword){
         
@@ -171,7 +174,7 @@ public class SearchReplaceManager {
      * @param keyword Schlüsselwort
      * @param replaceWith Ersetzung
      */
-    public void replaceAll(String keyword, String replaceWith){    
+    public void replaceAll(String keyword, String replaceWith){
         try {
             String toReplace = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(regex ? keyword : Pattern.quote(keyword)).matcher(toReplace);
@@ -179,12 +182,21 @@ public class SearchReplaceManager {
             // sucht weiter, solange noch was gefunden wird
             while (matcher.find()){
                 matcher.appendReplacement(sb, replaceWith);
+                positions.add(new Pair(matcher.start(), matcher.end()));
             }
-            matcher.appendTail(sb);   
+            matcher.appendTail(sb);
             doc.remove(0, doc.getLength());
             doc.insertString(0, sb.toString(), null);
-            // zum Markieren der Änderungen
-            search(replaceWith, false);
+            
+            // Markieren der Änderungen
+            if (positions.size() > 0) {
+                for (Pair<Integer, Integer> position : positions) {
+                    setBackgroundColor(Color.green, position.getFirst(), position.getSecond());
+                }
+                // Cursor wird an die Stelle ds grün markierten Schlüsselworts gesetzt
+                textPane.setCaretPosition(positions.get(index).getFirst());
+                textPane.moveCaretPosition(positions.get(index).getSecond());
+            }
         } catch (BadLocationException ex) {
         }
     }

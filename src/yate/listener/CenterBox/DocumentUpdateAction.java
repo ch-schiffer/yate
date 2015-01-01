@@ -1,5 +1,8 @@
 package yate.listener.CenterBox;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,8 +35,15 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
             FileManager.getInstance().incrementCountChanges();
             
             if (FileManager.getInstance().getCountChanges() > 1000 ) {
-                // Zwischenspeichern
-                FileManager.getInstance().saveAllFiles();
+                try {
+                    // Zwischenspeichern
+                    FileManager.getInstance().saveAllFilesTemporary();
+                    
+                    // Zähler wieder auf 0 setzen
+                    FileManager.getInstance().resetCountChanges();
+                } catch (IOException ex) {
+                    Logger.getLogger(DocumentUpdateAction.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

@@ -20,21 +20,25 @@ public class File implements Serializable{
     private java.io.File internalFile;
     // Programmiersprache der Datei
     private Language language;
+    // Angabe, ob Datei ordentlich abgespeichert wurde und nicht nur temporär
+    private boolean saved;
     
     /**
      * Konstruktor für eine Datei ohne Namen und Pfad
      */
     public File (){
         validName = false;
+        saved = false;
     }
     
     /**
-     * Konstruktpr für eine Datei mit Pfad
+     * Konstruktor für eine Datei mit Pfad
      * @param path übergebener Pfad
      */
     public File  (String path) {
         this.path = path;
         validName = false;
+        saved = false;
     }
     
     /**
@@ -130,6 +134,15 @@ public class File implements Serializable{
      */
     public void setValid() {
         this.validName = true;
+    }
+    
+    
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
     
     //3.12.2014 Laurin

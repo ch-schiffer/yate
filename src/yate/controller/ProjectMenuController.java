@@ -3,6 +3,7 @@ package yate.controller;
 import yate.listener.ProjectMenu.AddToProjectListener;
 import yate.listener.ProjectMenu.EditProjectFileListener;
 import yate.listener.ProjectMenu.NewProjectListener;
+import yate.listener.ProjectMenu.OpenProjectFileListener;
 import yate.listener.ProjectMenu.OpenProjectListener;
 import yate.listener.ProjectMenu.RemoveFromProjectListener;
 import yate.listener.ProjectMenu.SaveProjectListener;
@@ -66,6 +67,7 @@ public class ProjectMenuController {
         view.addRemoveFromProjectListener(new RemoveFromProjectListener(view, model));
         view.addOpenProjectListener(new OpenProjectListener(view, model));
         view.addSaveProjectListener(new SaveProjectListener(view, model));
+        view.addMouseListener(new OpenProjectFileListener(view, model));
     }
 
 }

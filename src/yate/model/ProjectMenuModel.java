@@ -9,13 +9,13 @@ import yate.project.Project;
  * @author Laurin
  */
 public class ProjectMenuModel {
-
+    
     //Das Projekt mit all seinen Daten.
     private Project project;
     //Diese Liste ist das model der JList in ProjectView.
     //Nur Änderungen in der dml werden sichtbar sein.
     private DefaultListModel<File> dlm;
-
+    
     
     /**
      * Der Konstruktor für das ProjectMenuModel übertragt alle Einträge aus der File Liste aus dem Projekt in die dlm.
@@ -28,7 +28,7 @@ public class ProjectMenuModel {
         sync();
     }
     /**
-     * Getter für den Projektnamen. 
+     * Getter für den Projektnamen.
      * Ruft getName() vom aktuellen project auf.
      * @return Projektname Der aktuelle Name des Projekts.
      */
@@ -36,7 +36,7 @@ public class ProjectMenuModel {
         return project.getName();
     }
     /**
-     * Setter für den Projektnamen. 
+     * Setter für den Projektnamen.
      * Ruft setName() vom aktuellen project auf.
      * @param projectName Der neue Name des Projekts.
      */
@@ -48,16 +48,18 @@ public class ProjectMenuModel {
      * @param file Eine Datei.
      */
     public void addFile(File file) {
-        project.addFile(file);
-        dlm.addElement(file);
+        if (!project.getFiles().contains(file)){
+            project.addFile(file);
+            dlm.addElement(file);
+        }
     }
     /**
      * Löscht eine Datei aus der Lsite des Projekts.
      * @param file Die zu löschende Datei.
      */
     public void removeFile(File file) {
-         project.removeFile(file);
-         dlm.removeElement(file);
+        project.removeFile(file);
+        dlm.removeElement(file);
     }
     /**
      * Eine Funktion um das aktuelle Projekt zu wechseln.

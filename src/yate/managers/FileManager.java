@@ -51,11 +51,11 @@ public class FileManager {
      * speichert die übergebene Datei
      * @param file 
      */
-    private void saveFile (File file) { 
+    private void saveFile (File file) {  
          try (PrintWriter pw = new PrintWriter(new java.io.File(file.getPath()))) {
                 pw.write(file.getContent());
                 file.setValid();
-                
+                file.setSaved(true);
             } catch (IOException e) {
             }
     }
@@ -75,6 +75,24 @@ public class FileManager {
             saveFile(file);     
         }
     }
+    
+    /**
+     * Temporäres Zwischenspeichern aller Dateien
+     */
+    public void saveAllFilesTemporary() throws IOException {
+        
+        for (File file : allFiles) {  
+           java.io.File temp = new java.io.File(file.getPath());
+           temp.createTempFile(temp.getName(), ".tmp");
+           /*try (PrintWriter pw = new PrintWriter(new java.io.File(file.getPath() + ".tmp"))) {
+                pw.write(file.getContent());
+                file.setSaved(false);
+            } catch (IOException e) {
+            } */
+        }
+    }
+    
+    
     
     /**
      * schließt die aktuelle Datei
@@ -144,7 +162,19 @@ public class FileManager {
         finally {
             return newFile; //06.12.14 CHS Erstellte Datei zurückgeben
         }
-    };
+    }
+    
+    /**
+     * lädt die übergebene Datei
+     * @param file übergebene Datei
+     * @return die erstellte Datei
+     */
+    public File loadFile(File file) { 
+        currentFile = file;
+        allFiles.add(file);
+        
+        return file;
+    }
     
     /**
      * erstellt eine neue Datei, fügt diese der Liste mit allen Dateien hinzu

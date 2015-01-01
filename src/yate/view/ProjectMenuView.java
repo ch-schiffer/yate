@@ -1,5 +1,6 @@
 package yate.view;
 
+import java.awt.event.MouseListener;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import yate.listener.ProjectMenu.AddToProjectListener;
@@ -115,6 +116,15 @@ public class ProjectMenuView extends javax.swing.JPanel {
      */
     public void addSaveProjectListener(SaveProjectListener l) {
         jB_saveProject.addActionListener(l);
+    }
+    
+    /**
+     * Fügt den Listener für das Öffnen von Dateien eines Projekts hinzu.
+     * @param l MouseListener
+     */
+    @Override
+    public void addMouseListener(MouseListener l){
+        jL_files.addMouseListener(l);
     }
 
     @SuppressWarnings("unchecked")
