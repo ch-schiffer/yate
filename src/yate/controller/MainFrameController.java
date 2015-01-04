@@ -4,6 +4,7 @@ import yate.listener.MainFrame.ColorChangedListener;
 import yate.listener.MainFrame.FontChangedListener;
 import yate.listener.MainFrame.FontSizeChangedListener;
 import yate.listener.MainFrame.LanguageChangedListener;
+import yate.listener.MainFrame.MainFrameWindowListener;
 import yate.listener.MainFrame.NewFileListener;
 import yate.listener.MainFrame.OpenFileListener;
 import yate.listener.MainFrame.SaveAllFilesListener;
@@ -104,6 +105,7 @@ public class MainFrameController {
         view.addTestButtonListener(new TestButtonListener(view, model));
         view.addTabChangedListener(new TabChangedListener(view, model));
         view.addColorChangedListener(new ColorChangedListener(view, model));
+        view.addWindowListener(new MainFrameWindowListener(view, model));
         //RegexListener
         view.addFindNextListener(new FindNextListener(view, model));
         view.addFindPreviousListener(new FindPreviousListener(view, model));

@@ -2,6 +2,7 @@ package yate.managers;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,35 +12,48 @@ import yate.project.File;
 /**
  *
  * @author Carina
- * 
+ *
  * Klasse FileManager ist für die Administration der Dateien zuständig
- * 
+ *
  */
 public class FileManager {
     // Liste aller Dateien
     private final List <File> allFiles;
     // aktuelle Datei, mit der gearbeitet wird
     private File currentFile;
-    // Varibale zum Zählen der Änderungen zum automatischen Zwischenspeichern
+    // Variable zum Zählen der Änderungen zum automatischen Zwischenspeichern
     private int countChanges;
-
+    // Pfad zum Verzeichnis für temporäre Dateien
+    private final String tmpdir = System.getProperty("java.io.tmpdir");
     
-   //Private Instanz der Klasse selbst
+    private final FilenameFilter fileNameFilter;
+    // Verzeichnis für temporäre Dateien
+    private java.io.File tempDir = new java.io.File(tmpdir);
+    
+    //Private Instanz der Klasse selbst
     private static FileManager filemanager;
     
     /**
-     * privater Konstruktor, der die Liste aller Dateien instanziiert und die aktuelle 
+     * privater Konstruktor, der die Liste aller Dateien instanziiert und die aktuelle
      * Datei auf null setzt
      */
     private FileManager (){
         this.allFiles = new ArrayList <> ();
         this.currentFile = null;
         countChanges = 0;
+        
+        fileNameFilter = new FilenameFilter() {
+            
+            @Override
+            public boolean accept(java.io.File dir, String name) {
+                return name.endsWith(".yate");
+            }
+        };
     }
     
     /**
      * Methode, die statt des Konstruktors von außen aufgerufen wird.
-     * Ruft, sofern das private Attribut der Klasse noch nicht instanziiert ist, 
+     * Ruft, sofern das private Attribut der Klasse noch nicht instanziiert ist,
      * den Konstruktor auf
      * @return Instanz des FileManagers
      */
@@ -49,22 +63,36 @@ public class FileManager {
     
     /**
      * speichert die übergebene Datei
-     * @param file 
+     * @param file
      */
-    private void saveFile (File file) {  
-         try (PrintWriter pw = new PrintWriter(new java.io.File(file.getPath()))) {
-                pw.write(file.getContent());
-                file.setValid();
-                file.setSaved(true);
-            } catch (IOException e) {
+    private void saveFile (File file) {
+        try (PrintWriter pw = new PrintWriter(new java.io.File(file.getPath()))) {
+            pw.write(file.getContent());
+            file.setValid();
+            // Finden und Löschen aller .yate-Dateien
+            for (java.io.File fileToDelete : tempDir.listFiles(fileNameFilter)) {
+                if (fileToDelete.getName().split(".")[0].equals(file.getName())){
+                    fileToDelete.delete();
+                }
             }
+            file.setSaved(true);
+        } catch (IOException e) {
+            file.setSaved(false);
+        }
+    }
+    
+    public void deleteAllTemporaryFiles() {
+        // Finden und Löschen aller .yate-Dateien
+        for (java.io.File fileToDelete : tempDir.listFiles(fileNameFilter)) {
+            fileToDelete.delete();
+        }
     }
     
     /**
-     * speichert die aktuelle Datei 
-    */
+     * speichert die aktuelle Datei
+     */
     public void saveCurrentFile(){
-            saveFile(currentFile);
+        saveFile(currentFile);
     }
     
     /**
@@ -72,7 +100,7 @@ public class FileManager {
      */
     public void saveAllFiles (){
         for (File file : allFiles) {
-            saveFile(file);     
+            saveFile(file);
         }
     }
     
@@ -81,14 +109,18 @@ public class FileManager {
      */
     public void saveAllFilesTemporary() throws IOException {
         
-        for (File file : allFiles) {  
-           java.io.File temp = new java.io.File(file.getPath());
-           temp.createTempFile(temp.getName(), ".tmp");
-           /*try (PrintWriter pw = new PrintWriter(new java.io.File(file.getPath() + ".tmp"))) {
+        // Finden und Löschen aller .yate-Dateien
+        for (java.io.File file : tempDir.listFiles(fileNameFilter)) {
+            file.delete();
+        }
+        
+        // ablegen aller Dateien im temporären Verzeichnis
+        for (File file : allFiles) {
+            java.io.File temp = java.io.File.createTempFile(file.getName()+".", ".yate");
+            try (PrintWriter pw = new PrintWriter(temp)) {
                 pw.write(file.getContent());
-                file.setSaved(false);
             } catch (IOException e) {
-            } */
+            }
         }
     }
     
@@ -100,7 +132,7 @@ public class FileManager {
     public void closeCurrentFile(){
         int index = allFiles.indexOf(currentFile);
         allFiles.remove(currentFile);
-                        
+        
         if (index > 0) {
             currentFile = allFiles.get(index-1);
         } else if (allFiles.size() > 0){
@@ -118,7 +150,7 @@ public class FileManager {
     public void closeFile(File file){
         int index = allFiles.indexOf(file);
         allFiles.remove(file);
-        if (file != currentFile) return;                
+        if (file != currentFile) return;
         if (index > 0) {
             currentFile = allFiles.get(index-1);
         } else if (allFiles.size() > 0){
@@ -169,7 +201,7 @@ public class FileManager {
      * @param file übergebene Datei
      * @return die erstellte Datei
      */
-    public File loadFile(File file) { 
+    public File loadFile(File file) {
         currentFile = file;
         allFiles.add(file);
         
@@ -192,21 +224,21 @@ public class FileManager {
      * Getter für die aktuelle Datei
      * @return aktuelle Datei
      */
-     public File getCurrentFile() {
+    public File getCurrentFile() {
         return currentFile;
     }
-
-     /**
-      * Setter für die aktuelle Datei
-      * @param currentFile übergebene Datei
-      */
+    
+    /**
+     * Setter für die aktuelle Datei
+     * @param currentFile übergebene Datei
+     */
     public void setCurrentFile(File currentFile) {
         this.currentFile = currentFile;
     }
     
     /**
      * Getter für die Liste mit allen Dateien
-     * @return 
+     * @return
      */
     public List<File> getAllFiles() {
         return allFiles;
@@ -219,7 +251,7 @@ public class FileManager {
     public int getCountChanges() {
         return countChanges;
     }
-
+    
     /**
      * Setzt die Anzahl der Änderungen auf 0 zurück
      */

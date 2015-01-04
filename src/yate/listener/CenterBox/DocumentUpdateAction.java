@@ -33,9 +33,11 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
         if (isEnabled) {
             model.analyseSyntax();
             FileManager.getInstance().incrementCountChanges();
+            FileManager.getInstance().getCurrentFile().setSaved(false);
             
-            if (FileManager.getInstance().getCountChanges() > 1000 ) {
+            if (FileManager.getInstance().getCountChanges() > 100 ) {
                 try {
+                    FileManager.getInstance().getCurrentFile().setContent(model.getText());
                     // Zwischenspeichern
                     FileManager.getInstance().saveAllFilesTemporary();
                     
