@@ -70,7 +70,7 @@ public class MainFrameWindowListener extends MainFrameListener implements Window
             saved = file.isSaved();
             if (!saved) break;
         }
-        if (saved || JOptionPane.showConfirmDialog(null, "Einige Änderungen wurden nicht gespeichert."
+        if (saved || JOptionPane.showConfirmDialog(view, "Einige Änderungen wurden nicht gespeichert."
                 + " Trotzdem beenden?","Speichern",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             FileManager.getInstance().deleteAllTemporaryFiles();
             System.exit(0);

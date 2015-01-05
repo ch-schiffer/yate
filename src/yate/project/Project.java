@@ -29,7 +29,7 @@ public class Project implements Serializable{
      * Konstruktor zur Erstellung eines Projekts
      */
     public Project (){
-        this.files = new ArrayList <>();
+        this.files = new ArrayList <>();        
     }
     
     /**
@@ -51,15 +51,6 @@ public class Project implements Serializable{
     }
     
     /**
-     * Getter für die gesetzten Farben
-     * @return HashMap mit den gesetzten Farben
-     */
-    public HashMap<String, Color> getColors() {
-        return ColorManager.getInstance().getColors();
-    }
-    
-    
-    /**
      * Getter für Pfad
      * @return Pfad
      */
@@ -73,9 +64,7 @@ public class Project implements Serializable{
      */
     public void setPath (String path){
         this.projectPath = path;
-    }
-    
-    
+    }    
     
     /**
      * Getter für den Projektnamen
@@ -123,14 +112,20 @@ public class Project implements Serializable{
     public void setValid() {
         this.validName = true;
     }
-    
+
+    /**
+     * Getter für die gesetzten Farben
+     * @return HashMap mit den gesetzten Farben
+     */
+    public HashMap<String, Color> getColors() {
+        return colors;
+    }
+
     /**
      * Setter für die Farben
      * @param colors HashMap mit den zu setzenden Farben
      */
     public void setColors(HashMap<String, Color> colors) {
-        for (String s: colors.keySet()) {
-            ColorManager.getInstance().setColor(s, colors.get(s));
-        }
+        this.colors = colors;
     }
 }

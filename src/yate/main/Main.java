@@ -1,18 +1,10 @@
 package yate.main;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import yate.controller.CenterBoxController;
 import yate.controller.MainFrameController;
-import yate.listener.MainFrame.TabCloseListener;
-import yate.managers.FileManager;
 import yate.model.MainFrameModel;
-import yate.project.File;
 import yate.view.MainFrameView;
 
 /**

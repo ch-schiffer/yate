@@ -1,10 +1,13 @@
 package yate.managers;
 
+import java.awt.Color;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import yate.project.Project;
 
 /**
@@ -44,6 +47,11 @@ public class ProjectManager {
      */
     public void saveProject() {
         try (XMLEncoder enc = new XMLEncoder(new FileOutputStream(currentProject.getPath()))){
+            HashMap<String,Color> colors = new HashMap<>();
+            for (Entry<String,Color> e : ColorManager.getInstance().getColors().entrySet()) {
+                colors.put(e.getKey(), e.getValue());
+            }
+            currentProject.setColors(colors);
             enc.writeObject(currentProject);       
         } catch (IOException e) {
         }
@@ -56,7 +64,10 @@ public class ProjectManager {
     public void loadProject(FileInputStream fis) {
         
         XMLDecoder dec = new XMLDecoder(fis);
-        currentProject = (Project) dec.readObject();        
+        currentProject = (Project) dec.readObject(); 
+        for (Entry<String,Color> e : currentProject.getColors().entrySet()) {
+            ColorManager.getInstance().setColor(e.getKey(), e.getValue());
+        }
     }
     
     /**

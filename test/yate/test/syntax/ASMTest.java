@@ -200,7 +200,7 @@ public class ASMTest {
         AsmLanguage language = new AsmLanguage();
         NavigableMap<Integer, SyntaxToken> syntaxMap = new TreeMap<>();
         String inputText = "EAX EBX ECX EDX AX BX CX DX AH BH CH DH AL BL CL DL SP"
-                + "BP IP SI DI CS DS SS ES";
+                + " BP IP SI DI CS DS SS ES";
         language.analyzeSyntax(inputText, syntaxMap, null);
         ArrayList<SyntaxToken> foundTokens = new ArrayList<>(syntaxMap.values());
         
@@ -221,20 +221,22 @@ public class ASMTest {
                 new SyntaxToken(null, "BL",43,45),
                 new SyntaxToken(null, "CL",46,48),
                 new SyntaxToken(null, "DL",49,51),
-                new SyntaxToken(null, "IP",57,59),
-                new SyntaxToken(null, "SI",60,62),
-                new SyntaxToken(null, "DI",63,65),
-                new SyntaxToken(null, "CS",66,68),
-                new SyntaxToken(null, "DS",69,71),
-                new SyntaxToken(null, "SS",72,74),
-                new SyntaxToken(null, "ES",75,77)
+                new SyntaxToken(null, "SP",52,54),
+                new SyntaxToken(null, "BP",55,57),
+                new SyntaxToken(null, "IP",58,60),
+                new SyntaxToken(null, "SI",61,63),
+                new SyntaxToken(null, "DI",64,66),
+                new SyntaxToken(null, "CS",67,69),
+                new SyntaxToken(null, "DS",70,72),
+                new SyntaxToken(null, "SS",73,75),
+                new SyntaxToken(null, "ES",76,78)
         ));
         
         assertEquals(foundTokens, targetTokens);
         
         for (SyntaxToken targetToken : foundTokens) {
             assertTrue(targetToken.getTokenType() instanceof ASMRegister);
-        }       
+        }
     }
     
     /**
