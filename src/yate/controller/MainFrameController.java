@@ -11,7 +11,6 @@ import yate.listener.MainFrame.SaveAllFilesListener;
 import yate.listener.MainFrame.SaveFileListener;
 import yate.listener.MainFrame.TabChangedListener;
 import yate.listener.MainFrame.TabCloseListener;
-import yate.listener.MainFrame.TestButtonListener;
 import yate.listener.MainFrame.regex.FindNextListener;
 import yate.listener.MainFrame.regex.FindPreviousListener;
 import yate.listener.MainFrame.regex.RegexChangedListener;
@@ -50,7 +49,7 @@ public class MainFrameController {
         this.model = model;
 
         Project project = new Project();
-        project.setName("Test Project");
+        project.setName("Projekt");
 
         model.addProjectMenu(project);
         view.addProjectMenuView(model.getProjectMenuController().getView());
@@ -102,7 +101,6 @@ public class MainFrameController {
         view.addOpenFileListener(new OpenFileListener(view, model));
         view.addSaveAllFileListener(new SaveAllFilesListener(view, model));
         view.addSaveFileListener(new SaveFileListener(view, model));
-        view.addTestButtonListener(new TestButtonListener(view, model));
         view.addTabChangedListener(new TabChangedListener(view, model));
         view.addColorChangedListener(new ColorChangedListener(view, model));
         view.addWindowListener(new MainFrameWindowListener(view, model));

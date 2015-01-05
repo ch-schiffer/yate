@@ -16,6 +16,12 @@ import yate.managers.ProjectManager;
 import yate.model.MainFrameModel;
 import yate.model.ProjectMenuModel;
 import yate.project.File;
+import yate.syntax.asm.AsmLanguage;
+import yate.syntax.c.CLanguage;
+import yate.syntax.cpp.CppLanguage;
+import yate.syntax.csharp.CSharpLanguage;
+import yate.syntax.java.JavaLanguage;
+import yate.syntax.python.PythonLanguage;
 import yate.view.MainFrameView;
 import yate.view.ProjectMenuView;
 
@@ -35,14 +41,14 @@ public class OpenProjectFileListener extends ProjectMenuListener implements Mous
         if (e.getClickCount() >= 2) {
             int index = list.locationToIndex(e.getPoint());
             File selectedFile = ProjectManager.getInstance().getCurrentProject().getFiles().get(index);
-            FileManager.getInstance().loadFile(selectedFile);
+            FileManager.getInstance().loadFile(new java.io.File(selectedFile.getPath()));
             MainFrameView mainFrameView = Main.getView();
             MainFrameModel mainFrameModel = Main.getModel();
             CenterBoxController cbc = mainFrameModel.addCenterBox(selectedFile);
-            mainFrameView.addCenterBoxViewToTab(cbc.getView(), selectedFile.getName(),new TabCloseListener(mainFrameView, mainFrameModel,cbc));
+            mainFrameView.addCenterBoxViewToTab(cbc.getView(), selectedFile.getName(),new TabCloseListener(mainFrameView, mainFrameModel,cbc));            
             cbc.getView().setText(selectedFile.getContent());
             cbc.getView().focusElement();
-            cbc.getModel().setLanguage(selectedFile.getLanguage());
+            selectedFile.setSaved(true);
         }
     }
 

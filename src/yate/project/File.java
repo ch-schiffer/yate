@@ -9,7 +9,7 @@ import yate.syntax.general.Language;
  * @author Carina
  * Klasse File enthält die serialisierbare Datei
  */
-public class File implements Serializable{
+public class File implements Serializable {
     // Pfad der Datei
     private String path = null;
     // Inhalt der Datei
@@ -22,7 +22,7 @@ public class File implements Serializable{
     private Language language;
     // Angabe, ob die Datei ordentlich gespeichert ist und
     // nicht nur zwischengespeichert
-    private boolean saved;
+    private boolean saved;        
 
     /**
      * Konstruktor für eine Datei ohne Namen und Pfad
@@ -137,11 +137,18 @@ public class File implements Serializable{
         this.validName = true;
     }
     
-    
+    /**
+     * Gibt an, ob eine Datei bereits gespeichert wurde
+     * @return Zustand
+     */
     public boolean isSaved() {
         return saved;
     }
 
+    /**
+     * Legt fest, ob eine Datei bereits abgespeichert wurde
+     * @param saved Zustand
+     */
     public void setSaved(boolean saved) {
         this.saved = saved;
     }

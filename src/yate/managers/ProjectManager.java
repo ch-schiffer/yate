@@ -8,7 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import yate.project.File;
 import yate.project.Project;
+import yate.syntax.asm.AsmLanguage;
+import yate.syntax.c.CLanguage;
+import yate.syntax.cpp.CppLanguage;
+import yate.syntax.csharp.CSharpLanguage;
+import yate.syntax.java.JavaLanguage;
+import yate.syntax.python.PythonLanguage;
 
 /**
  *
@@ -50,8 +57,8 @@ public class ProjectManager {
             HashMap<String,Color> colors = new HashMap<>();
             for (Entry<String,Color> e : ColorManager.getInstance().getColors().entrySet()) {
                 colors.put(e.getKey(), e.getValue());
-            }
-            currentProject.setColors(colors);
+            }            
+            currentProject.setColors(colors);            
             enc.writeObject(currentProject);       
         } catch (IOException e) {
         }
@@ -67,7 +74,7 @@ public class ProjectManager {
         currentProject = (Project) dec.readObject(); 
         for (Entry<String,Color> e : currentProject.getColors().entrySet()) {
             ColorManager.getInstance().setColor(e.getKey(), e.getValue());
-        }
+        }        
     }
     
     /**

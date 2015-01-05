@@ -28,6 +28,7 @@ public class OpenProjectListener extends ProjectMenuListener implements ActionLi
         if (openFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
            try {
                ProjectManager.getInstance().loadProject(new FileInputStream(openFile.getSelectedFile()));
+               view.setProjectName(ProjectManager.getInstance().getCurrentProject().getName());
                for (File f: ProjectManager.getInstance().getCurrentProject().getFiles()){
                    model.addFile(f);
                }

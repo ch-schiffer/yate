@@ -10,19 +10,61 @@ package yate.syntax.general.elements;
  * @author Christian
  */
 public enum LanguageElementType {
+    /**
+     * Literal
+     */
     LITERAL("Literal"),
+    /**
+     * Schlüsselwort
+     */
     KEYWORD("Schlüsselwort"),
+    /**
+     * Öffnende Klammer
+     */
     OPENBRACER("Klammer"),
+    /**
+     * Schließende Klammer
+     */
     CLOSEBRACER("Klammer"),
+    /**
+     * Öffnende, für die Einrückung relevante Klammer
+     */
     OPENINDBRACER("Klammer"),
+    /**
+     * Schließende, für die Einrückung relevante Klammer
+     */
     CLOSEINDBRACER("Klammer"),
+    /**
+     * Kommentar
+     */
     COMMENT("Kommentar"),
+    /**
+     * Datentyp
+     */
     DATATYPE("Datentyp"),
+    /**
+     * Bezeichner
+     */
     IDENTIFIER("Bezeichner"),
+    /**
+     * Register (Assembler)
+     */
     REGISTER("Register"),
+    /**
+     * Flag (Assembler)
+     */
     FLAG("Flag"),
+    /**
+     * Mnemonic (Assembler)
+     */
     MNEMONIC("Menmonic"),
+    /**
+     * Zahlenelement (Assembler)
+     */
     NUMBER("Zahl"),
+    /**
+     * Präprozessordirektive
+     */
     PREPROCESSOR("Präprozessor");
     
     private final String displayName;
@@ -49,7 +91,5 @@ public enum LanguageElementType {
     @Override
     public String toString() {
         return this.name();
-    }
-    
-    
+    }    
 }

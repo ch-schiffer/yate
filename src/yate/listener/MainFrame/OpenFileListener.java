@@ -28,6 +28,7 @@ public class OpenFileListener extends MainFrameListener implements ActionListene
             view.addCenterBoxViewToTab(cbc.getView(), newFile.getName(),new TabCloseListener(view, model,cbc));
             cbc.getView().setText(newFile.getContent());
             cbc.getView().focusElement();
+            newFile.setSaved(true);
         }        
     }
 }

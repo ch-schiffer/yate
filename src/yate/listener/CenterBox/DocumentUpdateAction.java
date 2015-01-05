@@ -32,8 +32,6 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
     private void action() {
         if (isEnabled) {
             model.analyseSyntax();
-            FileManager.getInstance().incrementCountChanges();
-            FileManager.getInstance().getCurrentFile().setSaved(false);
             
             if (FileManager.getInstance().getCountChanges() > 100 ) {
                 try {
@@ -55,11 +53,15 @@ public class DocumentUpdateAction extends CenterBoxListener implements DocumentL
         SwingUtilities.invokeLater(resetSearchReplaceManager);
         action();
         indent(e.getOffset(), e.getDocument());
+        FileManager.getInstance().incrementCountChanges();
+        FileManager.getInstance().getCurrentFile().setSaved(false);
     }
     
     @Override
     public void removeUpdate(DocumentEvent e) {
-        action();
+        action();        
+        FileManager.getInstance().incrementCountChanges();
+        FileManager.getInstance().getCurrentFile().setSaved(false);
     }
     
     @Override

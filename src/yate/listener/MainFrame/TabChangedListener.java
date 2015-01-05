@@ -2,6 +2,7 @@ package yate.listener.MainFrame;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import yate.managers.FileManager;
 import yate.model.CenterBoxModel;
 import yate.model.MainFrameModel;
 import yate.view.MainFrameView;
@@ -28,6 +29,7 @@ public class TabChangedListener extends MainFrameListener implements ChangeListe
         CenterBoxModel currentCenterBoxModel = model.getCurrentCenterBox();
         if (currentCenterBoxModel != null) {
             view.setSelectedLanguage(currentCenterBoxModel.getLanguage().getLanguageName());
+            FileManager.getInstance().setCurrentFile(currentCenterBoxModel.getFile());
             currentCenterBoxModel.reHighlightSyntax();
         }
     }

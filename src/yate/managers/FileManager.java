@@ -81,6 +81,9 @@ public class FileManager {
         }
     }
     
+    /**
+     * Löscht alle temporären Dateien, die von yate abgespeichert wurden
+     */
     public void deleteAllTemporaryFiles() {
         // Finden und Löschen aller .yate-Dateien
         for (java.io.File fileToDelete : tempDir.listFiles(fileNameFilter)) {
@@ -89,7 +92,7 @@ public class FileManager {
     }
     
     /**
-     * speichert die aktuelle Datei
+     * Speichert die aktuelle Datei
      */
     public void saveCurrentFile(){
         saveFile(currentFile);
@@ -106,6 +109,7 @@ public class FileManager {
     
     /**
      * Temporäres Zwischenspeichern aller Dateien
+     * @throws java.io.IOException
      */
     public void saveAllFilesTemporary() throws IOException {
         
@@ -189,6 +193,7 @@ public class FileManager {
             
             newFile.setContent(sb.toString());
             newFile.setValid();
+            newFile.setSaved(true);
         } catch (IOException e) {
         }
         finally {
