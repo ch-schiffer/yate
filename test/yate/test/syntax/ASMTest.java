@@ -234,8 +234,7 @@ public class ASMTest {
         
         for (SyntaxToken targetToken : foundTokens) {
             assertTrue(targetToken.getTokenType() instanceof ASMRegister);
-        }
-        
+        }       
     }
     
     /**
